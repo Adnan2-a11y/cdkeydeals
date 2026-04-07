@@ -11,11 +11,12 @@ import SaleBanner from "@/components/SaleBanner";
 import BrandCarousel from "@/components/BrandCarousel";
 import BestOffersSection from "@/components/BestOffersSection";
 import TrendingNow from "@/components/TrendingNow";
+import PromoCarouselSection from "@/components/home/PromoCarouselSection";
 import MostPopular from "@/components/MostPopular";
 import ServicesSection from "@/components/ServicesSection";
 import CustomerAssistanceFAQ from "@/components/CustomerAssistanceFAQ";
 import Newsletter from "@/components/Newsletter";
-import { mockTopProducts } from "@/data/mockProducts";
+import { mockTopProducts, mockMostPopularProducts, mockTrendingProducts } from "@/data/mockProducts";
 
 // Static data for the UI
 const categories = [
@@ -185,10 +186,21 @@ export default function Home() {
           <BestOffersSection />
 
           {/* Trending Now Section */}
-          <TrendingNow />
+          <TrendingNow
+            title="Trending Now"
+            products={mockTrendingProducts}
+            viewAllLink="/trending"
+          />
+
+          {/* Promo Banner + Product Carousel Section */}
+          <PromoCarouselSection />
 
           {/* Most Popular Section */}
-          <MostPopular />
+          <MostPopular
+            title="Most Popular"
+            products={mockMostPopularProducts}
+            viewAllLink="/best-selling"
+          />
 
           {/* Services Section */}
           <ServicesSection />

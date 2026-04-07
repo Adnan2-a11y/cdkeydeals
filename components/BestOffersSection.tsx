@@ -4,9 +4,71 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Copy, ChevronRight } from "lucide-react";
 
+// Interface for Best Offer products
+interface BestOfferProduct {
+  id: number;
+  title: string;
+  slug: string;
+  image?: string;
+  price: number;
+  originalPrice?: number;
+  badge?: string;
+  discount?: number;
+}
+
+// Product data for best offers with proper slugs
+const bestOffersProducts: BestOfferProduct[] = [
+  {
+    id: 1,
+    title: "MS Office 2024 Pro Plus & Windows 11 Pro Combo",
+    slug: "ms-office-2024-pro-plus-windows-11-pro-combo",
+    price: 49.99,
+    originalPrice: 89.99,
+    badge: "Mega Sale",
+    discount: 44,
+    image: "https://img.freepik.com/free-vector/spring-sale-background-with-bokeh-effect_23-2148851410.jpg",
+  },
+  {
+    id: 11,
+    title: "Microsoft Windows 10 Pro 1 pc Key",
+    slug: "microsoft-windows-10-pro-1-pc-key",
+    price: 14.99,
+    originalPrice: 199.99,
+    badge: "75% OFF",
+    discount: 75,
+    image: "https://upload.wikimedia.org/wikipedia/commons/4/48/Windows_logo_-_2012_%28dark_blue%29.svg",
+  },
+  {
+    id: 7,
+    title: "Windows 11 Pro 1 PC Digital License",
+    slug: "windows-11-pro-1-pc-digital-license",
+    price: 29.99,
+    originalPrice: 199.99,
+    badge: "Mega Sale",
+    discount: 85,
+    image: "https://www.microsoft.com/content/dam/static/Windows11Pro.png",
+  },
+  {
+    id: 9,
+    title: "Steam Wallet Code $100 USD Global",
+    slug: "steam-wallet-code-100-usd-global",
+    price: 99.99,
+    originalPrice: 100.00,
+    badge: "Spring Sale",
+    discount: 0,
+    image: "",
+  },
+];
+
 export default function BestOffersSection() {
-  // স্ক্রিনশটের মতো ডাটা ডাইনামিক করার জন্য
+  // Dynamic promo code
   const promoCode = "MEGA26";
+
+  // Get product slugs with fallback
+  const getProductLink = (slug: string | undefined): string => {
+    if (!slug) return "/shop";
+    return `/product/${slug}`;
+  };
 
   return (
     <section className="py-12 bg-white">
@@ -59,12 +121,17 @@ export default function BestOffersSection() {
                   <button 
                     onClick={() => navigator.clipboard.writeText(promoCode)}
                     className="p-2 text-gray-400 hover:text-indigo-600 transition-colors"
+                    aria-label="Copy promo code"
                   >
                     <Copy className="w-5 h-5" />
                   </button>
                 </div>
 
-                <Link href="/shop" className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-8 py-4 rounded-xl transition-transform hover:scale-105">
+                <Link 
+                  href={getProductLink(bestOffersProducts[0]?.slug)}
+                  className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-8 py-4 rounded-xl transition-transform hover:scale-105"
+                  aria-label={`Shop now for ${bestOffersProducts[0]?.title}`}
+                >
                   Shop Now
                 </Link>
               </div>
@@ -77,37 +144,52 @@ export default function BestOffersSection() {
             </div>
           </div>
 
-          {/* Right Side Smaller Banners */}
+            {/* Right Side Smaller Banners */}
           <div className="lg:col-span-6 flex flex-col gap-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 h-full">
               
               {/* Windows 10 Card */}
-              <div className="bg-gradient-to-br from-purple-800 to-indigo-900 rounded-2xl p-6 relative overflow-hidden min-h-[200px] flex flex-col justify-end group">
-                <div className="absolute top-4 left-4 bg-yellow-400 text-black text-[10px] font-bold px-1.5 py-0.5 rounded">75%</div>
+              <Link 
+                href={getProductLink(bestOffersProducts[1]?.slug)}
+                className="bg-gradient-to-br from-purple-800 to-indigo-900 rounded-2xl p-6 relative overflow-hidden min-h-[200px] flex flex-col justify-end group cursor-pointer"
+              >
+                <div className="absolute top-4 left-4 bg-yellow-400 text-black text-[10px] font-bold px-1.5 py-0.5 rounded">{bestOffersProducts[1]?.discount}%</div>
                 <div className="relative z-10">
-                  <h3 className="text-white text-xl font-bold mb-1">Windows 10 Pro</h3>
+                  <h3 className="text-white text-xl font-bold mb-1">{bestOffersProducts[1]?.title}</h3>
                   <p className="text-white/80 text-sm">at the cheapest price in the online market!</p>
+                  <span className="inline-block mt-2 bg-yellow-400 hover:bg-yellow-500 text-black text-sm font-bold px-4 py-2 rounded-lg transition-colors">
+                    Shop Now
+                  </span>
                 </div>
                 {/* Windows Logo Watermark */}
                 <div className="absolute -right-4 -bottom-4 opacity-20 group-hover:scale-110 transition-transform">
-                   <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Windows_logo_-_2012_%28dark_blue%29.svg" className="w-32 h-32 invert" alt="" />
+                   <img src={bestOffersProducts[1]?.image} className="w-32 h-32 invert" alt="" />
                 </div>
-              </div>
+              </Link>
 
               {/* Windows 11 Card */}
-              <div className="bg-[#001b3d] rounded-2xl p-6 relative overflow-hidden min-h-[200px] flex flex-col justify-end group border border-blue-500/30">
-                <div className="absolute top-4 left-4 bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">Mega Sale</div>
+              <Link 
+                href={getProductLink(bestOffersProducts[2]?.slug)}
+                className="bg-[#001b3d] rounded-2xl p-6 relative overflow-hidden min-h-[200px] flex flex-col justify-end group border border-blue-500/30 cursor-pointer"
+              >
+                <div className="absolute top-4 left-4 bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">{bestOffersProducts[2]?.badge}</div>
                 <div className="relative z-10">
-                  <h3 className="text-white text-xl font-bold mb-1">Windows 11 Pro</h3>
+                  <h3 className="text-white text-xl font-bold mb-1">{bestOffersProducts[2]?.title}</h3>
                   <p className="text-white/80 text-sm">at the cheapest price in the online market!</p>
+                  <span className="inline-block mt-2 bg-yellow-400 hover:bg-yellow-500 text-black text-sm font-bold px-4 py-2 rounded-lg transition-colors">
+                    Shop Now
+                  </span>
                 </div>
                 {/* Abstract Line Art */}
                 <div className="absolute inset-0 opacity-40 pointer-events-none bg-[url('https://www.microsoft.com/content/dam/static/Windows11Pro.png')] bg-cover" />
-              </div>
+              </Link>
             </div>
 
             {/* Bottom Horizontal Banner */}
-            <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-2xl p-6 relative overflow-hidden flex items-center justify-between border border-blue-100">
+            <Link 
+              href={getProductLink(bestOffersProducts[3]?.slug)}
+              className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-2xl p-6 relative overflow-hidden flex items-center justify-between border border-blue-100 cursor-pointer group"
+            >
                <div className="flex items-center gap-6 z-10">
                   <div className="hidden sm:block">
                      <span className="text-6xl">🌼</span>
@@ -120,11 +202,11 @@ export default function BestOffersSection() {
                     </div>
                   </div>
                </div>
-               
-               <Link href="/shop" className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6 py-2 rounded-lg z-10 transition-colors">
+                         
+               <span className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6 py-2 rounded-lg z-10 transition-colors">
                   Shop Now
-               </Link>
-
+               </span>
+            
                {/* Decorative Graphics */}
                <div className="absolute right-0 bottom-0 opacity-20 pointer-events-none">
                   <svg width="200" height="100" viewBox="0 0 200 100" fill="none">
@@ -132,7 +214,7 @@ export default function BestOffersSection() {
                     <circle cx="180" cy="40" r="40" fill="#fbbf24" />
                   </svg>
                </div>
-            </div>
+            </Link>
           </div>
         </div>
 

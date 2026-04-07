@@ -21,6 +21,7 @@ const badgeColors: Record<BadgeColor, string> = {
 
 export default function ProductCard({
   id,
+  slug,
   title,
   price,
   originalPrice,
@@ -69,11 +70,15 @@ export default function ProductCard({
     }
   };
 
-  const handleQuickView = () => {
+  const handleQuickView = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
     if (onQuickView) {
       onQuickView(id);
     }
   };
+
+  // Generate product URL - use slug if available, otherwise fallback to ID-based URL
+  const productUrl = slug ? `/product/${slug}` : `/product/${id}`;
 
   return (
     <div
@@ -107,7 +112,7 @@ export default function ProductCard({
 
       {/* Product Image Container */}
       <div className="relative h-36 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4 overflow-hidden">
-        <Link href={`/product/${id}`} className="block w-full h-full">
+        <Link href={productUrl} className="block w-full h-full">
           {image && !imageError ? (
             <img
               src={image}
@@ -154,7 +159,7 @@ export default function ProductCard({
           )}
 
           {/* Title */}
-          <Link href={`/product/${id}`}>
+          <Link href={productUrl}>
             <h3 className="text-xs font-bold text-gray-900 line-clamp-2 min-h-[2rem] hover:text-blue-600 transition-colors leading-tight">
               {title}
             </h3>

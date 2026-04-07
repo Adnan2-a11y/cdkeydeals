@@ -1,8 +1,40 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
-import { ChevronRight, Shield, Zap, Clock } from "lucide-react";
+import { Shield, Zap, Clock } from "lucide-react";
+import ShopNowButton from "./ShopNowButton";
+
+// =====================================================
+// TYPES & INTERFACES
+// =====================================================
+
+export interface PromoBannerData {
+  id: string;
+  productSlug: string;
+  badge: string;
+  badgeColor: string;
+  title: string;
+  description: string;
+  originalPrice: number;
+  salePrice: number;
+  discount: number;
+  gradient: {
+    from: string;
+    to: string;
+  accent: string;
+  buttonHover: string;
+  };
+  showCountdown?: boolean;
+}
+
+export interface PromoBannerProps {
+  banners?: PromoBannerData[];
+  className?: string;
+}
+
+// =====================================================
+// COUNTDOWN TIMER COMPONENT
+// =====================================================
 
 function CountdownTimer() {
   const [timeLeft, setTimeLeft] = useState({
@@ -57,84 +89,154 @@ function CountdownTimer() {
   );
 }
 
-export default function PromoBanner() {
+// =====================================================
+// SINGLE BANNER CARD COMPONENT
+// =====================================================
+
+interface BannerCardProps {
+  banner: PromoBannerData;
+}
+
+function BannerCard({ banner }: BannerCardProps) {
+  const { gradient } = banner;
+
   return (
-    <section className="py-12 bg-white">
+    <div
+      className="relative overflow-hidden rounded-2xl p-6 lg:p-8 group transition-transform duration-300 hover:scale-[1.02] hover:shadow-2xl"
+      style={{
+        background: `linear-gradient(135deg, ${gradient.from} 0%, ${gradient.to} 100%)`,
+      }}
+    >
+      <div className="relative z-10">
+        {/* Badge */}
+        <span
+          className="inline-block px-3 py-1 text-white text-xs font-bold rounded-full mb-4 transition-transform duration-200 group-hover:scale-105"
+          style={{ backgroundColor: gradient.accent }}
+        >
+          {banner.badge}
+        </span>
+
+        {/* Title */}
+        <h3 className="text-2xl lg:text-3xl font-bold text-white mb-2 transition-colors duration-200">
+          {banner.title}
+        </h3>
+
+        {/* Description */}
+        <p className="text-gray-300 mb-4 max-w-md">
+          {banner.description}
+        </p>
+
+        {/* Countdown Timer or Price Display */}
+        {banner.showCountdown ? (
+          <div className="mb-6">
+            <CountdownTimer />
+          </div>
+        ) : (
+          <div className="flex items-center gap-4 mb-6">
+            <span className="text-gray-400 line-through text-lg">
+              ${banner.originalPrice.toFixed(2)}
+            </span>
+            <div className="flex items-baseline gap-1">
+              <span className="text-gray-300">$</span>
+              <span
+                className="text-4xl font-bold transition-transform duration-200 group-hover:scale-105"
+                style={{ color: gradient.accent }}
+              >
+                {banner.salePrice.toFixed(2)}
+              </span>
+            </div>
+            <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+              -{banner.discount}%
+            </span>
+          </div>
+        )}
+
+        {/* Shop Now Button */}
+        <ShopNowButton
+          slug={banner.productSlug}
+          variant="custom"
+          className="group text-white transition-all duration-300 transform hover:translate-x-1 hover:shadow-lg active:scale-95"
+          style={{ backgroundColor: gradient.accent }}
+          onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => e.currentTarget.style.setProperty('background-color', gradient.buttonHover)}
+          onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => e.currentTarget.style.setProperty('background-color', gradient.accent)}
+        >
+          Shop Now
+        </ShopNowButton>
+      </div>
+
+      {/* Decorative Elements */}
+      <div
+        className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl opacity-50 transition-opacity duration-300 group-hover:opacity-70"
+        style={{ backgroundColor: `${gradient.accent}20` }}
+      />
+      <div
+        className="absolute bottom-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"
+      />
+    </div>
+  );
+}
+
+// =====================================================
+// DEFAULT BANNER DATA
+// =====================================================
+
+const defaultBanners: PromoBannerData[] = [
+  {
+    id: "windows-11-pro-promo",
+    productSlug: "windows-11-pro-1-pc-digital-license",
+    badge: "Lifetime Warranty",
+    badgeColor: "teal",
+    title: "Windows 11 Pro - Genuine & Instant Delivery",
+    description: "Everything you need for secure, fast performance - activate your PC with a trusted license.",
+    originalPrice: 29.00,
+    salePrice: 25.50,
+    discount: 12,
+    gradient: {
+      from: "#1a3a4a",
+      to: "#0f2030",
+      accent: "#00d4aa",
+      buttonHover: "#00b894",
+    },
+    showCountdown: false,
+  },
+  {
+    id: "windows-10-11-pro-best-seller",
+    productSlug: "microsoft-windows-10-pro-1-pc-key",
+    badge: "Best Seller",
+    badgeColor: "orange",
+    title: "Windows 10/11 Pro License - Ready to Activate",
+    description: "Fast. Secure. Affordable. The perfect upgrade for any PC.",
+    originalPrice: 199.99,
+    salePrice: 14.99,
+    discount: 92,
+    gradient: {
+      from: "#3a2a3a",
+      to: "#201020",
+      accent: "#ff6b35",
+      buttonHover: "#e55a2b",
+    },
+    showCountdown: true,
+  },
+];
+
+// =====================================================
+// MAIN PROMO BANNER COMPONENT
+// =====================================================
+
+export default function PromoBanner({ banners = defaultBanners, className = "" }: PromoBannerProps) {
+  return (
+    <section className={`py-12 bg-white ${className}`}>
       <div className="px-4 sm:px-6 lg:px-8">
+        {/* Banner Grid */}
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Windows 11 Pro Banner */}
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1a3a4a] to-[#0f2030] p-6 lg:p-8">
-            <div className="relative z-10">
-              <span className="inline-block px-3 py-1 bg-[#00d4aa] text-white text-xs font-bold rounded-full mb-4">
-                Lifetime Warranty
-              </span>
-              <h3 className="text-2xl lg:text-3xl font-bold text-white mb-2">
-                Windows 11 Pro - Genuine & Instant Delivery
-              </h3>
-              <p className="text-gray-300 mb-6 max-w-md">
-                Everything you need for secure, fast performance - activate your
-                PC with a trusted license.
-              </p>
-
-              <div className="flex items-center gap-4 mb-6">
-                <span className="text-gray-400 line-through text-lg">$29.00</span>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-gray-300">$</span>
-                  <span className="text-4xl font-bold text-[#00d4aa]">25.50</span>
-                </div>
-                <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                  -5%
-                </span>
-              </div>
-
-              <Link
-                href="/windows"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-[#00d4aa] hover:bg-[#00b894] text-white font-semibold rounded-lg transition-colors"
-              >
-                Shop Now
-                <ChevronRight className="w-4 h-4" />
-              </Link>
-            </div>
-
-            {/* Decorative Elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#00d4aa]/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl" />
-          </div>
-
-          {/* Windows 10/11 Pro License Banner */}
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#3a2a3a] to-[#201020] p-6 lg:p-8">
-            <div className="relative z-10">
-              <span className="inline-block px-3 py-1 bg-[#ff6b35] text-white text-xs font-bold rounded-full mb-4">
-                Best Seller
-              </span>
-              <h3 className="text-2xl lg:text-3xl font-bold text-white mb-2">
-                Windows 10/11 Pro License - Ready to Activate
-              </h3>
-              <p className="text-gray-300 mb-4">
-                Fast. Secure. Affordable. The perfect upgrade for any PC.
-              </p>
-
-              <div className="mb-6">
-                <CountdownTimer />
-              </div>
-
-              <Link
-                href="/windows"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-[#ff6b35] hover:bg-[#e55a2b] text-white font-semibold rounded-lg transition-colors"
-              >
-                Shop Now
-                <ChevronRight className="w-4 h-4" />
-              </Link>
-            </div>
-
-            {/* Decorative Elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#ff6b35]/10 rounded-full blur-3xl" />
-          </div>
+          {banners.map((banner) => (
+            <BannerCard key={banner.id} banner={banner} />
+          ))}
         </div>
 
         {/* Trust Badges */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-          <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
+          <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200 transition-all duration-200 hover:bg-gray-100 hover:shadow-md">
             <div className="w-12 h-12 bg-[#00d4aa]/10 rounded-full flex items-center justify-center shrink-0">
               <Zap className="w-6 h-6 text-[#00d4aa]" />
             </div>
@@ -144,7 +246,7 @@ export default function PromoBanner() {
             </div>
           </div>
 
-          <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
+          <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200 transition-all duration-200 hover:bg-gray-100 hover:shadow-md">
             <div className="w-12 h-12 bg-[#00d4aa]/10 rounded-full flex items-center justify-center shrink-0">
               <Shield className="w-6 h-6 text-[#00d4aa]" />
             </div>
@@ -154,7 +256,7 @@ export default function PromoBanner() {
             </div>
           </div>
 
-          <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
+          <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200 transition-all duration-200 hover:bg-gray-100 hover:shadow-md">
             <div className="w-12 h-12 bg-[#00d4aa]/10 rounded-full flex items-center justify-center shrink-0">
               <Clock className="w-6 h-6 text-[#00d4aa]" />
             </div>

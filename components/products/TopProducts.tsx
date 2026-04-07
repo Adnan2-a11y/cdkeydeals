@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import ProductCard from './ProductCard';
 import ProductSkeleton from './ProductSkeleton';
 import EmptyState from './EmptyState';
+import QuickViewModal from './QuickViewModal';
 import { TopProductsProps, Product } from '@/types/product';
 
 export default function TopProducts({ 
@@ -14,6 +16,25 @@ export default function TopProducts({
   viewAllLink,
   loading = false 
 }: TopProductsProps) {
+  // State for Quick View modal
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
+
+  // Handle Quick View button click
+  const handleQuickView = (productId: number) => {
+    const product = products.find((p) => p.id === productId);
+    if (product) {
+      setSelectedProduct(product);
+      setIsQuickViewOpen(true);
+    }
+  };
+
+  // Handle modal close
+  const handleCloseQuickView = () => {
+    setIsQuickViewOpen(false);
+    // Delay clearing the product to allow exit animation
+    setTimeout(() => setSelectedProduct(null), 300);
+  };
   if (loading) {
     return (
       <section className="py-12">
@@ -65,7 +86,7 @@ export default function TopProducts({
           </div>
           {viewAllLink && (
             <Link href={viewAllLink}>
-              <Button variant="outline" size="md" className="group">
+              <Button variant="outline" size="default" className="group">
                 Shop All
                 <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Button>
@@ -79,17 +100,26 @@ export default function TopProducts({
             <ProductCard 
               key={product.id} 
               {...product}
-              onAddToCart={(id) => console.log('Add to cart:', id)}
-              onQuickView={(id) => console.log('Quick view:', id)}
+              onQuickView={handleQuickView}
             />
           ))}
         </div>
+
+        {/* Quick View Modal */}
+        <QuickViewModal
+          product={selectedProduct}
+          isOpen={isQuickViewOpen}
+          onClose={handleCloseQuickView}
+          relatedProducts={products
+            .filter((p) => p.id !== selectedProduct?.id && p.category === selectedProduct?.category)
+            .slice(0, 5)}
+        />
 
         {/* View All Button for Mobile */}
         {viewAllLink && (
           <div className="mt-8 text-center lg:hidden">
             <Link href={viewAllLink}>
-              <Button variant="accent" size="lg" className="group">
+              <Button variant="default" size="lg" className="group">
                 View All Products
                 <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Button>

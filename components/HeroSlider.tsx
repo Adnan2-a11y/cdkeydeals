@@ -1,38 +1,61 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import ShopNowButton from "./ShopNowButton";
 
-const slides = [
+// =====================================================
+// TYPES & INTERFACES
+// =====================================================
+
+interface SlideData {
+  id: number;
+  title: string;
+  subtitle: string;
+  cta?: string;
+  productSlug: string; // Dynamic product slug for routing
+  badge?: string;
+  discount?: string;
+  image: string;
+  buttonVariant?: "primary" | "secondary" | "accent" | "dark" | "custom";
+}
+
+// =====================================================
+// SLIDE DATA - CONFIGURED WITH PRODUCT SLUGS
+// =====================================================
+
+const slides: SlideData[] = [
   {
     id: 1,
-    title: "Escape from Tarkov – Steam",
+    title: "Counter-Strike 2 Prime Status",
     subtitle:
-      "Dive into Escape From Tarkov, a hardcore FPS blending RPG and MMO elements.",
+      "Upgrade your CS2 experience with Prime Status for exclusive drops and ranked matchmaking.",
     cta: "Shop Now",
-    href: "/games/escape-from-tarkov",
+    productSlug: "counter-strike-2-prime-status-upgrade",
     badge: "Save Up to",
     discount: "25%",
-    image: "/images/tarkov.jpg", // 👉 add your image in public folder
+    image: "/images/tarkov.jpg", // Replace with actual image
+    buttonVariant: "primary",
   },
   {
     id: 2,
-    title: "Xbox Game Pass Deals",
+    title: "Xbox Game Pass Ultimate",
     subtitle: "Instant delivery - Secure payments - 24/7 support",
     cta: "Shop Now",
-    href: "/xbox-keys",
+    productSlug: "xbox-game-pass-ultimate-3-months-key",
     image: "/images/xbox.jpg",
+    buttonVariant: "primary",
   },
   {
     id: 3,
-    title: "Call of Duty Points",
-    subtitle: "Grab discounted game codes & activate instantly.",
+    title: "Steam Gift Card $50",
+    subtitle: "Grab discounted Steam credit & activate instantly.",
     cta: "Shop Now",
-    href: "/gift-cards/cod-points",
+    productSlug: "steam-gift-card-50-usd-global-key",
     badge: "Save Up to",
     discount: "30%",
-    image: "/images/cod.jpg",
+    image: "/images/cod.jpg", // Replace with actual image
+    buttonVariant: "primary",
   },
 ];
 
@@ -120,12 +143,13 @@ export default function HeroSlider() {
 
           <p className="text-gray-300">{slide.subtitle}</p>
 
-          <Link
-            href={slide.href}
-            className="inline-block bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-3 rounded-lg font-semibold transition"
+          <ShopNowButton
+            slug={slide.productSlug}
+            variant={slide.buttonVariant || "primary"}
+            className="group"
           >
-            {slide.cta}
-          </Link>
+            {slide.cta || "Shop Now"}
+          </ShopNowButton>
         </div>
       </div>
 

@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ShoppingCart, Eye, Gamepad2 } from "lucide-react";
 
 interface ProductCardProps {
   id: number;
+  slug?: string;
   title: string;
   price: number;
   originalPrice?: number;
@@ -32,6 +34,7 @@ const badgeColors: Record<string, string> = {
 
 export default function ProductCard({
   id,
+  slug,
   title,
   price,
   originalPrice,
@@ -43,10 +46,14 @@ export default function ProductCard({
   stockLabel,
 }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const router = useRouter();
 
   const currencySymbol = currency === "GBP" ? "£" : currency === "EUR" ? "€" : "$";
   const isLowStock = stock !== undefined && stock <= 5 && stock > 0;
   const isOutOfStock = stock === 0;
+  
+  // Generate product URL - use slug if available, otherwise fallback to ID
+  const productUrl = slug ? `/product/${slug}` : `/product/${id}`;
 
   return (
     <div
@@ -75,6 +82,7 @@ export default function ProductCard({
 
       {/* Quick View Button */}
       <button
+        onClick={() => router.push(productUrl)}
         className={`absolute top-3 right-3 z-10 w-8 h-8 bg-[#1a1a1a]/60 hover:bg-[#00d4aa] text-white hover:text-white rounded-full flex items-center justify-center transition-all duration-300 ${
           isHovered ? "opacity-100" : "opacity-0"
         }`}
@@ -84,7 +92,7 @@ export default function ProductCard({
       </button>
 
       {/* Image */}
-      <Link href={`/product/${id}`} className="block">
+      <Link href={productUrl} className="block">
         <div className="aspect-[4/3] bg-gray-100 flex items-center justify-center p-6 relative overflow-hidden">
           <div className="w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center">
             <Gamepad2 className="w-10 h-10 text-gray-400" />
@@ -101,7 +109,7 @@ export default function ProductCard({
       {/* Content */}
       <div className="p-4">
         {/* Title */}
-        <Link href={`/product/${id}`}>
+        <Link href={productUrl}>
           <h3 className="text-sm font-medium text-[#1a1a1a] line-clamp-2 min-h-[40px] hover:text-[#00d4aa] transition-colors">
             {title}
           </h3>
