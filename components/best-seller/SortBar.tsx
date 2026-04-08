@@ -44,11 +44,11 @@ export default function SortBar({
   };
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-4 mb-6">
+    <div className="bg-card dark:bg-muted rounded-xl border border-border p-4 mb-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         {/* Results Count */}
-        <div className="text-sm text-gray-600">
-          Showing <span className="font-semibold text-gray-900">{totalProducts}</span> results
+        <div className="text-sm text-muted-foreground dark:text-gray-400">
+          Showing <span className="font-semibold text-foreground">{totalProducts}</span> results
         </div>
 
         {/* Right Side Controls */}
@@ -59,7 +59,7 @@ export default function SortBar({
             className={`lg:hidden flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${
               isMobileFilterOpen
                 ? "bg-blue-600 text-white border-blue-600"
-                : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                : "bg-card dark:bg-muted text-foreground dark:text-gray-300 border-border dark:border-gray-600 hover:bg-muted/50 dark:hover:bg-gray-700"
             }`}
           >
             <Filter className="w-4 h-4" />
@@ -70,13 +70,13 @@ export default function SortBar({
           <div className="relative">
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-card dark:bg-muted border border-border dark:border-gray-600 rounded-lg hover:bg-muted/50 dark:hover:bg-gray-700 transition-colors"
             >
-              <span className="text-sm text-gray-700">
+              <span className="text-sm text-foreground dark:text-gray-300">
                 {sortOptions.find(opt => opt.value === currentSort)?.label || "Sort"}
               </span>
               <svg
-                className={`w-4 h-4 text-gray-500 transition-transform ${
+                className={`w-4 h-4 text-muted-foreground dark:text-gray-500 transition-transform ${
                   isDropdownOpen ? "rotate-180" : ""
                 }`}
                 fill="none"
@@ -93,15 +93,15 @@ export default function SortBar({
                   className="fixed inset-0 z-10"
                   onClick={() => setIsDropdownOpen(false)}
                 />
-                <div className="absolute top-full right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
+                <div className="absolute top-full right-0 mt-2 w-48 bg-card dark:bg-muted border border-border dark:border-gray-600 rounded-lg shadow-lg z-20">
                   {sortOptions.map((option) => (
                     <button
                       key={option.value}
                       onClick={() => handleSortSelect(option.value)}
-                      className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors first:rounded-t-lg last:rounded-b-lg ${
+                      className={`w-full text-left px-4 py-2 text-sm hover:bg-muted/50 dark:hover:bg-gray-700 transition-colors first:rounded-t-lg last:rounded-b-lg ${
                         currentSort === option.value
-                          ? "bg-blue-50 text-blue-600 font-medium"
-                          : "text-gray-700"
+                          ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 font-medium"
+                          : "text-foreground dark:text-gray-300"
                       }`}
                     >
                       {option.label}
@@ -113,13 +113,13 @@ export default function SortBar({
           </div>
 
           {/* View Mode Toggle */}
-          <div className="hidden sm:flex items-center bg-gray-100 rounded-lg p-1">
+          <div className="hidden sm:flex items-center bg-muted dark:bg-gray-700 rounded-lg p-1">
             <button
               onClick={() => onViewChange("grid")}
               className={`p-2 rounded transition-colors ${
                 currentView === "grid"
-                  ? "bg-white text-gray-900 shadow-sm"
-                  : "text-gray-600 hover:text-gray-900"
+                  ? "bg-card dark:bg-muted text-foreground dark:text-gray-300 shadow-sm"
+                  : "text-muted-foreground dark:text-gray-400 hover:text-foreground dark:hover:text-gray-300"
               }`}
               title="Grid View"
             >
@@ -129,8 +129,8 @@ export default function SortBar({
               onClick={() => onViewChange("list")}
               className={`p-2 rounded transition-colors ${
                 currentView === "list"
-                  ? "bg-white text-gray-900 shadow-sm"
-                  : "text-gray-600 hover:text-gray-900"
+                  ? "bg-card dark:bg-muted text-foreground dark:text-gray-300 shadow-sm"
+                  : "text-muted-foreground dark:text-gray-400 hover:text-foreground dark:hover:text-gray-300"
               }`}
               title="List View"
             >

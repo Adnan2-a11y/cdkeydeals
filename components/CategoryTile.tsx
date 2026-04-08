@@ -84,11 +84,11 @@ const iconMap: Record<string, React.ComponentType> = {
 
 export default function CategoryTile({ categories }: CategoryTileProps) {
   return (
-    <section className="py-12 bg-white">
+    <section className="py-12 bg-background">
       <div className="px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-[#1a1a1a]">Shop by Category</h2>
+          <h2 className="text-2xl font-bold text-foreground">Shop by Category</h2>
           <Link
             href="/categories"
             className="flex items-center gap-1 text-[#00d4aa] hover:text-[#00b894] font-medium text-sm transition-colors"
@@ -111,11 +111,11 @@ export default function CategoryTile({ categories }: CategoryTileProps) {
                 href={`/${category.slug}`}
                 className="group"
               >
-                <div className="bg-gray-50 rounded-xl p-4 lg:p-6 border border-gray-200 hover:border-[#00d4aa]/50 hover:shadow-md transition-all text-center">
-                  <div className="w-16 h-16 mx-auto bg-white rounded-xl flex items-center justify-center text-gray-400 group-hover:text-[#00d4aa] transition-colors mb-3 shadow-sm">
+                <div className="bg-muted/50 dark:bg-muted rounded-xl p-4 lg:p-6 border border-border hover:border-[#00d4aa]/50 hover:shadow-md transition-all text-center">
+                  <div className="w-16 h-16 mx-auto bg-card dark:bg-muted rounded-xl flex items-center justify-center text-gray-400 dark:text-gray-500 group-hover:text-[#00d4aa] transition-colors mb-3 shadow-sm">
                     <IconComponent />
                   </div>
-                  <h3 className="text-sm font-medium text-[#1a1a1a] group-hover:text-[#00d4aa] transition-colors">
+                  <h3 className="text-sm font-medium text-foreground group-hover:text-[#00d4aa] transition-colors">
                     {category.name}
                   </h3>
                 </div>

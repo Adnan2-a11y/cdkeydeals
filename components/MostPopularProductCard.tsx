@@ -24,13 +24,13 @@ export default function MostPopularProductCard({
   badge
 }: Props) {
   return (
-    <div className="group flex flex-col bg-white transition-all duration-300">
+    <div className="group flex flex-col bg-card dark:bg-muted transition-all duration-300">
       {/* Product Image Container */}
-      <Link href={`/product/${id}`} className="relative block aspect-[4/5] overflow-hidden rounded-xl border border-gray-100 shadow-sm group-hover:shadow-md transition-shadow">
+      <Link href={`/product/${id}`} className="relative block aspect-[4/5] overflow-hidden rounded-xl border border-border shadow-sm group-hover:shadow-md transition-shadow">
         {/* Placeholder for your actual images from screenshot */}
-        <div className="w-full h-full bg-[#f8f9fa] flex items-center justify-center p-0">
+        <div className="w-full h-full bg-muted/50 dark:bg-gray-700 flex items-center justify-center p-0">
            {/* এখানে <img src={image} /> ব্যবহার করবেন */}
-           <div className="text-gray-300">Product Image</div> 
+           <div className="text-muted-foreground dark:text-gray-500">Product Image</div> 
         </div>
 
         {/* Promo Badge like 'Spring Promo' */}
@@ -43,16 +43,16 @@ export default function MostPopularProductCard({
 
       {/* Product Info */}
       <div className="mt-4 flex flex-col space-y-1">
-        <span className="text-xs text-gray-500 font-medium">{category}</span>
+        <span className="text-xs text-muted-foreground dark:text-gray-400 font-medium">{category}</span>
         
         <Link href={`/product/${id}`}>
-          <h3 className="text-[15px] font-bold text-gray-900 leading-snug hover:text-blue-600 line-clamp-2 min-h-[40px]">
+          <h3 className="text-[15px] font-bold text-foreground leading-snug hover:text-blue-600 dark:hover:text-blue-400 line-clamp-2 min-h-[40px]">
             {title}
           </h3>
         </Link>
 
         <div className="flex flex-col pt-1">
-          <span className="text-lg font-extrabold text-gray-900">
+          <span className="text-lg font-extrabold text-foreground">
             {currency} {price.toLocaleString()}.00 BDT
           </span>
         </div>
@@ -61,7 +61,7 @@ export default function MostPopularProductCard({
         {stockLabel && (
           <div className="flex items-center gap-1.5 mt-2">
             <span className={`w-2 h-2 rounded-full ${stockLabel.includes('Last') ? 'bg-red-500' : 'bg-green-500'}`}></span>
-            <span className={`text-xs font-semibold ${stockLabel.includes('Last') ? 'text-red-600' : 'text-green-600'}`}>
+            <span className={`text-xs font-semibold ${stockLabel.includes('Last') ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}>
               {stockLabel}
             </span>
           </div>

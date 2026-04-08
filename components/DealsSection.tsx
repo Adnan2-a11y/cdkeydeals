@@ -43,29 +43,29 @@ const dealsData = [
 
 function DealCard({ deal }: { deal: typeof dealsData[0] }) {
   return (
-    <div className="min-w-[280px] md:min-w-[300px] bg-white group cursor-pointer transition-all duration-300">
+    <div className="min-w-[280px] md:min-w-[300px] bg-card dark:bg-muted group cursor-pointer transition-all duration-300">
       {/* Product Image Container */}
-      <div className="relative aspect-[4/5] rounded-xl overflow-hidden mb-4 bg-gray-100 border border-gray-100 shadow-sm group-hover:shadow-md transition-shadow">
+      <div className="relative aspect-[4/5] rounded-xl overflow-hidden mb-4 bg-muted/50 dark:bg-gray-700 border border-border shadow-sm group-hover:shadow-md transition-shadow">
          {/* Placeholder for actual image */}
-         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-white to-gray-200">
-            <span className="text-gray-400 text-xs text-center px-4 font-bold uppercase">{deal.title}</span>
+         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-card to-muted dark:from-gray-700 dark:to-gray-600">
+            <span className="text-muted-foreground dark:text-gray-400 text-xs text-center px-4 font-bold uppercase">{deal.title}</span>
          </div>
       </div>
 
       {/* Content */}
       <div className="space-y-1">
-        <p className="text-gray-500 text-xs font-medium">{deal.category}</p>
-        <h3 className="font-bold text-gray-900 text-[15px] leading-tight line-clamp-2 h-10 group-hover:text-blue-600 transition-colors">
+        <p className="text-muted-foreground dark:text-gray-400 text-xs font-medium">{deal.category}</p>
+        <h3 className="font-bold text-foreground text-[15px] leading-tight line-clamp-2 h-10 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
           {deal.title}
         </h3>
         <div className="pt-1">
-          <span className="text-lg font-extrabold text-black">
+          <span className="text-lg font-extrabold text-foreground">
             Tk {deal.price} BDT
           </span>
         </div>
         <div className="flex items-center gap-1.5 pt-1">
           <div className="w-2 h-2 rounded-full bg-green-500" />
-          <span className="text-xs font-semibold text-green-600">{deal.status}</span>
+          <span className="text-xs font-semibold text-green-600 dark:text-green-400">{deal.status}</span>
         </div>
       </div>
     </div>
@@ -84,13 +84,13 @@ export default function DealsSection() {
   };
 
   return (
-    <section className="py-12 bg-white">
+    <section className="py-12 bg-background">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
         
         {/* Header Section */}
         <div className="flex justify-between items-end mb-8">
-          <h2 className="text-3xl font-extrabold text-black tracking-tight">Deals</h2>
-          <Link href="/deals" className="text-blue-600 font-bold hover:underline text-sm uppercase tracking-wider">
+          <h2 className="text-3xl font-extrabold text-foreground tracking-tight">Deals</h2>
+          <Link href="/deals" className="text-blue-600 dark:text-blue-400 font-bold hover:underline text-sm uppercase tracking-wider">
             Shop All
           </Link>
         </div>

@@ -26,7 +26,7 @@ export default function NewsCard({ article }: NewsCardProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden group cursor-pointer">
+    <div className="bg-card dark:bg-muted rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden group cursor-pointer border border-border">
       <div className="flex flex-col sm:flex-row">
         {/* Image */}
         <div className="relative w-full sm:w-48 h-48 sm:h-auto flex-shrink-0">
@@ -47,23 +47,23 @@ export default function NewsCard({ article }: NewsCardProps) {
         <div className="flex-1 p-6">
           {/* Category */}
           <div className="mb-3">
-            <span className="inline-block text-xs font-semibold text-indigo-600 uppercase tracking-wide">
+            <span className="inline-block text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wide">
               {article.category}
             </span>
           </div>
 
           {/* Title */}
-          <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-indigo-600 transition-colors">
+          <h3 className="text-xl font-bold text-foreground mb-3 line-clamp-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
             {article.title}
           </h3>
 
           {/* Excerpt */}
-          <p className="text-gray-600 mb-4 line-clamp-2">
+          <p className="text-muted-foreground dark:text-gray-400 mb-4 line-clamp-2">
             {article.excerpt}
           </p>
 
           {/* Meta Row */}
-          <div className="flex flex-wrap items-center text-sm text-gray-500 gap-4">
+          <div className="flex flex-wrap items-center text-sm text-muted-foreground dark:text-gray-500 gap-4">
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
               <span>{formatDate(article.date)}</span>
@@ -79,7 +79,7 @@ export default function NewsCard({ article }: NewsCardProps) {
           </div>
 
           {/* Read More Link */}
-          <div className="mt-4 flex items-center text-indigo-600 font-medium group-hover:text-indigo-700 transition-colors">
+          <div className="mt-4 flex items-center text-indigo-600 dark:text-indigo-400 font-medium group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition-colors">
             <span>Read more</span>
             <ArrowRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" />
           </div>

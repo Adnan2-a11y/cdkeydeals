@@ -69,8 +69,8 @@ export default function FilterSidebar({ onFilterChange }: FilterSidebarProps) {
   ];
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 sticky top-4">
-      <h2 className="text-lg font-bold text-gray-900 mb-6">Filters</h2>
+    <div className="bg-card dark:bg-muted rounded-lg border border-border p-6 sticky top-4">
+      <h2 className="text-lg font-bold text-foreground mb-6">Filters</h2>
       
       {/* Availability Section */}
       <div className="mb-6">
@@ -78,13 +78,13 @@ export default function FilterSidebar({ onFilterChange }: FilterSidebarProps) {
           onClick={() => toggleSection('availability')}
           className="flex items-center justify-between w-full text-left mb-3 group"
         >
-          <h3 className="font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">
+          <h3 className="font-semibold text-foreground group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
             Availability
           </h3>
           {expandedSections.availability ? (
-            <ChevronUp className="w-4 h-4 text-gray-500" />
+            <ChevronUp className="w-4 h-4 text-muted-foreground dark:text-gray-500" />
           ) : (
-            <ChevronDown className="w-4 h-4 text-gray-500" />
+            <ChevronDown className="w-4 h-4 text-muted-foreground dark:text-gray-500" />
           )}
         </button>
         
@@ -99,12 +99,12 @@ export default function FilterSidebar({ onFilterChange }: FilterSidebarProps) {
                   type="checkbox"
                   checked={filters.availability.includes(option.value)}
                   onChange={() => handleAvailabilityChange(option.value)}
-                  className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                  className="w-4 h-4 text-indigo-600 border-border dark:border-gray-600 rounded focus:ring-indigo-500"
                 />
-                <span className="text-sm text-gray-700 group-hover:text-indigo-600 transition-colors">
+                <span className="text-sm text-muted-foreground dark:text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                   {option.label}
                 </span>
-                <span className="text-xs text-gray-500 ml-auto">({option.count})</span>
+                <span className="text-xs text-muted-foreground dark:text-gray-500 ml-auto">({option.count})</span>
               </label>
             ))}
           </div>
@@ -117,13 +117,13 @@ export default function FilterSidebar({ onFilterChange }: FilterSidebarProps) {
           onClick={() => toggleSection('platforms')}
           className="flex items-center justify-between w-full text-left mb-3 group"
         >
-          <h3 className="font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">
+          <h3 className="font-semibold text-foreground group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
             Platforms
           </h3>
           {expandedSections.platforms ? (
-            <ChevronUp className="w-4 h-4 text-gray-500" />
+            <ChevronUp className="w-4 h-4 text-muted-foreground dark:text-gray-500" />
           ) : (
-            <ChevronDown className="w-4 h-4 text-gray-500" />
+            <ChevronDown className="w-4 h-4 text-muted-foreground dark:text-gray-500" />
           )}
         </button>
         
@@ -135,12 +135,12 @@ export default function FilterSidebar({ onFilterChange }: FilterSidebarProps) {
                   type="checkbox"
                   checked={filters.platforms.includes(platform.name)}
                   onChange={() => handlePlatformChange(platform.name)}
-                  className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                  className="w-4 h-4 text-indigo-600 border-border dark:border-gray-600 rounded focus:ring-indigo-500"
                 />
-                <span className="text-sm text-gray-700 group-hover:text-indigo-600 transition-colors">
+                <span className="text-sm text-muted-foreground dark:text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                   {platform.name}
                 </span>
-                <span className="text-xs text-gray-500 ml-auto">({platform.count})</span>
+                <span className="text-xs text-muted-foreground dark:text-gray-500 ml-auto">({platform.count})</span>
               </label>
             ))}
           </div>
@@ -153,13 +153,13 @@ export default function FilterSidebar({ onFilterChange }: FilterSidebarProps) {
           onClick={() => toggleSection('priceRange')}
           className="flex items-center justify-between w-full text-left mb-3 group"
         >
-          <h3 className="font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">
+          <h3 className="font-semibold text-foreground group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
             Price Range
           </h3>
           {expandedSections.priceRange ? (
-            <ChevronUp className="w-4 h-4 text-gray-500" />
+            <ChevronUp className="w-4 h-4 text-muted-foreground dark:text-gray-500" />
           ) : (
-            <ChevronDown className="w-4 h-4 text-gray-500" />
+            <ChevronDown className="w-4 h-4 text-muted-foreground dark:text-gray-500" />
           )}
         </button>
         
@@ -175,9 +175,9 @@ export default function FilterSidebar({ onFilterChange }: FilterSidebarProps) {
                   setFilters(prev => ({ ...prev, priceRange: newRange }));
                   onFilterChange?.({ ...filters, priceRange: newRange });
                 }}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full px-3 py-2 border border-border dark:border-gray-600 bg-background dark:bg-muted rounded-md text-sm focus:ring-indigo-500 focus:border-indigo-500"
               />
-              <span className="text-gray-500">-</span>
+              <span className="text-muted-foreground dark:text-gray-500">-</span>
               <input
                 type="number"
                 placeholder="Max"
@@ -187,10 +187,10 @@ export default function FilterSidebar({ onFilterChange }: FilterSidebarProps) {
                   setFilters(prev => ({ ...prev, priceRange: newRange }));
                   onFilterChange?.({ ...filters, priceRange: newRange });
                 }}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full px-3 py-2 border border-border dark:border-gray-600 bg-background dark:bg-muted rounded-md text-sm focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
-            <div className="text-xs text-gray-500">৳0 - ৳5000</div>
+            <div className="text-xs text-muted-foreground dark:text-gray-500">৳0 - ৳5000</div>
           </div>
         )}
       </div>
@@ -207,7 +207,7 @@ export default function FilterSidebar({ onFilterChange }: FilterSidebarProps) {
           setFilters(clearedFilters);
           onFilterChange?.(clearedFilters);
         }}
-        className="w-full py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+        className="w-full py-2 px-4 border border-border dark:border-gray-600 rounded-md text-sm font-medium text-foreground dark:text-gray-300 hover:bg-muted/50 dark:hover:bg-gray-700 transition-colors"
       >
         Clear All Filters
       </button>

@@ -257,17 +257,17 @@ export default function BestSellerClient() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Header Section */}
-      <div className="bg-white border-b border-gray-200">
+      <div className="bg-card dark:bg-muted border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Breadcrumb */}
           <Breadcrumb items={[]} currentPage="Best Seller" />
           
           {/* Page Title */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Best Seller</h1>
-            <p className="text-gray-600 max-w-3xl">
+            <h1 className="text-3xl font-bold text-foreground mb-4">Best Seller</h1>
+            <p className="text-muted-foreground dark:text-gray-400 max-w-3xl">
               Explore the Best Seller collection at CDKeyDeals—your fastest way to find the most trusted and frequently purchased digital products in our store.
               If you don't want to spend hours comparing options, this page helps you choose with confidence. Each item featured here earns its spot through consistent demand, strong customer satisfaction, and dependable performance across everyday use.
             </p>

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, Heart, MapPin, Moon, Flame, ChevronDown } from "lucide-react";
+import { Menu, Heart, MapPin, Moon, Sun, Flame, ChevronDown } from "lucide-react";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import Logo from "./Logo";
 import SearchBar from "./SearchBar";
@@ -17,12 +18,17 @@ import MobileMegaMenu from "./MobileMegaMenu";
 
 function HeaderContent() {
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [isGiftCardsDropdownOpen, setIsGiftCardsDropdownOpen] = useState(false);
   const [isBlogDropdownOpen, setIsBlogDropdownOpen] = useState(false);
   const [isGamesMegaMenuOpen, setIsGamesMegaMenuOpen] = useState(false);
   const [isMoreDropdownOpen, setIsMoreDropdownOpen] = useState(false);
   const [isFAQDropdownOpen, setIsFAQDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleMenuToggle = () => {
     setIsMegaMenuOpen(!isMegaMenuOpen);
@@ -32,14 +38,16 @@ function HeaderContent() {
     setIsMegaMenuOpen(false);
   };
 
+  const currentTheme = theme === 'system' ? resolvedTheme : theme;
+
   const handleDarkModeToggle = () => {
-    setIsDarkMode(!isDarkMode);
+    setTheme(currentTheme === "dark" ? "light" : "dark");
   };
 
   return (
     <>
       {/* Main Header — NOT sticky */}
-      <header className="w-full bg-white shadow-sm">
+      <header className="w-full bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
 
@@ -71,7 +79,7 @@ function HeaderContent() {
             {/* Right Side: Action Icons */}
             <div className="flex items-center gap-2">
               {/* Wishlist */}
-              <button className="p-2 text-gray-700 hover:text-indigo-600 hover:bg-gray-100 rounded-lg transition-all duration-200">
+              <button className="p-2 text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200">
                 <Heart className="w-5 h-5" />
               </button>
 
@@ -91,7 +99,7 @@ function HeaderContent() {
       </header>
 
       {/* Navigation Bar */}
-      <div className="hidden lg:block w-full border-b border-gray-200 bg-white relative">
+      <div className="hidden lg:block w-full border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 relative">
         <div className="max-w-[1280px] mx-auto px-4 relative">
           <div className="flex items-center justify-between h-[52px]">
 
@@ -163,19 +171,26 @@ function HeaderContent() {
             {/* RIGHT SIDE: Utilities */}
             <div className="flex items-center gap-8">
               {/* Currency/Region Selector */}
-              <button className="flex items-center gap-2 text-[14px] font-medium text-gray-700 hover:text-indigo-600 transition-colors">
+              <button className="flex items-center gap-2 text-[14px] font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                 <span>Bangladesh (BDT ৳)</span>
-                <MapPin className="w-4 h-4 text-gray-500" />
+                <MapPin className="w-4 h-4 text-gray-500 dark:text-gray-400" />
               </button>
 
               {/* Dark Mode Toggle */}
-              <button
-                onClick={handleDarkModeToggle}
-                className="flex items-center gap-2 text-[14px] font-medium text-gray-700 hover:text-indigo-600 transition-colors"
-              >
-                <span>{isDarkMode ? "Light Mode" : "Dark Mode"}</span>
-                <Moon className={`w-4 h-4 ${isDarkMode ? "fill-indigo-600 text-indigo-600" : "text-gray-500"}`} />
-              </button>
+              {mounted && (
+                <button
+                  onClick={handleDarkModeToggle}
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
+                  aria-label={`Switch to ${currentTheme === "dark" ? "light" : "dark"} mode`}
+                >
+                  <span>{currentTheme === "dark" ? "Light Mode" : "Dark Mode"}</span>
+                  {currentTheme === "dark" ? (
+                    <Sun className="w-4 h-4 text-amber-500" />
+                  ) : (
+                    <Moon className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                  )}
+                </button>
+              )}
             </div>
           </div>
 
@@ -234,16 +249,16 @@ function NavItem({
       onMouseLeave={onMouseLeave}
     >
       <span
-        className={`text-[14.5px] font-semibold text-[#1a1a1a] transition-colors ${
-          isGames ? "group-hover:text-purple-600" : "group-hover:text-indigo-600"
+        className={`text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 transition-colors ${
+          isGames ? "group-hover:text-purple-600 dark:group-hover:text-purple-400" : "group-hover:text-indigo-600 dark:group-hover:text-indigo-400"
         }`}
       >
         {title}
       </span>
       {hasDropdown && (
         <ChevronDown
-          className={`w-3.5 h-3.5 text-gray-400 transition-transform duration-200 group-hover:rotate-180 ${
-            isGames ? "group-hover:text-purple-600" : "group-hover:text-indigo-600"
+          className={`w-3.5 h-3.5 text-gray-400 dark:text-gray-500 transition-transform duration-200 group-hover:rotate-180 ${
+            isGames ? "group-hover:text-purple-600 dark:group-hover:text-purple-400" : "group-hover:text-indigo-600 dark:group-hover:text-indigo-400"
           }`}
         />
       )}

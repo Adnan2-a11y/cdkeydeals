@@ -65,15 +65,15 @@ export default function TopProducts({
   const displayProducts = products.slice(0, 6);
 
   return (
-    <section className="py-12 bg-gray-50/30">
+    <section className="py-12 bg-muted/30 dark:bg-muted/20">
       <div className="px-4 sm:px-6 lg:px-8 max-w-screen-xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 font-['Inter',system-ui,sans-serif]">
+            <h2 className="text-3xl font-bold text-foreground font-['Inter',system-ui,sans-serif]">
               {title}
             </h2>
-            <p className="mt-2 text-gray-600 text-sm">
+            <p className="mt-2 text-muted-foreground dark:text-gray-400 text-sm">
               Discover our most popular digital products and software keys
             </p>
           </div>

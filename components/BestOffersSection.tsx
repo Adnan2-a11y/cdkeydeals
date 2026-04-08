@@ -71,10 +71,10 @@ export default function BestOffersSection() {
   };
 
   return (
-    <section className="py-12 bg-white">
+    <section className="py-12 bg-background">
       <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Best Offers</h2>
+        <h2 className="text-2xl font-bold text-foreground mb-6">Best Offers</h2>
 
         {/* Top Banner Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-6">

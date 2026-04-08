@@ -4,11 +4,10 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import Header from '@/components/header/Header'
 import Footer from '@/components/Footer'
-import { AuthProvider } from '@/context/AuthContext'
 import { CartProvider } from '@/context/CartContext'
-import { WishlistProvider } from '@/context/WishlistContext'
 import CartDrawer from '@/components/cart/CartDrawer'
-import { Toaster } from 'sonner'
+import { ThemeProvider } from '@/components/theme-provider'
+import { themeInitScript } from '@/lib/theme-init'
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -34,23 +33,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
-      <body className="font-sans antialiased bg-white text-[#1a1a1a]" suppressHydrationWarning>
-        <AuthProvider>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: themeInitScript,
+          }}
+        />
+      </head>
+      <body className="font-sans antialiased bg-background text-foreground transition-colors duration-300" suppressHydrationWarning>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <CartProvider>
-            <WishlistProvider>
-              <div className="min-h-screen flex flex-col">
-                <Header />
-                <main className="flex-1">
-                  {children}
-                </main>
-                <Footer />
-              </div>
-              <CartDrawer />
-              <Toaster position="top-right" richColors />
-              <Analytics />
-            </WishlistProvider>
+            <div className="min-h-screen flex flex-col">
+              <Header />
+              <main className="flex-1">
+                {children}
+              </main>
+              <Footer />
+            </div>
+            <CartDrawer />
+            <Analytics />
           </CartProvider>
-        </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

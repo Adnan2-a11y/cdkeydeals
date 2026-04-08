@@ -21,7 +21,6 @@ const badgeColors: Record<BadgeColor, string> = {
 
 export default function ProductCard({
   id,
-  slug,
   title,
   price,
   originalPrice,
@@ -70,19 +69,15 @@ export default function ProductCard({
     }
   };
 
-  const handleQuickView = (e?: React.MouseEvent) => {
-    e?.stopPropagation();
+  const handleQuickView = () => {
     if (onQuickView) {
       onQuickView(id);
     }
   };
 
-  // Generate product URL - use slug if available, otherwise fallback to ID-based URL
-  const productUrl = slug ? `/product/${slug}` : `/product/${id}`;
-
   return (
     <div
-      className="group relative bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-300 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-out font-['Inter',system-ui,sans-serif] min-h-[340px] flex flex-col"
+      className="group relative bg-card dark:bg-muted rounded-xl overflow-hidden border border-border hover:border-gray-400 dark:hover:border-gray-500 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-out font-['Inter',system-ui,sans-serif] min-h-[340px] flex flex-col"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -112,7 +107,7 @@ export default function ProductCard({
 
       {/* Product Image Container */}
       <div className="relative h-36 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4 overflow-hidden">
-        <Link href={productUrl} className="block w-full h-full">
+        <Link href={`/product/${id}`} className="block w-full h-full">
           {image && !imageError ? (
             <img
               src={image}
@@ -152,33 +147,33 @@ export default function ProductCard({
           {/* Category */}
           {category && (
             <div className="mb-1">
-              <span className="text-xs text-gray-500 font-medium uppercase tracking-wide">
+              <span className="text-xs text-muted-foreground dark:text-gray-400 font-medium uppercase tracking-wide">
                 {category}
               </span>
             </div>
           )}
 
           {/* Title */}
-          <Link href={productUrl}>
-            <h3 className="text-xs font-bold text-gray-900 line-clamp-2 min-h-[2rem] hover:text-blue-600 transition-colors leading-tight">
+          <Link href={`/product/${id}`}>
+            <h3 className="text-xs font-bold text-foreground line-clamp-2 min-h-[2rem] hover:text-blue-600 dark:hover:text-blue-400 transition-colors leading-tight">
               {title}
             </h3>
           </Link>
 
           {/* Price */}
           <div className="mt-2 flex items-center gap-1">
-            <span className="text-sm font-bold text-gray-900">
+            <span className="text-sm font-bold text-foreground">
               {currencySymbol}
               {price.toFixed(2)}
             </span>
             {originalPrice && originalPrice > price && (
               <>
-                <span className="text-xs text-gray-400 line-through">
+                <span className="text-xs text-muted-foreground dark:text-gray-500 line-through">
                   {currencySymbol}
                   {originalPrice.toFixed(2)}
                 </span>
                 {discount && (
-                  <span className="text-xs text-red-500 font-semibold bg-red-50 px-1 py-0.5 rounded">
+                  <span className="text-xs text-red-500 font-semibold bg-red-50 dark:bg-red-900/20 px-1 py-0.5 rounded">
                     -{discount}%
                   </span>
                 )}

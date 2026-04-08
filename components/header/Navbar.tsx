@@ -32,7 +32,7 @@ export default function Navbar({ isDarkMode, onDarkModeToggle }: NavbarProps) {
   const [isFAQDropdownOpen, setIsFAQDropdownOpen] = useState(false);
 
   return (
-    <div className="hidden lg:block w-full border-b border-gray-200 bg-white">
+    <div className="hidden lg:block w-full border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
       {/* Main Container: 
           - max-w-[1280px]: মেনুগুলোকে একটি নির্দিষ্ট সীমানার মধ্যে রাখবে।
           - mx-auto: কন্টেইনারটিকে স্ক্রিনের মাঝখানে রাখবে।
@@ -74,12 +74,12 @@ export default function Navbar({ isDarkMode, onDarkModeToggle }: NavbarProps) {
                 />
               </div>
               <Link href="/best-deals" className="flex items-center gap-1 cursor-pointer group py-2">
-                  <span className="text-[14.5px] font-semibold text-[#1a1a1a] transition-colors group-hover:text-indigo-600">
+                  <span className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
                     Best Deals
                   </span>
                 </Link>
               <Link href="/best-seller" className="flex items-center gap-1 cursor-pointer group py-2">
-                <span className="text-[14.5px] font-semibold text-[#1a1a1a] transition-colors group-hover:text-indigo-600">
+                <span className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
                   Best Seller
                 </span>
               </Link>
@@ -109,18 +109,18 @@ export default function Navbar({ isDarkMode, onDarkModeToggle }: NavbarProps) {
           {/* RIGHT SIDE: Utilities */}
           <div className="flex items-center gap-8">
             {/* Currency/Region Selector */}
-            <button className="flex items-center gap-2 text-[14px] font-medium text-gray-700 hover:text-indigo-600 transition-colors">
+            <button className="flex items-center gap-2 text-[14px] font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
               <span>Bangladesh (BDT ৳)</span>
-              <MapPin className="w-4 h-4 text-gray-500" />
+              <MapPin className="w-4 h-4 text-gray-500 dark:text-gray-400" />
             </button>
 
             {/* Dark Mode Toggle */}
             <button
               onClick={onDarkModeToggle}
-              className="flex items-center gap-2 text-[14px] font-medium text-gray-700 hover:text-indigo-600 transition-colors"
+              className="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
             >
               <span>{isDarkMode ? "Light Mode" : "Dark Mode"}</span>
-              <Moon className={`w-4 h-4 ${isDarkMode ? "fill-indigo-600 text-indigo-600" : "text-gray-500"}`} />
+              <Moon className={`w-4 h-4 ${isDarkMode ? "fill-indigo-600 text-indigo-600" : "text-gray-500 dark:text-gray-400"}`} />
             </button>
           </div>
         </div>
@@ -157,14 +157,14 @@ function NavItem({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <span className={`text-[14.5px] font-semibold text-[#1a1a1a] transition-colors ${
-        isGames ? 'group-hover:text-purple-600' : 'group-hover:text-indigo-600'
+      <span className={`text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 transition-colors ${
+        isGames ? 'group-hover:text-purple-600 dark:group-hover:text-purple-400' : 'group-hover:text-indigo-600 dark:group-hover:text-indigo-400'
       }`}>
         {title}
       </span>
       {hasDropdown && (
-        <ChevronDown className={`w-3.5 h-3.5 text-gray-400 transition-transform duration-200 group-hover:rotate-180 ${
-          isGames ? 'group-hover:text-purple-600' : 'group-hover:text-indigo-600'
+        <ChevronDown className={`w-3.5 h-3.5 text-gray-400 dark:text-gray-500 transition-transform duration-200 group-hover:rotate-180 ${
+          isGames ? 'group-hover:text-purple-600 dark:group-hover:text-purple-400' : 'group-hover:text-indigo-600 dark:group-hover:text-indigo-400'
         }`} />
       )}
     </div>

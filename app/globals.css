@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* CDKeyDeals Color Palette - Light theme with white header */
+  /* CDKeyDeals Color Palette - Light theme */
   --background: #ffffff;
   --foreground: #1a1a1a;
   --card: #ffffff;
@@ -46,6 +46,29 @@
   --chart-3: #3498db;
   --chart-4: #9b59b6;
   --chart-5: #ffc107;
+}
+
+/* Dark theme variables - Deep Gray / Matte theme */
+.dark {
+  --background: #18181b;
+  --foreground: #f4f4f5;
+  --card: #27272a;
+  --card-foreground: #f4f4f5;
+  --popover: #27272a;
+  --popover-foreground: #f4f4f5;
+  --primary: #00d4aa;
+  --primary-foreground: #18181b;
+  --secondary: #3f3f46;
+  --secondary-foreground: #f4f4f5;
+  --muted: #3f3f46;
+  --muted-foreground: #a1a1aa;
+  --accent: #00d4aa;
+  --accent-foreground: #18181b;
+  --destructive: #ff4757;
+  --destructive-foreground: #ffffff;
+  --border: #3f3f46;
+  --input: #3f3f46;
+  --ring: #00d4aa;
 }
 
 /* Line clamp utilities */
@@ -122,13 +145,25 @@
   background: #f0f0f0;
 }
 
+.dark ::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
 ::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 4px;
 }
 
+.dark ::-webkit-scrollbar-thumb {
+  background: #4a4a4a;
+}
+
 ::-webkit-scrollbar-thumb:hover {
   background: #aaa;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #6a6a6a;
 }
 
 /* Marquee animation for sale banner */

@@ -49,7 +49,7 @@ const footerLinks = {
 
 export default function Footer() {
   return (
-    <footer className="bg-white pt-12 pb-6 font-sans border-t border-gray-100 relative">
+    <footer className="bg-white dark:bg-gray-900 pt-12 pb-6 font-sans border-t border-gray-100 dark:border-gray-800 relative">
       {/* 1. Social Media Bar (Top Center) */}
       <div className="flex justify-center gap-3 mb-12">
         {[
@@ -62,7 +62,7 @@ export default function Footer() {
           <a
             key={i}
             href="#"
-            className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center hover:bg-gray-800 transition-colors"
+            className="w-10 h-10 bg-black dark:bg-gray-700 text-white rounded-full flex items-center justify-center hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors"
           >
             {social.icon}
           </a>
@@ -83,18 +83,18 @@ export default function Footer() {
                 <span className="text-2xl font-bold tracking-tight">cdkey<span className="font-medium">Deals</span></span>
               </div>
             </div>
-            <p className="text-[#666666] text-[14px] leading-relaxed max-w-xs">
+            <p className="text-[#666666] dark:text-gray-400 text-[14px] leading-relaxed max-w-xs">
               Save more on games and software with CDKeyDeals. Buy authentic digital keys and gift cards with instant email delivery and secure checkout.
             </p>
           </div>
 
           {/* 3. By Platform */}
           <div>
-            <h4 className="font-bold text-[#1a1a1a] mb-5 text-[15px]">By Platform</h4>
+            <h4 className="font-bold text-[#1a1a1a] dark:text-gray-100 mb-5 text-[15px]">By Platform</h4>
             <ul className="space-y-3">
               {footerLinks.byPlatform.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="text-[#666666] text-[14px] hover:text-[#6343D8] transition-colors">
+                  <Link href={link.href} className="text-[#666666] dark:text-gray-400 text-[14px] hover:text-[#6343D8] dark:hover:text-indigo-400 transition-colors">
                     {link.name}
                   </Link>
                 </li>
@@ -104,11 +104,11 @@ export default function Footer() {
 
           {/* 4. Categories */}
           <div>
-            <h4 className="font-bold text-[#1a1a1a] mb-5 text-[15px]">Categories</h4>
+            <h4 className="font-bold text-[#1a1a1a] dark:text-gray-100 mb-5 text-[15px]">Categories</h4>
             <ul className="space-y-3">
               {footerLinks.categories.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="text-[#666666] text-[14px] hover:text-[#6343D8] transition-colors">
+                  <Link href={link.href} className="text-[#666666] dark:text-gray-400 text-[14px] hover:text-[#6343D8] dark:hover:text-indigo-400 transition-colors">
                     {link.name}
                   </Link>
                 </li>
@@ -118,11 +118,11 @@ export default function Footer() {
 
           {/* 5. Get to Know Us */}
           <div>
-            <h4 className="font-bold text-[#1a1a1a] mb-5 text-[15px]">Get to Know Us</h4>
+            <h4 className="font-bold text-[#1a1a1a] dark:text-gray-100 mb-5 text-[15px]">Get to Know Us</h4>
             <ul className="space-y-3">
               {footerLinks.getToKnowUs.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="text-[#666666] text-[14px] hover:text-[#6343D8] transition-colors">
+                  <Link href={link.href} className="text-[#666666] dark:text-gray-400 text-[14px] hover:text-[#6343D8] dark:hover:text-indigo-400 transition-colors">
                     {link.name}
                   </Link>
                 </li>
@@ -132,11 +132,11 @@ export default function Footer() {
 
           {/* 6. Let Us Help You */}
           <div>
-            <h4 className="font-bold text-[#1a1a1a] mb-5 text-[15px]">Let Us Help You</h4>
+            <h4 className="font-bold text-[#1a1a1a] dark:text-gray-100 mb-5 text-[15px]">Let Us Help You</h4>
             <ul className="space-y-3">
               {footerLinks.letUsHelpYou.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="text-[#666666] text-[14px] hover:text-[#6343D8] transition-colors">
+                  <Link href={link.href} className="text-[#666666] dark:text-gray-400 text-[14px] hover:text-[#6343D8] dark:hover:text-indigo-400 transition-colors">
                     {link.name}
                   </Link>
                 </li>
@@ -146,21 +146,21 @@ export default function Footer() {
         </div>
 
         {/* Bottom Section */}
-        <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex flex-col md:flex-row items-center gap-4 text-[#666666] text-[13px]">
+        <div className="pt-8 border-t border-gray-100 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex flex-col md:flex-row items-center gap-4 text-[#666666] dark:text-gray-400 text-[13px]">
             <span>© 2026 cdkeydeals.com. Powered by Shopify</span>
-            <div className="flex items-center gap-1 font-medium text-black">
+            <div className="flex items-center gap-1 font-medium text-black dark:text-gray-200">
                <span>Bangladesh (BDT ৳)</span>
                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3 h-3"><path d="m6 9 6 6 6-6"/></svg>
             </div>
           </div>
           
-          <div className="flex gap-6 text-[#666666] text-[13px]">
-            <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
-            <Link href="/refund-policy" className="hover:underline">Refund Policy</Link>
-            <Link href="/terms" className="hover:underline">Terms Of Service</Link>
-            <Link href="/shipping-policy" className="hover:underline">Shipping Policy</Link>
-            <Link href="/contact" className="hover:underline">Contact Information</Link>
+          <div className="flex gap-6 text-[#666666] dark:text-gray-400 text-[13px]">
+            <Link href="/privacy" className="hover:underline hover:text-indigo-600 dark:hover:text-indigo-400">Privacy Policy</Link>
+            <Link href="/refund-policy" className="hover:underline hover:text-indigo-600 dark:hover:text-indigo-400">Refund Policy</Link>
+            <Link href="/terms" className="hover:underline hover:text-indigo-600 dark:hover:text-indigo-400">Terms Of Service</Link>
+            <Link href="/shipping-policy" className="hover:underline hover:text-indigo-600 dark:hover:text-indigo-400">Shipping Policy</Link>
+            <Link href="/contact" className="hover:underline hover:text-indigo-600 dark:hover:text-indigo-400">Contact Information</Link>
           </div>
         </div>
       </div>
@@ -169,7 +169,7 @@ export default function Footer() {
       <div className="fixed bottom-6 right-6 z-50">
         <button className="bg-[#6343D8] text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform relative">
           <MessageCircle size={28} />
-          <span className="absolute -top-1 -right-1 bg-red-600 text-[10px] w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">1</span>
+          <span className="absolute -top-1 -right-1 bg-red-600 text-[10px] w-5 h-5 flex items-center justify-center rounded-full border-2 border-white dark:border-gray-900">1</span>
         </button>
       </div>
     </footer>

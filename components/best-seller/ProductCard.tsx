@@ -39,15 +39,15 @@ const badgeColors = {
 };
 
 const categoryColors = {
-  "Office Keys": "bg-blue-100 text-blue-700 border-blue-200",
-  "Software": "bg-green-100 text-green-700 border-green-200", 
-  "Games": "bg-purple-100 text-purple-700 border-purple-200",
-  "Gaming": "bg-purple-100 text-purple-700 border-purple-200",
-  "Gift Cards": "bg-yellow-100 text-yellow-700 border-yellow-200",
-  "Antivirus": "bg-red-100 text-red-700 border-red-200",
-  "VPN": "bg-teal-100 text-teal-700 border-teal-200",
-  "Adobe Software": "bg-orange-100 text-orange-700 border-orange-200",
-  "Project & Visio": "bg-indigo-100 text-indigo-700 border-indigo-200"
+  "Office Keys": "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800",
+  "Software": "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-200 dark:border-green-800", 
+  "Games": "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800",
+  "Gaming": "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800",
+  "Gift Cards": "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 border-yellow-200 dark:border-yellow-800",
+  "Antivirus": "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 border-red-200 dark:border-red-800",
+  "VPN": "bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 border-teal-200 dark:border-teal-800",
+  "Adobe Software": "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 border-orange-200 dark:border-orange-800",
+  "Project & Visio": "bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800"
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
@@ -62,7 +62,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <div
-      className="group relative bg-white rounded-xl border border-gray-200 overflow-hidden hover:border-gray-300 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ease-out"
+      className="group relative bg-card dark:bg-muted rounded-xl border border-border overflow-hidden hover:border-gray-400 dark:hover:border-gray-500 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ease-out"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -85,7 +85,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       {/* Quick View Button */}
       <button
-        className={`absolute top-3 right-3 z-10 w-10 h-10 bg-white/95 hover:bg-gray-900 text-gray-700 hover:text-white rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ${
+        className={`absolute top-3 right-3 z-10 w-10 h-10 bg-card/95 dark:bg-muted/95 hover:bg-gray-900 dark:hover:bg-gray-700 text-foreground hover:text-white rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ${
           isHovered ? "opacity-100 scale-100" : "opacity-0 scale-75"
         }`}
         aria-label="Quick view"
@@ -95,7 +95,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       {/* Product Image */}
       <Link href={`/product/${product.id}`} className="block">
-        <div className="relative aspect-[4/3] bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+        <div className="relative aspect-[4/3] bg-gradient-to-br from-muted/30 to-muted/50 dark:from-gray-700 dark:to-gray-600 overflow-hidden">
           {/* Image or Placeholder */}
           {!imageError && product.image ? (
             <Image
@@ -141,7 +141,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Title */}
         <Link href={`/product/${product.id}`}>
-          <h3 className="font-semibold text-gray-900 text-sm mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors duration-200 min-h-[40px]">
+          <h3 className="font-semibold text-foreground text-sm mb-2 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200 min-h-[40px]">
             {product.title}
           </h3>
         </Link>
@@ -156,14 +156,14 @@ export default function ProductCard({ product }: ProductCardProps) {
                   className={`w-3.5 h-3.5 ${
                     i < Math.floor(product.rating!)
                       ? 'text-yellow-400 fill-current'
-                      : 'text-gray-300'
+                      : 'text-gray-300 dark:text-gray-600'
                   }`}
                 />
               ))}
             </div>
-            <span className="text-xs text-gray-500">({product.rating})</span>
+            <span className="text-xs text-muted-foreground dark:text-gray-400">({product.rating})</span>
             {product.soldCount && (
-              <span className="text-xs text-gray-500">({product.soldCount.toLocaleString()} sold)</span>
+              <span className="text-xs text-muted-foreground dark:text-gray-400">({product.soldCount.toLocaleString()} sold)</span>
             )}
           </div>
         )}
@@ -171,12 +171,12 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Price Section */}
         <div className="flex items-baseline gap-2 mb-4">
           {hasDiscount && (
-            <span className="text-gray-400 line-through text-sm">
+            <span className="text-muted-foreground dark:text-gray-500 line-through text-sm">
               {currencySymbol}{product.originalPrice!.toFixed(2)}
             </span>
           )}
           <div className="flex items-baseline gap-1">
-            <span className="text-xl font-bold text-gray-900">
+            <span className="text-xl font-bold text-foreground">
               {currencySymbol}{product.price.toFixed(2)}
             </span>
           </div>

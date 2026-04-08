@@ -30,13 +30,13 @@ const badgeConfig = {
 };
 
 const platformColors = {
-  steam: "bg-blue-100 text-blue-700 border-blue-200",
-  xbox: "bg-green-100 text-green-700 border-green-200",
-  playstation: "bg-blue-100 text-blue-700 border-blue-200",
-  microsoft: "bg-orange-100 text-orange-700 border-orange-200",
-  adobe: "bg-red-100 text-red-700 border-red-200",
-  nintendo: "bg-red-100 text-red-700 border-red-200",
-  epic: "bg-gray-100 text-gray-700 border-gray-200",
+  steam: "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800",
+  xbox: "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-200 dark:border-green-800",
+  playstation: "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800",
+  microsoft: "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 border-orange-200 dark:border-orange-800",
+  adobe: "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 border-red-200 dark:border-red-800",
+  nintendo: "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 border-red-200 dark:border-red-800",
+  epic: "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700",
 };
 
 export default function BestOffersProductCard({
@@ -66,7 +66,7 @@ export default function BestOffersProductCard({
 
   return (
     <div
-      className="group relative bg-white rounded-2xl border border-gray-200 overflow-hidden hover:border-[#00d4aa]/50 hover:shadow-xl hover:shadow-[#00d4aa]/10 hover:-translate-y-1 transition-all duration-300 ease-out"
+      className="group relative bg-card dark:bg-muted rounded-2xl border border-border overflow-hidden hover:border-[#00d4aa]/50 hover:shadow-xl hover:shadow-[#00d4aa]/10 hover:-translate-y-1 transition-all duration-300 ease-out"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -87,7 +87,7 @@ export default function BestOffersProductCard({
 
       {/* Quick View Button */}
       <button
-        className={`absolute top-3 right-3 z-10 w-10 h-10 bg-white/90 hover:bg-[#00d4aa] text-gray-700 hover:text-white rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ${
+        className={`absolute top-3 right-3 z-10 w-10 h-10 bg-card/90 dark:bg-muted/90 hover:bg-[#00d4aa] text-foreground hover:text-white rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ${
           isHovered ? "opacity-100 scale-100" : "opacity-0 scale-75"
         }`}
         aria-label="Quick view"
@@ -97,7 +97,7 @@ export default function BestOffersProductCard({
 
       {/* Product Image */}
       <Link href={`/product/${id}`} className="block">
-        <div className="relative aspect-[4/3] bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+        <div className="relative aspect-[4/3] bg-gradient-to-br from-muted/30 to-muted/50 dark:from-gray-700 dark:to-gray-600 overflow-hidden">
           {/* Image or Placeholder */}
           {!imageError && image ? (
             <img
@@ -108,8 +108,8 @@ export default function BestOffersProductCard({
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <div className="w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center">
-                <span className="text-gray-400 text-xs font-medium text-center uppercase">
+              <div className="w-20 h-20 bg-muted dark:bg-gray-700 rounded-lg flex items-center justify-center">
+                <span className="text-muted-foreground dark:text-gray-500 text-xs font-medium text-center uppercase">
                   {platform}
                 </span>
               </div>
@@ -141,7 +141,7 @@ export default function BestOffersProductCard({
             {platform}
           </span>
           {isLimited && (
-            <span className="inline-block ml-2 text-xs font-medium px-2.5 py-1 rounded-full bg-red-100 text-red-700 border border-red-200 animate-pulse">
+            <span className="inline-block ml-2 text-xs font-medium px-2.5 py-1 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800 animate-pulse">
               Limited Time
             </span>
           )}
@@ -149,7 +149,7 @@ export default function BestOffersProductCard({
 
         {/* Title */}
         <Link href={`/product/${id}`}>
-          <h3 className="font-semibold text-gray-900 text-sm mb-2 line-clamp-2 group-hover:text-[#00d4aa] transition-colors duration-200 min-h-[40px]">
+          <h3 className="font-semibold text-foreground text-sm mb-2 line-clamp-2 group-hover:text-[#00d4aa] transition-colors duration-200 min-h-[40px]">
             {title}
           </h3>
         </Link>
@@ -163,23 +163,23 @@ export default function BestOffersProductCard({
                 className={`w-3.5 h-3.5 ${
                   i < Math.floor(rating)
                     ? 'text-yellow-400 fill-current'
-                    : 'text-gray-300'
+                    : 'text-gray-300 dark:text-gray-600'
                 }`}
               />
             ))}
           </div>
-          <span className="text-xs text-gray-500">({rating})</span>
+          <span className="text-xs text-muted-foreground dark:text-gray-400">({rating})</span>
         </div>
 
         {/* Price Section */}
         <div className="flex items-baseline gap-2 mb-4">
           {originalPrice && originalPrice > price && (
-            <span className="text-gray-400 line-through text-sm">
+            <span className="text-muted-foreground dark:text-gray-500 line-through text-sm">
               {currencySymbol}{originalPrice.toFixed(2)}
             </span>
           )}
           <div className="flex items-baseline gap-1">
-            <span className="text-xs text-gray-500">{currency}</span>
+            <span className="text-xs text-muted-foreground dark:text-gray-400">{currency}</span>
             <span className="text-xl font-bold text-[#00d4aa]">
               {currencySymbol}{price.toFixed(2)}
             </span>
@@ -188,23 +188,23 @@ export default function BestOffersProductCard({
 
         {/* CTA Buttons */}
         <div className="flex gap-2">
-          <button className="flex-1 bg-gray-900 hover:bg-gray-800 text-white font-semibold py-2.5 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 group-hover:bg-[#00d4aa] group-hover:text-white">
+          <button className="flex-1 bg-gray-900 dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white font-semibold py-2.5 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 group-hover:bg-[#00d4aa] group-hover:text-white">
             <ShoppingCart className="w-4 h-4" />
             Add to Cart
           </button>
           
-          <button className="w-10 h-10 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200 flex items-center justify-center">
+          <button className="w-10 h-10 bg-muted dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-foreground dark:text-gray-300 rounded-lg transition-colors duration-200 flex items-center justify-center">
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
 
         {/* Additional Info */}
-        <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
-          <div className="flex items-center gap-1 text-xs text-gray-500">
+        <div className="flex items-center justify-between mt-3 pt-3 border-t border-border">
+          <div className="flex items-center gap-1 text-xs text-muted-foreground dark:text-gray-400">
             <Clock className="w-3 h-3" />
             <span>{deliveryTime} Delivery</span>
           </div>
-          <div className="flex items-center gap-1 text-xs text-gray-500">
+          <div className="flex items-center gap-1 text-xs text-muted-foreground dark:text-gray-400">
             <Shield className="w-3 h-3" />
             <span>Official Key</span>
           </div>
@@ -213,7 +213,7 @@ export default function BestOffersProductCard({
         {/* Countdown Timer for Limited Deals */}
         {isLimited && endTime && (
           <div className="mt-3 text-center">
-            <div className="bg-red-50 text-red-600 text-xs font-semibold px-3 py-2 rounded-lg border border-red-200">
+            <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-xs font-semibold px-3 py-2 rounded-lg border border-red-200 dark:border-red-800">
               Ends in: {endTime}
             </div>
           </div>

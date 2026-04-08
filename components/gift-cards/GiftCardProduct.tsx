@@ -10,9 +10,9 @@ interface GiftCardProductProps {
 
 export default function GiftCardProduct({ product }: GiftCardProductProps) {
   return (
-    <div className="group relative bg-[#1b2838] rounded-lg overflow-hidden hover:scale-[1.02] transition-all duration-300 hover:shadow-2xl cursor-pointer border border-[#2a475e] hover:border-[#66c0f4]">
+    <div className="group relative bg-card dark:bg-muted rounded-lg overflow-hidden hover:scale-[1.02] transition-all duration-300 hover:shadow-2xl cursor-pointer border border-border hover:border-[#66c0f4]">
       {/* Card Image Container */}
-      <div className="relative h-[140px] bg-gradient-to-b from-[#2a475e] to-[#1b2838] overflow-hidden">
+      <div className="relative h-[140px] bg-gradient-to-b from-muted to-card dark:from-gray-700 dark:to-gray-800 overflow-hidden">
         {/* Country Flag - Top Right */}
         <div className="absolute top-2 right-2 bg-black/50 backdrop-blur-sm px-2 py-1 rounded text-white text-xs font-medium">
           {product.countryCode}
@@ -34,15 +34,15 @@ export default function GiftCardProduct({ product }: GiftCardProductProps) {
       {/* Card Content */}
       <div className="p-4">
         {/* Product Title */}
-        <h3 className="text-white font-semibold text-sm mb-3 line-clamp-2 group-hover:text-[#66c0f4] transition-colors">
+        <h3 className="text-foreground dark:text-gray-300 font-semibold text-sm mb-3 line-clamp-2 group-hover:text-[#66c0f4] transition-colors">
           {product.title}
         </h3>
         
         {/* Price and Status */}
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
-            <span className="text-white font-bold text-lg">৳{product.price}</span>
-            <span className="text-gray-400 text-xs line-through">৳{product.price + 100}</span>
+            <span className="text-foreground dark:text-gray-300 font-bold text-lg">৳{product.price}</span>
+            <span className="text-muted-foreground dark:text-gray-500 text-xs line-through">৳{product.price + 100}</span>
           </div>
           
           {/* Stock Status */}
