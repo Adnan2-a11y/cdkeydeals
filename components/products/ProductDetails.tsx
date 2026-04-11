@@ -520,7 +520,7 @@ export default function ProductDetails({ product, relatedProducts = [] }: Produc
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm text-gray-500">{formatDate(review.date)}</p>
+                        <p className="text-sm text-gray-500" suppressHydrationWarning>{formatDate(review.date)}</p>
                         {review.verified && (
                           <Badge variant="secondary" className="text-xs bg-green-50 text-green-600">
                             <Check className="w-3 h-3 mr-1" />

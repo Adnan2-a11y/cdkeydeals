@@ -34,7 +34,7 @@ const slides: SlideData[] = [
     productSlug: "counter-strike-2-prime-status-upgrade",
     badge: "Save Up to",
     discount: "25%",
-    image: "/images/tarkov.jpg", // Replace with actual image
+    image: "/images/Escape from Tarkov – Steam.jpg", // Replaced with actual image
     buttonVariant: "primary",
   },
   {
@@ -43,7 +43,7 @@ const slides: SlideData[] = [
     subtitle: "Instant delivery - Secure payments - 24/7 support",
     cta: "Shop Now",
     productSlug: "xbox-game-pass-ultimate-3-months-key",
-    image: "/images/xbox.jpg",
+    image: "/images/Ready for Play on Xbox Game Pass!.jpg",
     buttonVariant: "primary",
   },
   {
@@ -54,7 +54,7 @@ const slides: SlideData[] = [
     productSlug: "steam-gift-card-50-usd-global-key",
     badge: "Save Up to",
     discount: "30%",
-    image: "/images/cod.jpg", // Replace with actual image
+    image: "/images/Call Of Duty 2.jpg", // Replaced with actual image
     buttonVariant: "primary",
   },
 ];

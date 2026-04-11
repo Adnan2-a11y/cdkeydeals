@@ -29,7 +29,7 @@ const mostPopularProducts = [
     category: "Hot Sale",
     price: 1900,
     currency: "Tk",
-    image: "/images/win11.jpg", 
+    image: "/placeholder.jpg", 
     stockLabel: "In Stock",
   },
   {
@@ -38,7 +38,7 @@ const mostPopularProducts = [
     category: "Hot Sale",
     price: 5100,
     currency: "Tk",
-    image: "/images/combo.jpg",
+    image: "/placeholder.jpg",
     stockLabel: "1 Last Items",
   },
   {
@@ -48,7 +48,7 @@ const mostPopularProducts = [
     price: 1700,
     badge: "SPRING PROMO",
     currency: "Tk",
-    image: "/images/office-promo.jpg",
+    image: "/placeholder.jpg",
     stockLabel: "In Stock",
   },
   {
@@ -57,7 +57,7 @@ const mostPopularProducts = [
     category: "Office Keys",
     price: 6300,
     currency: "Tk",
-    image: "/images/office365.jpg",
+    image: "/placeholder.jpg",
     stockLabel: "In Stock",
   },
   {
@@ -66,7 +66,7 @@ const mostPopularProducts = [
     category: "Adobe Software",
     price: 7100,
     currency: "Tk",
-    image: "/images/adobe.jpg",
+    image: "/placeholder.jpg",
     stockLabel: "In Stock",
   },
   {
@@ -75,7 +75,7 @@ const mostPopularProducts = [
     category: "Gift Cards",
     price: 400,
     currency: "Tk",
-    image: "/images/psn.jpg",
+    image: "/placeholder.jpg",
     stockLabel: "In Stock",
   },
 ];
