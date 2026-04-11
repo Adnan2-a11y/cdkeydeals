@@ -50,26 +50,25 @@ const footerLinks = {
 export default function Footer() {
   return (
     <footer className="bg-white dark:bg-[#1E1E1E] pt-12 pb-6 font-sans border-t border-gray-100 dark:border-gray-800 relative">
-      {/* 1. Social Media Bar (Top Center) */}
-      <div className="flex justify-center gap-3 mb-12">
-        {[
-          { icon: <Facebook size={18} fill="currentColor" />, name: "Facebook" },
-          { icon: <Instagram size={18} />, name: "Instagram" },
-          { icon: <Twitter size={18} fill="currentColor" />, name: "X" },
-          { icon: <Linkedin size={18} fill="currentColor" />, name: "LinkedIn" },
-          { icon: <CirclePlay size={18} fill="currentColor" />, name: "Pinterest" },
-        ].map((social, i) => (
-          <a
-            key={i}
-            href="#"
-            className="w-10 h-10 bg-black dark:bg-gray-700 text-white rounded-full flex items-center justify-center hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors"
-          >
-            {social.icon}
-          </a>
-        ))}
-      </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* 1. Social Media Bar (Top Center) */}
+        <div className="flex justify-center gap-3 mb-12">
+          {[
+            { icon: <Facebook size={18} fill="currentColor" />, name: "Facebook" },
+            { icon: <Instagram size={18} />, name: "Instagram" },
+            { icon: <Twitter size={18} fill="currentColor" />, name: "X" },
+            { icon: <Linkedin size={18} fill="currentColor" />, name: "LinkedIn" },
+            { icon: <CirclePlay size={18} fill="currentColor" />, name: "Pinterest" },
+          ].map((social, i) => (
+            <a
+              key={i}
+              href="#"
+              className="w-10 h-10 bg-black dark:bg-gray-700 text-white rounded-full flex items-center justify-center hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors"
+            >
+              {social.icon}
+            </a>
+          ))}
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
           {/* 2. Logo & Description Section */}
           <div className="lg:col-span-1">
@@ -165,7 +164,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Floating Chat Button */}
+      {/* Floating Chat Button - Outside the container to stay fixed */}
       <div className="fixed bottom-6 right-6 z-50">
         <button className="bg-[#6343D8] text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform relative">
           <MessageCircle size={28} />

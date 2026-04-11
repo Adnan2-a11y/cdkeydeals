@@ -39,8 +39,8 @@ const menuCategories: Category[] = [
     items: [
       { name: "Windows Keys", href: "/collections/games" },
       { name: "Best Sellers", href: "/collections/best-seller" },
-      { name: "New Releases", href: "/games" },
-      { name: "Game Cards", href: "/gift-cards" },
+      { name: "New Releases", href: "/collections/games" },
+      { name: "Game Cards", href: "/collections/gift-cards" },
     ]
   },
   {
@@ -48,10 +48,10 @@ const menuCategories: Category[] = [
     title: "Software",
     icon: Monitor,
     items: [
-      { name: "Windows Keys", href: "/software" },
-      { name: "Office Keys", href: "/software" },
-      { name: "Antivirus", href: "/software" },
-      { name: "Creative Tools", href: "/software" },
+      { name: "Windows Keys", href: "/collections/software" },
+      { name: "Office Keys", href: "/collections/software" },
+      { name: "Antivirus", href: "/collections/software" },
+      { name: "Creative Tools", href: "/collections/software" },
     ]
   },
   {
@@ -59,10 +59,10 @@ const menuCategories: Category[] = [
     title: "Gift Cards",
     icon: ShoppingCart,
     items: [
-      { name: "Steam", href: "/gift-cards/steam" },
-      { name: "PlayStation", href: "/gift-cards/playstation" },
-      { name: "Xbox", href: "/gift-cards/xbox" },
-      { name: "All Gift Cards", href: "/gift-cards" },
+      { name: "Steam", href: "/collections/gift-cards" },
+      { name: "PlayStation", href: "/collections/gift-cards" },
+      { name: "Xbox", href: "/collections/gift-cards" },
+      { name: "All Gift Cards", href: "/collections/gift-cards" },
     ]
   },
 ];

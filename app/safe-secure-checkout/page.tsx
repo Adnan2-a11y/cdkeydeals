@@ -2,7 +2,7 @@ import React from 'react';
 
 const SafeSecureCheckout = () => {
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12 text-gray-800 leading-relaxed">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-gray-800 leading-relaxed">
 
       {/* Header */}
       <div className="border-b pb-8 mb-8">

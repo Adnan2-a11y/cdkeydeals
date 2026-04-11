@@ -106,7 +106,7 @@ export default function GamesPage() {
       <main>
         {/* Page Header */}
         <div className="bg-gradient-to-r from-blue-500/10 to-white py-12">
-          <div className="container mx-auto px-4">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center">
                 <Gamepad2 className="w-6 h-6 text-blue-500" />
@@ -123,7 +123,7 @@ export default function GamesPage() {
           </div>
         </div>
 
-        <div className="container mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid lg:grid-cols-4 gap-8">
             {/* Sidebar Categories */}
             <aside className="lg:col-span-1">

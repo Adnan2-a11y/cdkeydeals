@@ -6,15 +6,15 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
 const giftCardsItems = [
-  { name: "Steam Gift Cards", href: "/gift-cards/steam" },
-  { name: "PlayStation Gift Cards", href: "/gift-cards/playstation" },
-  { name: "Xbox Gift Cards", href: "/gift-cards/xbox" },
-  { name: "Nintendo Gift Cards", href: "/gift-cards/nintendo" },
-  { name: "Google Play", href: "/gift-cards/google-play" },
-  { name: "Netflix", href: "/gift-cards/netflix" },
-  { name: "Spotify", href: "/gift-cards/spotify" },
-  { name: "Amazon", href: "/gift-cards/amazon" },
-  { name: "iTunes / Apple", href: "/gift-cards/apple" }
+  { name: "Steam Gift Cards", href: "/collections/gift-cards" },
+  { name: "PlayStation Gift Cards", href: "/collections/gift-cards" },
+  { name: "Xbox Gift Cards", href: "/collections/gift-cards" },
+  { name: "Nintendo Gift Cards", href: "/collections/gift-cards" },
+  { name: "Google Play", href: "/collections/gift-cards" },
+  { name: "Netflix", href: "/collections/gift-cards" },
+  { name: "Spotify", href: "/collections/gift-cards" },
+  { name: "Amazon", href: "/collections/gift-cards" },
+  { name: "iTunes / Apple", href: "/collections/gift-cards" }
 ];
 
 interface GiftCardsDropdownProps {
@@ -74,7 +74,7 @@ export default function GiftCardsDropdown({ isOpen, onToggle, onClose }: GiftCar
       onMouseLeave={handleMouseLeave}
     >
       {/* Trigger - Now with Link */}
-      <Link href="/gift-cards" className="flex items-center gap-1 cursor-pointer group py-2">
+      <Link href="/collections/gift-cards" className="flex items-center gap-1 cursor-pointer group py-2">
         <span className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
           Gift Cards
         </span>

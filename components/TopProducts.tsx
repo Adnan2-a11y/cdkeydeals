@@ -18,22 +18,11 @@ export default function TopProducts({
     return (
       <section>
         <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          {/* Grid Skeleton - Desktop */}
-          <div className="hidden lg:grid grid-cols-6 gap-3 overflow-hidden">
+          {/* Grid Skeleton - All breakpoints */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 lg:gap-3 overflow-hidden">
             {Array.from({ length: 6 }).map((_, index) => (
               <ProductSkeleton key={index} />
             ))}
-          </div>
-
-          {/* Mobile/Tablet Skeleton - Horizontal Scroll */}
-          <div className="lg:hidden overflow-x-auto">
-            <div className="flex gap-3 pb-4" style={{ minWidth: 'max-content' }}>
-              {Array.from({ length: 6 }).map((_, index) => (
-                <div key={index} className="w-72 shrink-0">
-                  <ProductSkeleton />
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
@@ -81,8 +70,8 @@ export default function TopProducts({
           )}
         </div>
 
-        {/* Product Grid - Exactly 6 columns on desktop, horizontal scroll on smaller screens */}
-        <div className="mb-10 hidden lg:grid grid-cols-6 gap-3">
+        {/* Product Grid - Responsive: 2 cols mobile, 3 cols tablet, 6 cols desktop */}
+        <div className="mb-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
           {displayProducts.map((product) => (
             <ProductCard
               key={product.id}
@@ -90,34 +79,6 @@ export default function TopProducts({
             />
           ))}
         </div>
-
-        {/* Mobile/Tablet - Horizontal Scroll */}
-        <div className="lg:hidden overflow-x-auto">
-          <div className="flex gap-3 pb-4" style={{ minWidth: 'max-content' }}>
-            {displayProducts.map((product) => (
-              <div
-                key={product.id}
-                className="w-72 shrink-0"
-              >
-                <ProductCard
-                  {...product}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* View All Button for Mobile */}
-        {viewAllLink && (
-          <div className="mt-8 text-center lg:hidden">
-            <Link href={viewAllLink}>
-              <Button variant="default" size="lg" className="group">
-                View All Products
-                <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Button>
-            </Link>
-          </div>
-        )}
       </div>
     </section>
   );

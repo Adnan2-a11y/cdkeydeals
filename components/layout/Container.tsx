@@ -11,7 +11,7 @@ interface ContainerProps {
  * Unified Container Component
  * 
  * Provides consistent max-width and padding across all sections.
- * - Max-width: 1320px (consistent with cdkeydeals.com style)
+ * - Max-width: 1280px (max-w-7xl) - matches Header width
  * - Responsive padding: px-4 (mobile) → sm:px-6 (tablet) → lg:px-8 (desktop)
  * - Centers content with mx-auto
  */
@@ -21,7 +21,7 @@ export function Container({
 }: ContainerProps) {
   return (
     <div className={cn(
-      "max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8",
+      "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
       className
     )}>
       {children}
@@ -47,7 +47,7 @@ export function Section({
   return (
     <section className={cn("w-full", className)}>
       <div className={cn(
-        "max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8",
+        "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
         innerClassName
       )}>
         {children}
@@ -70,7 +70,7 @@ export function PageWrapper({ children, className }: PageWrapperProps) {
       "min-h-screen bg-white",
       className
     )}>
-      <div className="max-w-[1320px] mx-auto bg-white">
+      <div className="max-w-7xl mx-auto bg-white">
         {children}
       </div>
     </div>

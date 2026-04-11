@@ -260,14 +260,14 @@ export default function BestSellerClient() {
     <div className="min-h-screen bg-background">
       {/* Header Section */}
       <div className="bg-card dark:bg-muted border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
           {/* Breadcrumb */}
           <Breadcrumb items={[]} currentPage="Best Seller" />
           
           {/* Page Title */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-4">Best Seller</h1>
-            <p className="text-muted-foreground dark:text-gray-400 max-w-3xl">
+          <div className="mb-6 md:mb-8">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-3 md:mb-4">Best Seller</h1>
+            <p className="text-muted-foreground dark:text-gray-400 max-w-3xl text-sm md:text-base">
               Explore the Best Seller collection at CDKeyDeals—your fastest way to find the most trusted and frequently purchased digital products in our store.
               If you don't want to spend hours comparing options, this page helps you choose with confidence. Each item featured here earns its spot through consistent demand, strong customer satisfaction, and dependable performance across everyday use.
             </p>
@@ -276,10 +276,10 @@ export default function BestSellerClient() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           {/* Sidebar - Desktop */}
-          <div className="hidden lg:block w-52 flex-shrink-0">
+          <div className="hidden lg:block w-64 flex-shrink-0">
             <FilterSidebar
               filters={filters}
               onFiltersChange={handleFiltersChange}

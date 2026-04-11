@@ -243,7 +243,7 @@ export default function CollectionsClient() {
     <div className="min-h-screen bg-gray-50 dark:bg-muted">
       {/* Header Section */}
       <div className="bg-white dark:bg-card border-b border-gray-200 dark:border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
           <Breadcrumb />
 
           {/* Page Title */}
@@ -273,9 +273,9 @@ export default function CollectionsClient() {
         <ShopByCategory categories={collectionsCategories} />
 
         {/* Main Layout */}
-        <div className="flex flex-col lg:flex-row gap-8 mt-8">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 mt-8">
           {/* Sidebar - Desktop */}
-          <div className="hidden lg:block w-44 flex-shrink-0">
+          <div className="hidden lg:block w-64 flex-shrink-0">
             <CollectionsFilterSidebar
               filters={filters}
               onFiltersChange={handleFiltersChange}

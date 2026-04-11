@@ -56,7 +56,7 @@ export default function Navbar({ isDarkMode, onDarkModeToggle }: NavbarProps) {
                 onMouseLeave={() => setIsGamesMegaMenuOpen(false)}
               >
                 <div className="flex items-center gap-1 cursor-pointer group py-2">
-                  <Link href="/games" className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 transition-colors group-hover:text-purple-600 dark:group-hover:text-purple-400">
+                  <Link href="/collections/games" className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 transition-colors group-hover:text-purple-600 dark:group-hover:text-purple-400">
                     Games
                   </Link>
                   <ChevronDown className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500 transition-transform duration-200 group-hover:rotate-180 group-hover:text-purple-600 dark:group-hover:text-purple-400" />
@@ -67,7 +67,7 @@ export default function Navbar({ isDarkMode, onDarkModeToggle }: NavbarProps) {
                 onMouseLeave={() => setIsMegaMenuOpen(false)}
               >
                 <div className="flex items-center gap-1 cursor-pointer group py-2">
-                  <Link href="/software" className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                  <Link href="/collections/software" className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
                     Software
                   </Link>
                   <ChevronDown className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500 transition-transform duration-200 group-hover:rotate-180 group-hover:text-indigo-600 dark:group-hover:text-indigo-400" />
@@ -83,12 +83,12 @@ export default function Navbar({ isDarkMode, onDarkModeToggle }: NavbarProps) {
                   onClose={() => setIsGiftCardsDropdownOpen(false)}
                 />
               </div>
-              <Link href="/best-deals" className="flex items-center gap-1 cursor-pointer group py-2">
+              <Link href="/collections/best-deals" className="flex items-center gap-1 cursor-pointer group py-2">
                   <span className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
                     Best Deals
                   </span>
                 </Link>
-              <Link href="/best-seller" className="flex items-center gap-1 cursor-pointer group py-2">
+              <Link href="/collections/best-seller" className="flex items-center gap-1 cursor-pointer group py-2">
                 <span className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
                   Best Seller
                 </span>

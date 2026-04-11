@@ -303,6 +303,22 @@ body {
   animation: slideInHeader 0.3s ease-out forwards;
 }
 
+/* Slide out header animation (scroll down) */
+@keyframes slideOutHeader {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+.animate-slide-out-header {
+  animation: slideOutHeader 0.3s ease-out forwards;
+}
+
 /* Pulse animation for badges */
 @keyframes pulse-glow {
   0%, 100% {

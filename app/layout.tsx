@@ -21,6 +21,10 @@ export const metadata: Metadata = {
   title: 'CDKeyDeals - Best Deals on Game Keys & Software',
   description: 'Get the best deals on game keys, software licenses, gift cards and more. Instant delivery, secure payments, 24/7 support.',
   keywords: 'game keys, software keys, gift cards, steam keys, xbox keys, playstation keys, windows keys, office keys',
+  icons: {
+    icon: '/images/CDkeyDeals--Favicon.jpg',
+    apple: '/images/CDkeyDeals--Favicon.jpg',
+  },
 }
 
 export const viewport: Viewport = {

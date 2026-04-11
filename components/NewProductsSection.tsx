@@ -7,12 +7,9 @@ import { useRef } from "react";
 interface Product {
   id: number;
   title: string;
-  price: number;
-  originalPrice?: number;
-  currency?: string;
+  price?: number; // Optional kore deya hoyeche karon amra eta dekhabo na
   badge?: string;
   discount?: number;
-  image?: string;
 }
 
 interface NewProductsSectionProps {
@@ -26,7 +23,8 @@ export default function NewProductsSection({
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
-      const scrollAmount = 300;
+      // Choto card er jonno scroll amount komano hoyeche
+      const scrollAmount = 450; 
       scrollRef.current.scrollBy({
         left: direction === "left" ? -scrollAmount : scrollAmount,
         behavior: "smooth",
@@ -34,32 +32,28 @@ export default function NewProductsSection({
     }
   };
 
-  const currencySymbol = (currency: string) => {
-    return currency === "GBP" ? "£" : currency === "EUR" ? "€" : "$";
-  };
-
   return (
-    <section className="py-12">
+    <section className="py-8">
       <div className="px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-foreground">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-bold text-foreground">
             New Products and Current Offers
           </h2>
 
           <div className="flex items-center gap-2">
             <button
               onClick={() => scroll("left")}
-              className="w-10 h-10 bg-card dark:bg-muted hover:bg-gray-100 dark:hover:bg-gray-700 text-foreground rounded-full flex items-center justify-center transition-colors shadow-sm border border-border"
+              className="w-8 h-8 bg-card dark:bg-muted hover:bg-gray-100 dark:hover:bg-gray-700 text-foreground rounded-full flex items-center justify-center transition-colors shadow-sm border border-border"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-4 h-4" />
             </button>
 
             <button
               onClick={() => scroll("right")}
-              className="w-10 h-10 bg-card dark:bg-muted hover:bg-gray-100 dark:hover:bg-gray-700 text-foreground rounded-full flex items-center justify-center transition-colors shadow-sm border border-border"
+              className="w-8 h-8 bg-card dark:bg-muted hover:bg-gray-100 dark:hover:bg-gray-700 text-foreground rounded-full flex items-center justify-center transition-colors shadow-sm border border-border"
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -67,69 +61,45 @@ export default function NewProductsSection({
         {/* Scrollable Products */}
         <div
           ref={scrollRef}
-          className="flex gap-4 overflow-x-auto pt-10 pb-6 px-2 scrollbar-hide snap-x snap-mandatory"
+          className="flex gap-3 overflow-x-auto py-4 px-1 scrollbar-hide snap-x snap-mandatory"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {products.map((product) => (
             <Link
               key={product.id}
               href={`/product/${product.id}`}
-              className="shrink-0 w-[200px] snap-start group"
+              // Width komiye 140px kora hoyeche jate 7-8 ta card show kore
+              className="shrink-0 w-[140px] sm:w-[150px] snap-start group"
             >
               <div
                 className="
-                relative bg-card dark:bg-muted rounded-xl overflow-hidden
-                border border-border hover:border
-
-                hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)]
-                dark:hover:shadow-[0_8px_30px_rgba(255,255,255,0.08)]
-
-                hover:-translate-y-1.5
-                transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]
+                relative bg-card dark:bg-muted rounded-lg overflow-hidden
+                border border-border hover:border-[#00d4aa]
+                hover:shadow-md
+                transition-all duration-300
               "
               >
-                {/* Badge */}
+                {/* Badge/Discount - Optional, choto kore rakha hoyeche */}
                 {(product.discount || product.badge) && (
-                  <div className="absolute top-2 left-2 z-10">
-                    {product.discount ? (
-                      <span className="inline-block px-2 py-0.5 bg-red-500 text-white text-xs font-bold rounded">
-                        {product.discount}%
-                      </span>
-                    ) : product.badge ? (
-                      <span className="inline-block px-2 py-0.5 bg-[#00d4aa] text-white text-xs font-bold rounded">
-                        {product.badge}
-                      </span>
-                    ) : null}
+                  <div className="absolute top-1 left-1 z-10">
+                    <span className="inline-block px-1.5 py-0.5 bg-[#00d4aa] text-white text-[10px] font-bold rounded">
+                      {product.discount ? `-${product.discount}%` : product.badge}
+                    </span>
                   </div>
                 )}
 
-                {/* Image */}
-                <div className="aspect-square bg-muted/50 dark:bg-muted flex items-center justify-center p-4">
-                  <div className="w-16 h-16 bg-muted dark:bg-gray-700 rounded-lg flex items-center justify-center">
-                    <Gamepad2 className="w-8 h-8 text-gray-400 dark:text-gray-500" />
+                {/* Image Placeholder - Height komano hoyeche */}
+                <div className="aspect-[4/5] bg-muted/30 dark:bg-muted/50 flex items-center justify-center p-2">
+                  <div className="w-12 h-12 bg-muted/50 dark:bg-gray-700 rounded-md flex items-center justify-center">
+                    <Gamepad2 className="w-6 h-6 text-gray-400" />
                   </div>
                 </div>
 
-                {/* Content */}
-                <div className="p-3">
-                  <h3 className="text-xs font-medium text-foreground line-clamp-2 min-h-[32px] group-hover:text-[#00d4aa] transition-colors">
+                {/* Content - Sudhu Title rakha hoyeche */}
+                <div className="p-2">
+                  <h3 className="text-[11px] font-semibold text-foreground line-clamp-2 min-h-[30px] group-hover:text-[#00d4aa] transition-colors text-center leading-tight">
                     {product.title}
                   </h3>
-
-                  <div className="mt-2 flex items-center gap-2">
-                    <span className="text-sm font-bold text-[#00d4aa]">
-                      {currencySymbol(product.currency || "GBP")}
-                      {product.price.toFixed(2)}
-                    </span>
-
-                    {product.originalPrice &&
-                      product.originalPrice > product.price && (
-                        <span className="text-xs text-gray-400 dark:text-gray-500 line-through">
-                          {currencySymbol(product.currency || "GBP")}
-                          {product.originalPrice.toFixed(2)}
-                        </span>
-                      )}
-                  </div>
                 </div>
               </div>
             </Link>

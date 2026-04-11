@@ -351,17 +351,29 @@ export default function FilterSidebar({
     </div>
   );
 
-  // Mobile overlay
+  // Mobile bottom sheet
   if (isMobile) {
     return (
       <>
+        {/* Backdrop */}
         {isOpen && (
-          <div className="fixed inset-0 bg-black/50 z-40" onClick={onClose} />
+          <div 
+            className="fixed inset-0 bg-black/50 z-40 transition-opacity duration-300" 
+            onClick={onClose}
+          />
         )}
-        <div className={`fixed top-0 left-0 h-full w-80 bg-background dark:bg-muted shadow-xl z-50 transform transition-transform duration-300 ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}>
-          <div className="p-6 overflow-y-auto h-full">
+        {/* Bottom Sheet */}
+        <div 
+          className={`fixed bottom-0 left-0 right-0 bg-background dark:bg-muted shadow-2xl z-50 transform transition-transform duration-300 ease-out rounded-t-2xl ${
+            isOpen ? 'translate-y-0' : 'translate-y-full'
+          }`}
+        >
+          {/* Handle bar */}
+          <div className="flex justify-center pt-3 pb-2">
+            <div className="w-10 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
+          </div>
+          
+          <div className="p-4 sm:p-6 overflow-y-auto max-h-[80vh]">
             {sidebarContent}
           </div>
         </div>

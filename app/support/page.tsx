@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function HelpSupportPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-card">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Breadcrumbs */}
         <nav className="flex items-center space-x-2 text-sm text-gray-500 dark:text-muted-foreground mb-8">
           <Link href="/" className="hover:text-gray-700 dark:text-muted-foreground transition-colors">

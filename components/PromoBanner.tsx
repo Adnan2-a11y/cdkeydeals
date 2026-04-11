@@ -233,39 +233,6 @@ export default function PromoBanner({ banners = defaultBanners, className = "" }
             <BannerCard key={banner.id} banner={banner} />
           ))}
         </div>
-
-        {/* Trust Badges */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mt-6 sm:mt-8">
-          <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 rounded-xl border border-gray-200 transition-all duration-200 hover:bg-gray-100 hover:shadow-md">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#00d4aa]/10 rounded-full flex items-center justify-center shrink-0">
-              <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-[#00d4aa]" />
-            </div>
-            <div>
-              <h4 className="font-semibold text-[#1a1a1a] text-sm sm:text-base">Instant Delivery</h4>
-              <p className="text-xs sm:text-sm text-gray-500">Get your keys in seconds</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 rounded-xl border border-gray-200 transition-all duration-200 hover:bg-gray-100 hover:shadow-md">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#00d4aa]/10 rounded-full flex items-center justify-center shrink-0">
-              <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-[#00d4aa]" />
-            </div>
-            <div>
-              <h4 className="font-semibold text-[#1a1a1a] text-sm sm:text-base">Secure Payments</h4>
-              <p className="text-xs sm:text-sm text-gray-500">100% safe transactions</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 rounded-xl border border-gray-200 transition-all duration-200 hover:bg-gray-100 hover:shadow-md sm:col-span-2 lg:col-span-1">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#00d4aa]/10 rounded-full flex items-center justify-center shrink-0">
-              <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-[#00d4aa]" />
-            </div>
-            <div>
-              <h4 className="font-semibold text-[#1a1a1a] text-sm sm:text-base">24/7 Support</h4>
-              <p className="text-xs sm:text-sm text-gray-500">Always here to help</p>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

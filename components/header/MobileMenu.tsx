@@ -115,7 +115,7 @@ export default function MobileMenu({
             {/* Additional Links */}
             <div className="py-2">
               <Link
-                href="/best-seller"
+                href="/collections/best-seller"
                 onClick={onClose}
                 className="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
               >

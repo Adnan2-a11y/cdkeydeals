@@ -150,7 +150,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-[1320px] mx-auto bg-background">
+      <div className="max-w-7xl mx-auto bg-background">
         <main>
           {/* Hero Slider */}
           <HeroSlider />

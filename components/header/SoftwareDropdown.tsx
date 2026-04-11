@@ -6,14 +6,14 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
 const softwareItems = [
-  { name: "Windows Keys", href: "/software/windows" },
-  { name: "Microsoft Office", href: "/software/office" },
-  { name: "Adobe Software", href: "/software/adobe" },
-  { name: "Antivirus", href: "/software/antivirus" },
-  { name: "VPN Services", href: "/software/vpn" },
-  { name: "Project & Visio", href: "/software/project-visio" },
-  { name: "Utilities", href: "/software/utilities" },
-  { name: "SQL Server", href: "/software/sql-server" }
+  { name: "Windows Keys", href: "/collections/software" },
+  { name: "Microsoft Office", href: "/collections/software" },
+  { name: "Adobe Software", href: "/collections/software" },
+  { name: "Antivirus", href: "/collections/software" },
+  { name: "VPN Services", href: "/collections/software" },
+  { name: "Project & Visio", href: "/collections/software" },
+  { name: "Utilities", href: "/collections/software" },
+  { name: "SQL Server", href: "/collections/software" }
 ];
 
 interface SoftwareDropdownProps {
@@ -73,7 +73,7 @@ export default function SoftwareDropdown({ isOpen, onToggle, onClose }: Software
       onMouseLeave={handleMouseLeave}
     >
       {/* Trigger - Now with Link */}
-      <Link href="/software" className="flex items-center gap-1 cursor-pointer group py-2">
+      <Link href="/collections/software" className="flex items-center gap-1 cursor-pointer group py-2">
         <span className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
           Software
         </span>

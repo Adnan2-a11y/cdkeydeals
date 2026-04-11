@@ -6,14 +6,14 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
 const gamesItems = [
-  { name: "Steam Keys", href: "/games/steam" },
-  { name: "Xbox Keys", href: "/games/xbox" },
-  { name: "PlayStation Keys", href: "/games/playstation" },
-  { name: "Nintendo Keys", href: "/games/nintendo" },
-  { name: "Epic Games", href: "/games/epic" },
-  { name: "Uplay Keys", href: "/games/uplay" },
-  { name: "Origin Keys", href: "/games/origin" },
-  { name: "Battle.net", href: "/games/battle-net" }
+  { name: "Steam Keys", href: "/collections/games" },
+  { name: "Xbox Keys", href: "/collections/games" },
+  { name: "PlayStation Keys", href: "/collections/games" },
+  { name: "Nintendo Keys", href: "/collections/games" },
+  { name: "Epic Games", href: "/collections/games" },
+  { name: "Uplay Keys", href: "/collections/games" },
+  { name: "Origin Keys", href: "/collections/games" },
+  { name: "Battle.net", href: "/collections/games" }
 ];
 
 interface GamesDropdownProps {
@@ -73,7 +73,7 @@ export default function GamesDropdown({ isOpen, onToggle, onClose }: GamesDropdo
       onMouseLeave={handleMouseLeave}
     >
       {/* Trigger - Now with Link */}
-      <Link href="/games" className="flex items-center gap-1 cursor-pointer group py-2">
+      <Link href="/collections/games" className="flex items-center gap-1 cursor-pointer group py-2">
         <span className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
           Games
         </span>
