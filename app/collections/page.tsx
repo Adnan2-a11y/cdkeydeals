@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import CollectionsClient from './CollectionsClient';
+import { getProducts } from '@/lib/wordpress';
 
 export const metadata: Metadata = {
   title: 'All Products | Collections - CDKeyDeals Software, Games & Gift Cards',
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function CollectionsPage() {
-  return <CollectionsClient />;
+export default async function CollectionsPage() {
+  const products = await getProducts({ per_page: 50 });
+  return <CollectionsClient initialProducts={products} />;
 }

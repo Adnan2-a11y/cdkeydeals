@@ -147,7 +147,7 @@ export default function Footer() {
         {/* Bottom Section */}
         <div className="pt-8 border-t border-gray-100 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex flex-col md:flex-row items-center gap-4 text-[#666666] dark:text-gray-400 text-[13px]">
-            <span>© 2026 cdkeydeals.com. Powered by Shopify</span>
+            <span>© 2026 cdkeydeals.com. All Rights Reserved.</span>
             <div className="flex items-center gap-1 font-medium text-black dark:text-gray-200">
                <span>Bangladesh (BDT ৳)</span>
                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3 h-3"><path d="m6 9 6 6 6-6"/></svg>

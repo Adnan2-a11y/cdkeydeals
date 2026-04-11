@@ -1,6 +1,3 @@
-"use client";
-
-import { useState } from "react";
 import HeroSlider from "@/components/HeroSlider";
 import CategoryTile from "@/components/CategoryTile";
 import NewProductsSection from "@/components/NewProductsSection";
@@ -14,7 +11,7 @@ import PromoCarouselSection from "@/components/home/PromoCarouselSection";
 import MostPopular from "@/components/MostPopular";
 import ServicesSection from "@/components/ServicesSection";
 import Newsletter from "@/components/Newsletter";
-import { mockTopProducts } from "@/data/mockProducts";
+import { getProducts } from "@/lib/wordpress";
 
 // Static data for the UI
 const categories = [
@@ -108,45 +105,12 @@ const brands = [
   { id: 10, name: "Apple", slug: "apple" },
 ];
 
-export default function Home() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+export default async function Home() {
+  // Fetch products from WooCommerce API
+  const liveProducts = await getProducts({ per_page: 20 });
   
-  const navCategories = {
-    games: [
-      { name: "Steam Games", slug: "steam-games" },
-      { name: "Xbox Games", slug: "xbox-games" },
-      { name: "PlayStation Games", slug: "playstation-games" },
-      { name: "Nintendo Games", slug: "nintendo-games" },
-    ],
-    software: [
-      { name: "Microsoft Office", slug: "microsoft-office" },
-      { name: "Windows OS", slug: "windows-os" },
-      { name: "Adobe Creative Cloud", slug: "adobe-creative-cloud" },
-      { name: "Antivirus", slug: "antivirus" },
-    ],
-    giftCards: [
-      { name: "Steam Gift Cards", slug: "steam-gift-cards" },
-      { name: "Xbox Gift Cards", slug: "xbox-gift-cards" },
-      { name: "PlayStation Gift Cards", slug: "playstation-gift-cards" },
-      { name: "iTunes Gift Cards", slug: "itunes-gift-cards" },
-    ],
-    bestDeals: [
-      { name: "Today's Deals", slug: "todays-deals" },
-      { name: "Weekly Deals", slug: "weekly-deals" },
-      { name: "Flash Sales", slug: "flash-sales" },
-      { name: "Clearance", slug: "clearance" },
-    ],
-    more: [
-      { name: "About Us", slug: "about-us" },
-      { name: "Contact", slug: "contact" },
-      { name: "Support", slug: "support" },
-      { name: "Terms of Service", slug: "terms-of-service" },
-    ],
-  };
-
-  const handleDarkModeToggle = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+  const displayNewProducts = liveProducts.slice(0, 8);
+  const displayTopProducts = liveProducts.slice(0, 8);
 
   return (
     <div className="min-h-screen bg-background">
@@ -159,12 +123,12 @@ export default function Home() {
           <CategoryTile categories={categories} />
 
           {/* New Products Section (Horizontal Scroll) */}
-          <NewProductsSection products={newProducts} />
+          <NewProductsSection products={displayNewProducts} />
 
           {/* Top Products Grid */}
           <TopProducts
             title="Top Products"
-            products={mockTopProducts}
+            products={displayTopProducts}
             viewAllLink="/best-selling"
           />
 

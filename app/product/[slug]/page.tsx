@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getProductBySlug, getAllProducts } from '@/lib/slug';
+import { getProductBySlug, getProducts } from '@/lib/wordpress';
 import ProductDetails from '@/components/products/ProductDetails';
 import ProductDetailsSkeleton from '@/components/products/ProductDetailsSkeleton';
 import { Suspense } from 'react';
@@ -18,9 +18,9 @@ interface ProductPageProps {
 
 // Generate static params for all products with slugs
 export async function generateStaticParams() {
-  const products = getAllProducts();
+  const products = await getProducts({ per_page: 100 });
   return products
-    .filter(product => product.slug)
+    .filter(product => product && product.slug)
     .map((product) => ({
       slug: product.slug,
     }));
@@ -29,7 +29,7 @@ export async function generateStaticParams() {
 // Generate dynamic metadata for SEO
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     return {
@@ -73,7 +73,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 }
 
 // JSON-LD structured data for SEO
-function generateStructuredData(product: ReturnType<typeof getProductBySlug>) {
+function generateStructuredData(product: Product) {
   if (!product) return null;
 
   return {
@@ -138,14 +138,14 @@ function getRelatedProducts(currentProduct: Product, allProducts: Product[]): Pr
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
 
   // If product not found, show 404
   if (!product) {
     notFound();
   }
 
-  const allProducts = getAllProducts();
+  const allProducts = await getProducts({ per_page: 20 });
   const relatedProducts = getRelatedProducts(product, allProducts);
   const structuredData = generateStructuredData(product);
 

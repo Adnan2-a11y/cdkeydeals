@@ -14,7 +14,6 @@ import ProductSection from "@/components/collections/ProductSection";
 import QuickViewModal from "@/components/collections/QuickViewModal";
 
 import {
-  collectionsProducts,
   collectionsCategories,
 } from "@/data/mockProducts";
 import {
@@ -71,7 +70,7 @@ function PromoBanner() {
 
 const ITEMS_PER_PAGE_OPTIONS = [12, 24, 36, 48];
 
-export default function CollectionsClient() {
+export default function CollectionsClient({ initialProducts = [] }: { initialProducts?: Product[] }) {
   // State
   const [filters, setFilters] = useState<CollectionsFilterOptions>({
     categories: [],
@@ -90,8 +89,10 @@ export default function CollectionsClient() {
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
 
-  // All products (in a real app, this would come from an API)
-  const allProducts = useMemo(() => collectionsProducts, []);
+  // All products (using live API data exclusively)
+  const allProducts = useMemo(() => {
+    return initialProducts;
+  }, [initialProducts]);
 
   // Filter products
   const filteredProducts = useMemo(() => {
