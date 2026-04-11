@@ -48,9 +48,9 @@ export default function BlogDropdown({ isOpen, onHover, onLeave }: BlogDropdownP
         className="flex items-center gap-1 cursor-pointer group py-2"
         onClick={handleToggle}
       >
-        <Link href="/blog" className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+        <span className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
           Blog
-        </Link>
+        </span>
         <ChevronDown className={`w-3.5 h-3.5 text-gray-400 dark:text-gray-500 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-transform duration-200 ${
           isDropdownOpen || isOpen ? "rotate-180" : ""
         }`} />
