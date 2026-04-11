@@ -5,25 +5,24 @@ import { ChevronDown } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
-const giftCardsItems = [
-  { name: "Steam Gift Cards", href: "/gift-cards/steam" },
-  { name: "PlayStation Gift Cards", href: "/gift-cards/playstation" },
-  { name: "Xbox Gift Cards", href: "/gift-cards/xbox" },
-  { name: "Nintendo Gift Cards", href: "/gift-cards/nintendo" },
-  { name: "Google Play", href: "/gift-cards/google-play" },
-  { name: "Netflix", href: "/gift-cards/netflix" },
-  { name: "Spotify", href: "/gift-cards/spotify" },
-  { name: "Amazon", href: "/gift-cards/amazon" },
-  { name: "iTunes / Apple", href: "/gift-cards/apple" }
+const softwareItems = [
+  { name: "Windows Keys", href: "/software/windows" },
+  { name: "Microsoft Office", href: "/software/office" },
+  { name: "Adobe Software", href: "/software/adobe" },
+  { name: "Antivirus", href: "/software/antivirus" },
+  { name: "VPN Services", href: "/software/vpn" },
+  { name: "Project & Visio", href: "/software/project-visio" },
+  { name: "Utilities", href: "/software/utilities" },
+  { name: "SQL Server", href: "/software/sql-server" }
 ];
 
-interface GiftCardsDropdownProps {
+interface SoftwareDropdownProps {
   isOpen: boolean;
   onToggle: () => void;
   onClose: () => void;
 }
 
-export default function GiftCardsDropdown({ isOpen, onToggle, onClose }: GiftCardsDropdownProps) {
+export default function SoftwareDropdown({ isOpen, onToggle, onClose }: SoftwareDropdownProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -74,9 +73,9 @@ export default function GiftCardsDropdown({ isOpen, onToggle, onClose }: GiftCar
       onMouseLeave={handleMouseLeave}
     >
       {/* Trigger - Now with Link */}
-      <Link href="/gift-cards" className="flex items-center gap-1 cursor-pointer group py-2">
+      <Link href="/software" className="flex items-center gap-1 cursor-pointer group py-2">
         <span className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-          Gift Cards
+          Software
         </span>
         <ChevronDown
           className={`w-3.5 h-3.5 text-gray-400 dark:text-gray-500 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-transform duration-200 ${
@@ -101,7 +100,7 @@ export default function GiftCardsDropdown({ isOpen, onToggle, onClose }: GiftCar
             }}
             onMouseLeave={onClose}
           >
-            {giftCardsItems.map((item, index) => (
+            {softwareItems.map((item, index) => (
               <motion.div
                 key={item.name}
                 initial={{ opacity: 0, x: -10 }}

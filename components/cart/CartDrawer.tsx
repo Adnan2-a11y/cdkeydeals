@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 export default function CartDrawer() {
-  const { state, toggleCart } = useCart();
+  const { state, toggleCart, clearCart } = useCart();
 
   const handleClose = () => {
     toggleCart(false);
@@ -108,42 +108,56 @@ export default function CartDrawer() {
           )}
         </div>
 
-        {/* Footer - Fixed at Bottom */}
-        {state.items.length > 0 && (
-          <div className="flex-shrink-0 border-t border-gray-200 bg-white p-5 space-y-4">
-            {/* Subtotal */}
-            <div className="flex justify-between items-center">
-              <span className="text-base font-medium text-gray-700">Subtotal</span>
-              <span className="text-lg font-bold text-gray-900">
-                {currencySymbol}
-                {state.totalPrice.toFixed(2)}
-              </span>
+          {/* Cart Footer */}
+          {state.items.length > 0 && (
+            <div className="border-t border-gray-200 mb-45 bg-white p-4 space-y-4">
+              {/* Cart Summary */}
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Subtotal</span>
+                  <span className="font-medium text-gray-900">
+                    {currencySymbol}
+                    {state.totalPrice.toFixed(2)}
+                  </span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Total Items</span>
+                  <span className="font-medium text-gray-900">
+                    {state.totalItems}
+                  </span>
+                </div>
+                <div className="flex justify-between text-lg font-bold text-gray-900 pt-2 border-t border-gray-100">
+                  <span>Total</span>
+                  <span>
+                    {currencySymbol}
+                    {state.totalPrice.toFixed(2)}
+                  </span>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="space-y-2">
+                <Link href="/cart" onClick={handleClose}>
+                  <Button variant="outline" className="w-full">
+                    View Cart
+                  </Button>
+                </Link>
+                <Link href="/checkout" onClick={handleClose}>
+                  <Button className="w-full bg-gray-900 hover:bg-gray-800">
+                    Checkout
+                  </Button>
+                </Link>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearCart}
+                  className="w-full text-red-500 hover:text-red-600 hover:bg-red-50"
+                >
+                  Clear Cart
+                </Button>
+              </div>
             </div>
-
-            {/* Tax Note */}
-            <p className="text-xs text-gray-500">
-              Taxes and shipping calculated at checkout
-            </p>
-
-            {/* Checkout Button */}
-            <Link href="/checkout" onClick={handleClose}>
-              <Button className="w-full h-12 text-base font-semibold bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-lg shadow-purple-200 transition-all duration-200">
-                Checkout
-              </Button>
-            </Link>
-
-            {/* View Cart Link */}
-            <div className="text-center">
-              <Link
-                href="/cart"
-                onClick={handleClose}
-                className="text-sm text-gray-600 hover:text-purple-600 font-medium underline underline-offset-4 transition-colors"
-              >
-                View Cart
-              </Link>
-            </div>
-          </div>
-        )}
+          )}
       </div>
     </>
   );

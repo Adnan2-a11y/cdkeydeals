@@ -10,53 +10,25 @@ interface DropdownWrapperProps {
   className?: string;
 }
 
-/**
- * DropdownWrapper - Provides properly positioned dropdown container
- * 
- * This component solves the dropdown positioning issue by:
- * 1. Using absolute positioning relative to the navigation bar
- * 2. Positioning exactly below the header (top-full)
- * 3. Providing full-width design with proper z-index
- * 4. Ensuring dropdown sits on top of main content
- */
-export default function DropdownWrapper({ 
-  isOpen, 
-  onClose, 
-  children, 
-  className = "" 
+export default function DropdownWrapper({
+  isOpen,
+  onClose,
+  children,
+  className = "",
 }: DropdownWrapperProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  // Handle escape key and outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node;
-      const header = document.querySelector('header');
       if (
-        wrapperRef.current && 
-        !wrapperRef.current.contains(target) &&
-        header && 
-        !header.contains(target)
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
       ) {
         onClose();
       }
     };
-
-    const handleEscapeKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      document.addEventListener('keydown', handleEscapeKey);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('keydown', handleEscapeKey);
-    };
+    if (isOpen) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen, onClose]);
 
   return (
@@ -64,13 +36,16 @@ export default function DropdownWrapper({
       {isOpen && (
         <motion.div
           ref={wrapperRef}
-          initial={{ opacity: 0, y: -10 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.15, ease: "easeOut" }}
-          className={`absolute left-0 right-0 top-full z-50 -mt-[20px] ${className}`}
+          exit={{ opacity: 0, y: 10 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          className={`absolute top-full left-0 mt-2 z-50 ${className}`}
         >
-          {children}
+          {/* The main card container */}
+          <div className="bg-[#1A1A1A] text-white rounded-xl shadow-2xl border border-white/5 overflow-hidden min-w-[600px]">
+            {children}
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

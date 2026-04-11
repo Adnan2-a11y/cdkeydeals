@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Navbar from "@/components/header/Navbar";
 import BlogHero from "@/components/blog/BlogHero";
 import ArticleCard from "@/components/blog/ArticleCard";
 import FeaturedSidebar from "@/components/blog/FeaturedSidebar";
@@ -9,14 +8,9 @@ import { blogPosts } from "@/data/blogData";
 
 export default function BlogPage() {
   const [displayedPosts, setDisplayedPosts] = useState(9);
-  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const handleLoadMore = () => {
     setDisplayedPosts(prev => Math.min(prev + 6, blogPosts.length));
-  };
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
   };
 
   const currentPosts = blogPosts.slice(0, displayedPosts);
@@ -24,8 +18,6 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-card">
-      <Navbar isDarkMode={isDarkMode} onDarkModeToggle={toggleDarkMode} />
-      
       <BlogHero />
       
       <div className="max-w-7xl mx-auto px-4 py-12">

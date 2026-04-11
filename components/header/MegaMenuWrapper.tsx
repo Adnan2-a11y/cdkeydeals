@@ -12,18 +12,18 @@ interface MegaMenuWrapperProps {
 
 /**
  * MegaMenuWrapper - Provides full-width dropdown container
- * 
+ *
  * This component solves the dropdown layout issue by:
  * 1. Using fixed positioning to break out of container constraints
  * 2. Calculating proper top position based on navbar element
  * 3. Providing full viewport width with internal content alignment
  * 4. Handling proper z-index and overflow management
  */
-export default function MegaMenuWrapper({ 
-  isOpen, 
-  onClose, 
-  children, 
-  className = "" 
+export default function MegaMenuWrapper({
+  isOpen,
+  onClose,
+  children,
+  className = ""
 }: MegaMenuWrapperProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -65,29 +65,29 @@ export default function MegaMenuWrapper({
     <AnimatePresence>
       {isOpen && (
         <>
+          {/* Backdrop to dim the page content */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/20 dark:bg-black/60 z-40 backdrop-blur-[2px]"
+            onClick={onClose}
+          />
+
           {/* Full-width dropdown container */}
           <motion.div
             ref={wrapperRef}
-            initial={{ opacity: 0, y: -20, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.98 }}
-            transition={{
-              duration: 0.2,
-              ease: [0.4, 0, 0.2, 1],
-              scale: { type: "spring", stiffness: 300, damping: 25 }
-            }}
-            className={`fixed left-0 right-0 top-[52px] z-50 ${className}`}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="fixed left-0 right-0 top-[64px] z-50 bg-white dark:bg-[#121212] border-b border-gray-200 dark:border-gray-800 shadow-2xl"
             style={{
-              maxHeight: 'calc(100vh - 52px)',
+              maxHeight: 'calc(100vh - 64px)',
               overflowY: 'auto'
             }}
           >
-            {/* Content container with proper alignment */}
-            <div className="w-full bg-[#1E1E1E] shadow-2xl">
-              <div className="max-w-screen-2xl mx-auto">
-                {children}
-              </div>
-            </div>
+            {children}
           </motion.div>
         </>
       )}

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import {
   Menu,
+  X,
   Heart,
   MapPin,
   Moon,
@@ -14,12 +15,12 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 import Logo from "./Logo";
 import SearchBar from "./SearchBar";
-import MegaMenu from "./MegaMenu";
 import AccountDropdown from "./AccountDropdown";
 import CartIcon from "@/components/cart/CartIcon";
 import GiftCardsDropdown from "./GiftCardsDropdown";
 import BlogDropdown from "./BlogDropdown";
-import GamesMegaMenu from "./GamesMegaMenu";
+import GamesDropdown from "./GamesDropdown";
+import SoftwareDropdown from "./SoftwareDropdown";
 import MoreDropdown from "./MoreDropdown";
 import FAQDropdown from "./FAQDropdown";
 import MobileMegaMenu from "./MobileMegaMenu";
@@ -30,7 +31,8 @@ function HeaderContent() {
   const [mounted, setMounted] = useState(false);
   const [isGiftCardsDropdownOpen, setIsGiftCardsDropdownOpen] = useState(false);
   const [isBlogDropdownOpen, setIsBlogDropdownOpen] = useState(false);
-  const [isGamesMegaMenuOpen, setIsGamesMegaMenuOpen] = useState(false);
+  const [isGamesDropdownOpen, setIsGamesDropdownOpen] = useState(false);
+  const [isSoftwareDropdownOpen, setIsSoftwareDropdownOpen] = useState(false);
   const [isMoreDropdownOpen, setIsMoreDropdownOpen] = useState(false);
   const [isFAQDropdownOpen, setIsFAQDropdownOpen] = useState(false);
 
@@ -97,16 +99,20 @@ function HeaderContent() {
 
               {/* Hamburger Menu Button with "Menu" label */}
               <button
-                onClick={handleMenuToggle}
+                onClick={isMegaMenuOpen ? handleMenuClose : handleMenuToggle}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${
                   isMegaMenuOpen
                     ? "bg-indigo-600 text-white"
                     : "bg-indigo-600 text-white hover:bg-indigo-700"
                 }`}
-                aria-label="Toggle menu"
+                aria-label={isMegaMenuOpen ? "Close menu" : "Toggle menu"}
               >
-                <Menu className="w-4 h-4" />
-                <span>Menu</span>
+                {isMegaMenuOpen ? (
+                  <X className="w-4 h-4" />
+                ) : (
+                  <Menu className="w-4 h-4" />
+                )}
+                <span>{isMegaMenuOpen ? "Close" : "Menu"}</span>
               </button>
             </div>
 
@@ -161,68 +167,56 @@ function HeaderContent() {
                 </span>
               </Link>
 
-              {/* Menu Items */}
-              <div className="flex items-center gap-5">
-                <div
-                  onMouseEnter={() => setIsGamesMegaMenuOpen(true)}
-                  onMouseLeave={() => setIsGamesMegaMenuOpen(false)}
-                >
-                  <span
-                    className="flex items-center gap-1 cursor-pointer group py-2"
-                  >
-                    <Link href="/games" className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 transition-colors group-hover:text-purple-600 dark:group-hover:text-purple-400">
-                      Games
-                    </Link>
-                    <ChevronDown className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500 transition-transform duration-200 group-hover:rotate-180 group-hover:text-purple-600 dark:group-hover:text-purple-400" />
-                  </span>
-                </div>
-                <div
-                  onMouseEnter={() => setIsMegaMenuOpen(true)}
-                  onMouseLeave={() => setIsMegaMenuOpen(false)}
-                >
-                  <span
-                    className="flex items-center gap-1 cursor-pointer group py-2"
-                  >
-                    <Link href="/software" className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                      Software
-                    </Link>
-                    <ChevronDown className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500 transition-transform duration-200 group-hover:rotate-180 group-hover:text-indigo-600 dark:group-hover:text-indigo-400" />
-                  </span>
-                </div>
-                <GiftCardsDropdown
-                  isOpen={isGiftCardsDropdownOpen}
-                  onToggle={() => setIsGiftCardsDropdownOpen(true)}
-                  onClose={() => setIsGiftCardsDropdownOpen(false)}
-                />
-                <Link
-                  href="/collections/best-seller"
-                  className="flex items-center gap-1 cursor-pointer group py-2"
-                >
-                  <span className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                    Best Seller
-                  </span>
-                </Link>
-                <div
-                  onMouseEnter={() => setIsFAQDropdownOpen(true)}
-                  onMouseLeave={() => setIsFAQDropdownOpen(false)}
-                >
-                  <FAQDropdown
-                    isOpen={isFAQDropdownOpen}
-                    onToggle={() => setIsFAQDropdownOpen(true)}
-                    onClose={() => setIsFAQDropdownOpen(false)}
-                  />
-                </div>
-                <BlogDropdown
-                  isOpen={isBlogDropdownOpen}
-                  onHover={() => setIsBlogDropdownOpen(true)}
-                  onLeave={() => setIsBlogDropdownOpen(false)}
-                />
-                <MoreDropdown
-                  isOpen={isMoreDropdownOpen}
-                  onHover={() => setIsMoreDropdownOpen(true)}
-                  onLeave={() => setIsMoreDropdownOpen(false)}
-                />
-              </div>
+              {/* Games - Clickable with Dropdown */}
+              <GamesDropdown
+                isOpen={isGamesDropdownOpen}
+                onToggle={() => setIsGamesDropdownOpen(!isGamesDropdownOpen)}
+                onClose={() => setIsGamesDropdownOpen(false)}
+              />
+              
+              {/* Software - Clickable with Dropdown */}
+              <SoftwareDropdown
+                isOpen={isSoftwareDropdownOpen}
+                onToggle={() => setIsSoftwareDropdownOpen(!isSoftwareDropdownOpen)}
+                onClose={() => setIsSoftwareDropdownOpen(false)}
+              />
+              
+              {/* Gift Cards - Clickable with Dropdown */}
+              <GiftCardsDropdown
+                isOpen={isGiftCardsDropdownOpen}
+                onToggle={() => setIsGiftCardsDropdownOpen(!isGiftCardsDropdownOpen)}
+                onClose={() => setIsGiftCardsDropdownOpen(false)}
+              />
+              
+              <Link
+                href="/collections/best-seller"
+                className="flex items-center gap-1 cursor-pointer group py-2"
+              >
+                <span className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                  Best Seller
+                </span>
+              </Link>
+              
+              {/* FAQ - Clickable with Dropdown */}
+              <FAQDropdown
+                isOpen={isFAQDropdownOpen}
+                onToggle={() => setIsFAQDropdownOpen(!isFAQDropdownOpen)}
+                onClose={() => setIsFAQDropdownOpen(false)}
+              />
+              
+              {/* Blog - Clickable with Dropdown */}
+              <BlogDropdown
+                isOpen={isBlogDropdownOpen}
+                onHover={() => setIsBlogDropdownOpen(true)}
+                onLeave={() => setIsBlogDropdownOpen(false)}
+              />
+              
+              {/* More - Dropdown Only */}
+              <MoreDropdown
+                isOpen={isMoreDropdownOpen}
+                onHover={() => setIsMoreDropdownOpen(true)}
+                onLeave={() => setIsMoreDropdownOpen(false)}
+              />
             </nav>
 
             {/* RIGHT SIDE: Utilities */}
@@ -252,18 +246,6 @@ function HeaderContent() {
               )}
             </div>
           </div>
-
-          {/* Games Mega Menu */}
-          <GamesMegaMenu
-            isOpen={isGamesMegaMenuOpen}
-            onClose={() => setIsGamesMegaMenuOpen(false)}
-          />
-
-          {/* Software Mega Menu */}
-          <MegaMenu
-            isOpen={isMegaMenuOpen}
-            onClose={() => setIsMegaMenuOpen(false)}
-          />
         </div>
       </div>
 

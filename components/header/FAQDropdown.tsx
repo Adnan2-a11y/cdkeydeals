@@ -8,27 +8,32 @@ const faqItems = [
   {
     title: "FAQs General",
     icon: HelpCircle,
-    description: "General frequently asked questions"
+    description: "General frequently asked questions",
+    href: "/faq"
   },
   {
     title: "Order & Payment",
     icon: FileText,
-    description: "Questions about ordering and payment methods"
+    description: "Questions about ordering and payment methods",
+    href: "/faq#order-payment"
   },
   {
     title: "Customer Support",
     icon: MessageSquare,
-    description: "Get help from our support team"
+    description: "Get help from our support team",
+    href: "/support"
   },
   {
     title: "Account & Security",
     icon: Shield,
-    description: "Account management and security information"
+    description: "Account management and security information",
+    href: "/faq#account-security"
   },
   {
     title: "Shipping & Delivery",
     icon: Truck,
-    description: "Information about shipping and delivery"
+    description: "Information about shipping and delivery",
+    href: "/faq#shipping"
   }
 ];
 
@@ -82,23 +87,23 @@ export default function FAQDropdown({ isOpen, onToggle, onClose }: FAQDropdownPr
   };
 
   return (
-    <div 
-      ref={dropdownRef} 
+    <div
+      ref={dropdownRef}
       className="relative"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Trigger */}
-      <div className="flex items-center gap-1 cursor-pointer group py-2">
-        <Link href="/faq" className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+      {/* Trigger - Now with Link */}
+      <Link href="/faq" className="flex items-center gap-1 cursor-pointer group py-2">
+        <span className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
           FAQ
-        </Link>
+        </span>
         <ChevronDown
           className={`w-3.5 h-3.5 text-gray-400 dark:text-gray-500 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-transform duration-200 ${
             isOpen ? 'rotate-180' : ''
           }`}
         />
-      </div>
+      </Link>
 
       {/* Dropdown */}
       {isOpen && (
@@ -118,21 +123,16 @@ export default function FAQDropdown({ isOpen, onToggle, onClose }: FAQDropdownPr
             <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">Help & Support</h3>
             <p className="text-xs text-gray-500 mt-1">Find answers to common questions</p>
           </div>
-          
+
           {faqItems.map((item, index) => {
             const IconComponent = item.icon;
             return (
-              <div
+              <Link
                 key={item.title}
+                href={item.href}
                 className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors duration-150 group"
                 onClick={onClose}
                 role="menuitem"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    onClose();
-                  }
-                }}
               >
                 <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center group-hover:bg-indigo-100 transition-colors">
                   <IconComponent className="w-4 h-4 text-indigo-600" />
@@ -144,14 +144,14 @@ export default function FAQDropdown({ isOpen, onToggle, onClose }: FAQDropdownPr
                   <p className="text-xs text-gray-500 mt-0.5">{item.description}</p>
                 </div>
                 <ChevronDown className="w-4 h-4 text-gray-400 rotate-270 opacity-0 group-hover:opacity-100 transition-all duration-200" />
-              </div>
+              </Link>
             );
           })}
-          
+
           <div className="px-4 py-3 border-t border-gray-100 mt-2">
-            <button className="w-full text-center text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-colors">
+            <Link href="/faq" className="block w-full text-center text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-colors" onClick={onClose}>
               View All FAQ Articles →
-            </button>
+            </Link>
           </div>
         </div>
       )}

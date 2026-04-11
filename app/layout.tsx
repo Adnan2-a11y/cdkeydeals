@@ -42,8 +42,8 @@ export default function RootLayout({
       <body className="font-sans antialiased bg-background text-foreground" suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthProvider>
-            <CartProvider>
-              <WishlistProvider>
+            <WishlistProvider>
+              <CartProvider>
                 <div className="min-h-screen flex flex-col">
                   <Header />
                   <main className="flex-1">
@@ -54,8 +54,8 @@ export default function RootLayout({
                 <CartDrawer />
                 <Toaster position="top-right" richColors />
                 <Analytics />
-              </WishlistProvider>
-            </CartProvider>
+              </CartProvider>
+            </WishlistProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>

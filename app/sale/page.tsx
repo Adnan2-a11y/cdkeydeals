@@ -1,4 +1,3 @@
-import Header from "@/components/Header";
 import ProductCard from "@/components/ProductCard";
 import { Flame, Filter, ChevronDown } from "lucide-react";
 
@@ -89,8 +88,6 @@ const saleProducts = [
 export default function SalePage() {
   return (
     <div className="min-h-screen bg-white">
-      <Header />
-
       <main>
         {/* Page Header */}
         <div className="bg-gradient-to-r from-red-500/10 to-white py-12">

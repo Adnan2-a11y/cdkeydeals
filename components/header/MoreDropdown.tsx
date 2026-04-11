@@ -20,22 +20,25 @@ const menuItems = [
 
 export default function MoreDropdown({ isOpen, onHover, onLeave }: MoreDropdownProps) {
   return (
-    <div 
+    <div
       className="relative"
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
     >
-      {/* Trigger */}
-      <div className="flex items-center gap-1 cursor-pointer group py-2">
-        <Link href="/more" className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+      {/* Trigger - Now Clickable */}
+      <Link
+        href="/about"
+        className="flex items-center gap-1 cursor-pointer group py-2"
+      >
+        <span className="text-[14.5px] font-semibold text-[#1a1a1a] dark:text-gray-200 transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
           More
-        </Link>
+        </span>
         <ChevronDown
-          className={`w-3.5 h-3.5 text-gray-400 dark:text-gray-500 transition-all duration-200 ${
-            isOpen ? "rotate-180 text-indigo-600 dark:text-indigo-400" : "group-hover:text-indigo-600 dark:group-hover:text-indigo-400"
+          className={`w-3.5 h-3.5 text-gray-400 dark:text-gray-500 transition-all duration-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 ${
+            isOpen ? "rotate-180 text-indigo-600 dark:text-indigo-400" : ""
           }`}
         />
-      </div>
+      </Link>
 
       {/* Dropdown */}
       <AnimatePresence>

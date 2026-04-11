@@ -13,7 +13,7 @@ interface BlogDropdownProps {
 
 const menuItems = [
   { name: "AI Updates", href: "/ai-updates" },
-  { name: "Games", href: "/games" }, 
+  { name: "Games", href: "/games" },
   { name: "Software", href: "/software" },
   { name: "Gift Cards", href: "/gift-cards" },
   { name: "Tech News & Updates", href: "/tech-news-updates" }
@@ -31,7 +31,7 @@ export default function BlogDropdown({ isOpen, onHover, onLeave }: BlogDropdownP
   };
 
   return (
-    <div 
+    <div
       className="relative"
       onMouseEnter={() => {
         onHover();
@@ -42,8 +42,9 @@ export default function BlogDropdown({ isOpen, onHover, onLeave }: BlogDropdownP
         setIsDropdownOpen(false);
       }}
     >
-      {/* Blog Menu Item */}
-      <div
+      {/* Blog Menu Item - Now with Link */}
+      <Link
+        href="/blog"
         className="flex items-center gap-1 cursor-pointer group py-2"
         onClick={handleToggle}
       >
@@ -53,7 +54,7 @@ export default function BlogDropdown({ isOpen, onHover, onLeave }: BlogDropdownP
         <ChevronDown className={`w-3.5 h-3.5 text-gray-400 dark:text-gray-500 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-transform duration-200 ${
           isDropdownOpen || isOpen ? "rotate-180" : ""
         }`} />
-      </div>
+      </Link>
 
       {/* Dropdown Menu */}
       <AnimatePresence>

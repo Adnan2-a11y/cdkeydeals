@@ -1,21 +1,13 @@
 "use client";
 
-import Navbar from "@/components/header/Navbar";
 import { useState } from "react";
 
 export default function MegaMenuDemo() {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  const handleDarkModeToggle = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
   return (
     <div className={`min-h-screen ${isDarkMode ? 'dark' : ''}`}>
       <div className="bg-gray-50">
-        {/* Navbar */}
-        <Navbar isDarkMode={isDarkMode} onDarkModeToggle={handleDarkModeToggle} />
-        
         {/* Hero Section */}
         <div className="max-w-7xl mx-auto px-4 py-16">
           <div className="text-center">
@@ -70,10 +62,6 @@ export default function MegaMenuDemo() {
                 <div>
                   <h3 className="font-medium text-gray-900 mb-2">Security Software</h3>
                   <p className="text-sm text-gray-600">Antivirus, Firewall, VPN Services, Password Managers, Encryption Tools</p>
-                </div>
-                <div>
-                  <h3 className="font-medium text-gray-900 mb-2">Utilities & Download Tools</h3>
-                  <p className="text-sm text-gray-600">System Utilities, File Managers, Download Managers, Backup Tools, Recovery Software</p>
                 </div>
               </div>
             </div>

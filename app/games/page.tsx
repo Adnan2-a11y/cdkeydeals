@@ -1,4 +1,3 @@
-import Header from "@/components/Header";
 import ProductCard from "@/components/ProductCard";
 import { Gamepad2, Filter, ChevronDown } from "lucide-react";
 import Link from "next/link";
@@ -104,8 +103,6 @@ const gameProducts = [
 export default function GamesPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-card">
-      <Header />
-
       <main>
         {/* Page Header */}
         <div className="bg-gradient-to-r from-blue-500/10 to-white py-12">
