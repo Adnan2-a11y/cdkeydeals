@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import ShopNowButton from "./ShopNowButton";
 
 // =====================================================
@@ -13,7 +13,7 @@ interface SlideData {
   title: string;
   subtitle: string;
   cta?: string;
-  productSlug: string; // Dynamic product slug for routing
+  productSlug: string;
   badge?: string;
   discount?: string;
   image: string;
@@ -21,7 +21,7 @@ interface SlideData {
 }
 
 // =====================================================
-// SLIDE DATA - CONFIGURED WITH PRODUCT SLUGS
+// SLIDE DATA
 // =====================================================
 
 const slides: SlideData[] = [
@@ -34,7 +34,7 @@ const slides: SlideData[] = [
     productSlug: "counter-strike-2-prime-status-upgrade",
     badge: "Save Up to",
     discount: "25%",
-    image: "/images/Escape from Tarkov – Steam.jpg", // Replaced with actual image
+    image: "/images/Escape from Tarkov – Steam.jpg",
     buttonVariant: "primary",
   },
   {
@@ -54,7 +54,7 @@ const slides: SlideData[] = [
     productSlug: "steam-gift-card-50-usd-global-key",
     badge: "Save Up to",
     discount: "30%",
-    image: "/images/Call Of Duty 2.jpg", // Replaced with actual image
+    image: "/images/Call Of Duty 2.jpg",
     buttonVariant: "primary",
   },
 ];
@@ -97,18 +97,22 @@ function CountdownTimer() {
 
 export default function HeroSlider() {
   const [current, setCurrent] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true); // ✅ NEW
 
   useEffect(() => {
+    if (!isPlaying) return; // ✅ pause support
+
     const t = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length);
     }, 5000);
+
     return () => clearInterval(t);
-  }, []);
+  }, [isPlaying]);
 
   const slide = slides[current];
 
   return (
-    <section className="relative h-[420px] md:h-[500px] overflow-hidden rounded-xl">
+    <section className="relative h-[360px] md:h-[420px] overflow-hidden rounded-xl">
       
       {/* 🔥 Background Image */}
       <div
@@ -160,6 +164,18 @@ export default function HeroSlider() {
           <span className="text-lg sm:text-2xl">{slide.discount}</span>
         </div>
       )}
+
+      {/* ⏯️ Play / Pause Button (NEW) */}
+      <button
+        onClick={() => setIsPlaying(!isPlaying)}
+        className="absolute bottom-3 right-3 bg-white/20 hover:bg-white/40 p-2 rounded-full"
+      >
+        {isPlaying ? (
+          <Pause className="w-5 h-5 text-white" />
+        ) : (
+          <Play className="w-5 h-5 text-white" />
+        )}
+      </button>
 
       {/* ⬅️➡️ Arrows */}
       <button

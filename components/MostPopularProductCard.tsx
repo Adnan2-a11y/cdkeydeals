@@ -16,6 +16,7 @@ interface Props {
   image?: string;
   stockLabel?: string;
   badge?: string;
+  onQuickView?: () => void;
 }
 
 export default function MostPopularProductCard({
@@ -27,6 +28,7 @@ export default function MostPopularProductCard({
   image,
   stockLabel,
   badge,
+  onQuickView,
 }: Props) {
   const [isHovered, setIsHovered] = useState(false);
   const { addToCart, getItemQuantity } = useCart();
@@ -41,7 +43,9 @@ export default function MostPopularProductCard({
   };
 
   const handleQuickView = () => {
-    toast.info(`Quick view: ${title}`);
+    if (onQuickView) {
+      onQuickView();
+    }
   };
 
   return (

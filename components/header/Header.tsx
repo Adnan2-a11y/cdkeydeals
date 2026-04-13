@@ -4,11 +4,9 @@ import { useState, useEffect, useRef } from "react";
 import {
   Menu,
   X,
-  Heart,
   Moon,
   Sun,
   Flame,
-  ChevronDown,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
@@ -17,6 +15,7 @@ import SearchBar from "./SearchBar";
 import AccountDropdown from "./AccountDropdown";
 import CartIcon from "@/components/cart/CartIcon";
 import GiftCardsDropdown from "./GiftCardsDropdown";
+import BestDealsDropdown from "./BestDealsDropdown";
 import BlogDropdown from "./BlogDropdown";
 import GamesDropdown from "./GamesDropdown";
 import SoftwareDropdown from "./SoftwareDropdown";
@@ -30,6 +29,7 @@ function HeaderContent() {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isGiftCardsDropdownOpen, setIsGiftCardsDropdownOpen] = useState(false);
+  const [isBestDealsDropdownOpen, setIsBestDealsDropdownOpen] = useState(false);
   const [isBlogDropdownOpen, setIsBlogDropdownOpen] = useState(false);
   const [isGamesDropdownOpen, setIsGamesDropdownOpen] = useState(false);
   const [isSoftwareDropdownOpen, setIsSoftwareDropdownOpen] = useState(false);
@@ -123,11 +123,6 @@ function HeaderContent() {
 
             {/* Right Side: Action Icons */}
             <div className="flex items-center gap-2">
-              {/* Wishlist */}
-              <button className="p-2 text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200">
-                <Heart className="w-5 h-5" />
-              </button>
-
               {/* Account */}
               <AccountDropdown />
 
@@ -188,6 +183,13 @@ function HeaderContent() {
                 onClose={() => setIsGiftCardsDropdownOpen(false)}
               />
               
+              {/* Best Deals - Clickable with Mega Menu Dropdown */}
+              <BestDealsDropdown
+                isOpen={isBestDealsDropdownOpen}
+                onToggle={() => setIsBestDealsDropdownOpen(!isBestDealsDropdownOpen)}
+                onClose={() => setIsBestDealsDropdownOpen(false)}
+              />
+              
               <Link
                 href="/collections/best-seller"
                 className="flex items-center gap-1 cursor-pointer group py-2"
@@ -224,9 +226,7 @@ function HeaderContent() {
               {/* Currency/Region Selector */}
               <CurrencyDropdown 
                 onSelect={(country) => {
-                  // Handle country/currency selection
                   console.log("Selected country:", country);
-                  // You can add additional logic here like updating global state, cookies, etc.
                 }}
               />
 
@@ -258,7 +258,6 @@ function HeaderContent() {
   );
 }
 
-// Main Header component
 export default function Header() {
   return <HeaderContent />;
 }

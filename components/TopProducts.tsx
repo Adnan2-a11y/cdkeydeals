@@ -1,12 +1,14 @@
 "use client";
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ProductCard from './products/ProductCard';
 import ProductSkeleton from './products/ProductSkeleton';
 import EmptyState from './products/EmptyState';
-import { TopProductsProps } from '@/types/product';
+import QuickViewModal from './QuickViewModal';
+import { TopProductsProps, Product } from '@/types/product';
 
 export default function TopProducts({
   title = "Top Products",
@@ -14,11 +16,29 @@ export default function TopProducts({
   viewAllLink,
   loading = false
 }: TopProductsProps) {
+  // State for Quick View modal
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
+
+  // Handle Quick View button click
+  const handleQuickView = (productId: number) => {
+    const product = products.find((p) => p.id === productId);
+    if (product) {
+      setSelectedProduct(product);
+      setIsQuickViewOpen(true);
+    }
+  };
+
+  // Handle modal close
+  const handleCloseQuickView = () => {
+    setIsQuickViewOpen(false);
+    setTimeout(() => setSelectedProduct(null), 300);
+  };
+
   if (loading) {
     return (
       <section>
         <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          {/* Grid Skeleton - All breakpoints */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 lg:gap-3 overflow-hidden">
             {Array.from({ length: 6 }).map((_, index) => (
               <ProductSkeleton key={index} />
@@ -70,15 +90,26 @@ export default function TopProducts({
           )}
         </div>
 
-        {/* Product Grid - Responsive: 2 cols mobile, 3 cols tablet, 6 cols desktop */}
+        {/* Product Grid */}
         <div className="mb-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
           {displayProducts.map((product) => (
             <ProductCard
               key={product.id}
               {...product}
+              onQuickView={handleQuickView}
             />
           ))}
         </div>
+
+        {/* Quick View Modal */}
+        <QuickViewModal
+          product={selectedProduct}
+          isOpen={isQuickViewOpen}
+          onClose={handleCloseQuickView}
+          relatedProducts={products
+            .filter((p) => p.id !== selectedProduct?.id && p.category === selectedProduct?.category)
+            .slice(0, 5)}
+        />
       </div>
     </section>
   );

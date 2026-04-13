@@ -7,10 +7,11 @@ export default function Logo() {
       <Image
         src="/images/CDkeyDeals.com.png"
         alt="CDKeyDeals Logo"
-        width={120}
-        height={40}
-        className="h-10 w-auto object-contain"
+        width={90}
+        height={30}
+        className="h-8 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
         priority
+        quality={90}
       />
     </Link>
   );

@@ -1,6 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import MostPopularProductCard from "./MostPopularProductCard";
+import QuickViewModal from "./QuickViewModal";
+import { Product } from "@/types/product";
 
 // Product type for the component
 interface MostPopularProduct {
@@ -83,7 +86,33 @@ const mostPopularProducts = [
 export default function MostPopular({ title = "Most Popular", products: externalProducts, viewAllLink }: MostPopularProps) {
   // Use external products if provided, otherwise use default products
   const products = externalProducts || mostPopularProducts;
-  
+
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
+
+  const handleQuickView = (productId: number) => {
+    const product = products.find((p) => p.id === productId);
+    if (product) {
+      setSelectedProduct({
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        currency: product.currency,
+        image: product.image,
+        category: product.category,
+        stockLabel: product.stockLabel,
+        badge: product.badge,
+        originalPrice: product.originalPrice,
+      });
+      setIsQuickViewOpen(true);
+    }
+  };
+
+  const handleCloseQuickView = () => {
+    setIsQuickViewOpen(false);
+    setTimeout(() => setSelectedProduct(null), 300);
+  };
+
   return (
     <section className="py-12 bg-background">
       <div className="max-w-[1320px] mx-auto px-4">
@@ -97,9 +126,20 @@ export default function MostPopular({ title = "Most Popular", products: external
         {/* Clean Grid Setup */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-6 gap-y-10">
           {products.map((product) => (
-            <MostPopularProductCard key={product.id} {...product} />
+            <MostPopularProductCard
+              key={product.id}
+              {...product}
+              onQuickView={() => handleQuickView(product.id)}
+            />
           ))}
         </div>
+
+        {/* Quick View Modal */}
+        <QuickViewModal
+          product={selectedProduct}
+          isOpen={isQuickViewOpen}
+          onClose={handleCloseQuickView}
+        />
       </div>
     </section>
   );

@@ -217,20 +217,6 @@ export default function BestOffersSection() {
             </Link>
           </div>
         </div>
-
-        {/* Separator or Sub-heading (Optional) */}
-        <div className="flex items-center justify-between mt-12 mb-8">
-           <h3 className="text-xl font-bold flex items-center gap-2">
-             <span className="w-2 h-8 bg-[#00d4aa] rounded-full"></span>
-             Top Selling Products
-           </h3>
-           <Link href="/deals" className="text-[#00d4aa] font-semibold hover:underline flex items-center gap-1">
-             View All <ChevronRight className="w-4 h-4" />
-           </Link>
-        </div>
-
-        {/* Existing Product Cards Grid remains below */}
-        {/* ... (আপনার আগের প্রোডাক্ট গ্রিড কোড এখানে বসবে) */}
       </div>
     </section>
   );

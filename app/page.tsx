@@ -9,7 +9,9 @@ import BrandCarousel from "@/components/BrandCarousel";
 import BestOffersSection from "@/components/BestOffersSection";
 import PromoCarouselSection from "@/components/home/PromoCarouselSection";
 import MostPopular from "@/components/MostPopular";
+import TrendingNowSection from "@/components/TrendingNowSection";
 import ServicesSection from "@/components/ServicesSection";
+import SupportFaqSection from "@/components/SupportFaqSection";
 import Newsletter from "@/components/Newsletter";
 import { getProducts } from "@/lib/wordpress";
 
@@ -153,8 +155,17 @@ export default async function Home() {
           {/* Most Popular Section */}
           <MostPopular />
 
+          {/* Trending Now Section */}
+          <TrendingNowSection
+            title="Trending Now"
+            viewAllLink="/collections/trending"
+          />
+
           {/* Services Section */}
           <ServicesSection />
+
+          {/* Support & FAQ Section */}
+          <SupportFaqSection />
 
           {/* Newsletter */}
           <Newsletter />

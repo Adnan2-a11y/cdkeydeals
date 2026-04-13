@@ -7,9 +7,15 @@ import {
   Shield, 
   Download, 
   ChevronRight,
-  X
+  X,
+  Flame,
+  ShoppingBag,
+  Tag,
+  Clock,
+  User
 } from "lucide-react";
 import MegaMenuWrapper from "./MegaMenuWrapper";
+import Link from "next/link";
 
 interface MobileMegaMenuProps {
   isOpen: boolean;
@@ -21,6 +27,13 @@ interface Category {
   title: string;
   icon: React.ComponentType<{ className?: string }>;
   submenu: string[];
+}
+
+interface BestDealsCategory {
+  id: string;
+  title: string;
+  icon: React.ComponentType<{ className?: string }>;
+  items: { name: string; href: string }[];
 }
 
 const softwareCategories: Category[] = [
@@ -50,8 +63,48 @@ const softwareCategories: Category[] = [
   }
 ];
 
+const bestDealsCategories: BestDealsCategory[] = [
+  {
+    id: "shop-offer",
+    title: "Shop Offer",
+    icon: ShoppingBag,
+    items: [
+      { name: "Steam Keys", href: "/collections/games" },
+      { name: "Epic Games", href: "/collections/games" },
+      { name: "PlayStation (PSN)", href: "/collections/games" },
+      { name: "Xbox", href: "/collections/games" },
+      { name: "Nintendo Switch", href: "/collections/games" },
+      { name: "EA App", href: "/collections/games" },
+      { name: "Ubisoft Connect", href: "/collections/games" },
+      { name: "Battle.net", href: "/collections/games" },
+    ]
+  },
+  {
+    id: "best-deal",
+    title: "Best Deal",
+    icon: Tag,
+    items: [
+      { name: "Under 10 Dollar", href: "/best-deals" },
+      { name: "Best Discounts", href: "/best-deals" },
+      { name: "Clearance Sale", href: "/sale" },
+      { name: "Profile", href: "/account/profile" },
+    ]
+  },
+  {
+    id: "new-arrivals",
+    title: "New Arrivals",
+    icon: Clock,
+    items: [
+      { name: "New Releases", href: "/collections/games" },
+      { name: "Today's Deals", href: "/best-deals" },
+      { name: "Weekly Offers", href: "/best-deals" },
+    ]
+  }
+];
+
 export default function MobileMegaMenu({ isOpen, onClose }: MobileMegaMenuProps) {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [activeMenu, setActiveMenu] = useState<'software' | 'best-deals'>('software');
 
   const handleCategoryHover = (categoryId: string) => {
     setActiveCategory(categoryId);
@@ -59,7 +112,15 @@ export default function MobileMegaMenu({ isOpen, onClose }: MobileMegaMenuProps)
 
   const getActiveCategoryData = () => {
     if (!activeCategory) return null;
-    return softwareCategories.find(cat => cat.id === activeCategory) || null;
+    if (activeMenu === 'software') {
+      return softwareCategories.find(cat => cat.id === activeCategory) || null;
+    } else {
+      return bestDealsCategories.find(cat => cat.id === activeCategory) || null;
+    }
+  };
+
+  const isBestDealsCategory = (categoryId: string) => {
+    return bestDealsCategories.some(cat => cat.id === categoryId);
   };
 
   return (
@@ -81,12 +142,79 @@ export default function MobileMegaMenu({ isOpen, onClose }: MobileMegaMenuProps)
           {/* Left Side - Category Titles */}
           <div className="w-1/3 border-r border-gray-200 dark:border-gray-700 overflow-y-auto">
             <div className="p-2 space-y-1">
-              {softwareCategories.map((category) => (
+              {/* Best Deals Section Header */}
+              <Link
+                href="/best-deals"
+                onClick={onClose}
+                className={`w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg transition-all duration-200 ${
+                  activeMenu === 'best-deals'
+                    ? 'bg-orange-50 dark:bg-orange-900/20 text-orange-600'
+                    : 'hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300'
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <Flame className={`w-4 h-4 flex-shrink-0 transition-colors duration-200 ${
+                    activeMenu === 'best-deals' ? 'text-orange-600' : 'text-gray-500'
+                  }`} />
+                  <span className={`font-medium text-sm text-left transition-colors duration-200 ${
+                    activeMenu === 'best-deals' ? 'text-orange-600' : 'text-gray-700 dark:text-gray-300'
+                  }`}>
+                    Best Deals
+                  </span>
+                </div>
+                <ChevronRight className="w-3.5 h-3.5 flex-shrink-0" />
+              </Link>
+
+              {/* Best Deals Subcategories */}
+              {activeMenu === 'best-deals' && bestDealsCategories.map((category) => (
                 <button
                   key={category.id}
-                  onMouseEnter={() => handleCategoryHover(category.id)}
                   onClick={() => handleCategoryHover(category.id)}
-                  className={`w-full flex items-center gap-2 px-3 py-2.5 rounded-lg transition-all duration-200 ${
+                  className={`w-full flex items-center gap-2 px-3 py-2.5 pl-9 rounded-lg transition-all duration-200 ${
+                    activeCategory === category.id
+                      ? 'bg-orange-50 dark:bg-orange-900/20 text-orange-600'
+                      : 'hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300'
+                  }`}
+                >
+                  <category.icon className={`w-4 h-4 flex-shrink-0 transition-colors duration-200 ${
+                    activeCategory === category.id ? 'text-orange-600' : 'text-gray-500'
+                  }`} />
+                  <span className={`font-medium text-sm text-left transition-colors duration-200 ${
+                    activeCategory === category.id ? 'text-orange-600' : 'text-gray-700 dark:text-gray-300'
+                  }`}>
+                    {category.title}
+                  </span>
+                </button>
+              ))}
+
+              {/* Software Section Header */}
+              <button
+                onClick={() => {
+                  setActiveMenu('software');
+                  setActiveCategory('microsoft');
+                }}
+                className={`w-full flex items-center gap-2 px-3 py-2.5 rounded-lg transition-all duration-200 mt-2 ${
+                  activeMenu === 'software'
+                    ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600'
+                    : 'hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300'
+                }`}
+              >
+                <Monitor className={`w-4 h-4 flex-shrink-0 transition-colors duration-200 ${
+                  activeMenu === 'software' ? 'text-blue-600' : 'text-gray-500'
+                }`} />
+                <span className={`font-medium text-sm text-left transition-colors duration-200 ${
+                  activeMenu === 'software' ? 'text-blue-600' : 'text-gray-700 dark:text-gray-300'
+                }`}>
+                  Software
+                </span>
+              </button>
+
+              {/* Software Subcategories */}
+              {activeMenu === 'software' && softwareCategories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => handleCategoryHover(category.id)}
+                  className={`w-full flex items-center gap-2 px-3 py-2.5 pl-9 rounded-lg transition-all duration-200 ${
                     activeCategory === category.id
                       ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600'
                       : 'hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300'
@@ -110,16 +238,29 @@ export default function MobileMegaMenu({ isOpen, onClose }: MobileMegaMenuProps)
             {activeCategory ? (
               <div className="p-4">
                 <div className="space-y-1">
-                  {getActiveCategoryData()?.submenu.map((submenuItem) => (
-                    <a
-                      key={submenuItem}
-                      href="#"
-                      className="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
-                      onClick={onClose}
-                    >
-                      {submenuItem}
-                    </a>
-                  ))}
+                  {isBestDealsCategory(activeCategory) ? (
+                    (getActiveCategoryData() as BestDealsCategory)?.items.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
+                        onClick={onClose}
+                      >
+                        {item.name}
+                      </Link>
+                    ))
+                  ) : (
+                    (getActiveCategoryData() as Category)?.submenu.map((submenuItem) => (
+                      <a
+                        key={submenuItem}
+                        href="#"
+                        className="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
+                        onClick={onClose}
+                      >
+                        {submenuItem}
+                      </a>
+                    ))
+                  )}
                 </div>
               </div>
             ) : (

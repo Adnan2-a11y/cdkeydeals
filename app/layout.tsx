@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import Script from 'next/script'
 import './globals.css'
 import Header from '@/components/header/Header'
 import Footer from '@/components/Footer'
@@ -11,7 +12,6 @@ import { CurrencyProvider } from '@/context/CurrencyContext'
 import CartDrawer from '@/components/cart/CartDrawer'
 import { Toaster } from 'sonner'
 import { ThemeProvider } from '@/components/theme-provider'
-import { themeInitScript } from '@/lib/theme-init'
 
 const inter = Inter({
   subsets: ["latin"],
@@ -41,10 +41,29 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-      </head>
       <body className="font-sans antialiased bg-background text-foreground" suppressHydrationWarning>
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('cdkeydeals-theme') || 'system';
+                  var resolvedTheme = theme;
+                  if (theme === 'system') {
+                    resolvedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                  }
+                  if (resolvedTheme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthProvider>
             <CurrencyProvider>

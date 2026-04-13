@@ -3,8 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Copy, Check, ChevronLeft, ChevronRight, ShoppingCart, Eye } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Copy, Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -16,7 +15,6 @@ import {
 import { useCart } from "@/context/CartContext";
 import { toast } from "sonner";
 
-// Types
 interface PromoProduct {
   id: number;
   slug?: string;
@@ -26,406 +24,183 @@ interface PromoProduct {
   currency: string;
   badge?: string;
   image?: string;
-  stock: number;
   stockLabel?: string;
+  isHot?: boolean;
 }
 
-interface PromoCarouselSectionProps {
-  products?: PromoProduct[];
-}
-
-// Sample default products
 const defaultProducts: PromoProduct[] = [
   {
     id: 1,
     slug: "office-2024-pro-plus",
-    title: "Microsoft Office 2024 Pro Plus - Lifetime License",
+    title: "Office 2024 Pro Plus License Key Spring Promo Deal",
     price: 1700,
-    originalPrice: 4500,
     currency: "BDT",
     badge: "Best Seller",
-    image: "/placeholder.jpg",
-    stock: 50,
+    image: "/images/office-logo.png", // আপনার ইমেজের পাথ দিন
     stockLabel: "In Stock",
   },
   {
     id: 2,
     slug: "windows-11-pro",
-    title: "Microsoft Windows 11 Pro - Genuine License Key",
+    title: "Microsoft Windows 11 Professional",
     price: 1900,
-    originalPrice: 5200,
     currency: "BDT",
     badge: "Hot Sale",
-    image: "/placeholder.jpg",
-    stock: 35,
+    image: "/images/windows-logo.png",
     stockLabel: "In Stock",
   },
   {
     id: 3,
     slug: "office-windows-combo",
-    title: "Office 2024 + Windows 11 Pro Combo Pack",
+    title: "MS Office 2024 Pro Plus & Windows 11 Pro Combo",
     price: 5100,
-    originalPrice: 9700,
-    currency: "BDT",
-    badge: "Best Value",
-    image: "/placeholder.jpg",
-    stock: 20,
-    stockLabel: "In Stock",
-  },
-  {
-    id: 4,
-    slug: "windows-10-pro",
-    title: "Microsoft Windows 10 Pro - Genuine License",
-    price: 1500,
-    originalPrice: 4800,
     currency: "BDT",
     badge: "Hot Sale",
-    image: "/placeholder.jpg",
-    stock: 45,
-    stockLabel: "In Stock",
-  },
-  {
-    id: 5,
-    slug: "office-2021-pro",
-    title: "Microsoft Office 2021 Professional Plus",
-    price: 1400,
-    originalPrice: 3800,
-    currency: "BDT",
-    badge: "Best Seller",
-    image: "/placeholder.jpg",
-    stock: 30,
-    stockLabel: "In Stock",
-  },
-  {
-    id: 6,
-    slug: "windows-server-2022",
-    title: "Windows Server 2022 Standard - License Key",
-    price: 8500,
-    originalPrice: 15000,
-    currency: "BDT",
-    badge: "Limited",
-    image: "/placeholder.jpg",
-    stock: 8,
-    stockLabel: "Low Stock",
+    image: "/images/combo-logo.png",
+    stockLabel: "1 Last Items",
   },
 ];
 
 const COUPON_CODE = "MEGA26";
 
-// Product Card Component
 function PromoProductCard({ product }: { product: PromoProduct }) {
-  const [imageError, setImageError] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const { addToCart, getItemQuantity } = useCart();
-  
-  const currencySymbol = product.currency === "BDT" ? "৳" : "$";
-  const itemQuantity = getItemQuantity(product.id);
-  const isOutOfStock = product.stock === 0;
-  const isLowStock = product.stock <= 10 && product.stock > 0;
-  
-  const discount = product.originalPrice
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
-    : 0;
-
-  const handleAddToCart = () => {
-    if (!isOutOfStock) {
-      addToCart({
-        id: product.id,
-        title: product.title,
-        price: product.price,
-        originalPrice: product.originalPrice,
-        currency: product.currency,
-        badge: product.badge,
-        image: product.image,
-      });
-      toast.success(`${product.title} added to cart!`);
-    }
-  };
-
-  const productUrl = product.slug ? `/product/${product.slug}` : `/product/${product.id}`;
+  const currencySymbol = product.currency === "BDT" ? "Tk" : "$";
+  const isLimited = product.stockLabel?.includes("Last Items");
 
   return (
-    <Card
-      className="group relative bg-white dark:bg-muted rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_8px_30px_rgba(255,255,255,0.08)] hover:-translate-y-1.5 transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] h-full flex flex-col"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <Card className="bg-white rounded-2xl overflow-hidden border-none shadow-sm h-full flex flex-col p-4">
       {/* Badge */}
-      {product.badge && (
-        <div className="absolute top-3 left-3 z-20">
-          <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold px-2.5 py-1 shadow-md">
-            {product.badge}
-          </Badge>
-        </div>
-      )}
+      <div className="mb-2">
+        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-tight">
+          {product.badge}
+        </span>
+      </div>
 
-      {/* Quick View Button */}
-      <button
-        className={`absolute top-3 right-3 z-20 w-8 h-8 bg-white/90 dark:bg-gray-800/90 hover:bg-gray-900 hover:text-white text-gray-700 dark:text-gray-300 rounded-full flex items-center justify-center transition-all duration-300 shadow-md backdrop-blur-sm ${
-          isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
-        }`}
-        aria-label="Quick view"
-      >
-        <Eye className="w-3.5 h-3.5" />
-      </button>
+      {/* Product Title */}
+      <h3 className="text-[15px] font-bold text-gray-900 leading-tight mb-4 min-h-[40px]">
+        {product.title}
+      </h3>
 
       {/* Product Image */}
-      <Link href={productUrl} className="block">
-        <div className="relative h-40 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center p-4 overflow-hidden">
-          {product.image && !imageError ? (
-            <Image
-              src={product.image}
-              alt={product.title}
-              width={160}
-              height={120}
-              className="object-contain w-full h-full group-hover:scale-105 transition-transform duration-500"
-              onError={() => setImageError(true)}
-              loading="lazy"
-            />
-          ) : (
-            <div className="w-24 h-24 bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg flex items-center justify-center">
-              <span className="text-gray-400 text-xs">No Image</span>
-            </div>
-          )}
-        </div>
-      </Link>
+      <div className="relative aspect-square mb-4 flex items-center justify-center">
+        {product.image ? (
+          <Image
+            src={product.image}
+            alt={product.title}
+            width={180}
+            height={180}
+            className="object-contain"
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-100 rounded-lg flex items-center justify-center" />
+        )}
+      </div>
 
-      {/* Content */}
-      <div className="flex-1 p-4 flex flex-col justify-between">
-        <div>
-          {/* Title */}
-          <Link href={productUrl}>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 line-clamp-2 min-h-[2.5rem] hover:text-blue-600 dark:hover:text-blue-400 transition-colors leading-snug">
-              {product.title}
-            </h3>
-          </Link>
-
-          {/* Price */}
-          <div className="mt-2 flex items-center gap-2">
-            <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
-              {currencySymbol}{product.price.toLocaleString()}
-            </span>
-            {product.originalPrice && (
-              <>
-                <span className="text-sm text-gray-400 line-through">
-                  {currencySymbol}{product.originalPrice.toLocaleString()}
-                </span>
-                {discount > 0 && (
-                  <span className="text-xs text-red-500 font-semibold bg-red-50 dark:bg-red-900/20 px-1.5 py-0.5 rounded">
-                    -{discount}%
-                  </span>
-                )}
-              </>
-            )}
-          </div>
-
-          {/* Stock Status */}
-          <div className="mt-2 flex items-center gap-1.5">
-            <div
-              className={`w-2 h-2 rounded-full ${
-                isOutOfStock
-                  ? "bg-red-500"
-                  : isLowStock
-                  ? "bg-orange-500"
-                  : "bg-green-500"
-              }`}
-            />
-            <span
-              className={`text-xs font-medium ${
-                isOutOfStock
-                  ? "text-red-600"
-                  : isLowStock
-                  ? "text-orange-600"
-                  : "text-green-600"
-              }`}
-            >
-              {product.stockLabel || (isOutOfStock ? "Out of Stock" : isLowStock ? "Low Stock" : "In Stock")}
+      {/* Pricing & Stock */}
+      <div className="mt-auto">
+        <div className="flex flex-col gap-0.5">
+          <span className="text-base font-bold text-gray-900">
+            {currencySymbol} {product.price.toLocaleString()}.00 {product.currency}
+          </span>
+          <div className="flex items-center gap-1.5 mt-1">
+            <div className={`w-1.5 h-1.5 rounded-full ${isLimited ? "bg-red-500" : "bg-green-500"}`} />
+            <span className={`text-[11px] font-semibold ${isLimited ? "text-red-500" : "text-green-600"}`}>
+              {product.stockLabel}
             </span>
           </div>
-        </div>
-
-        {/* Action Buttons - Revealed on hover */}
-        <div className={`mt-3 space-y-1.5 transition-all duration-300 ${
-          isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
-        }`}>
-          <Button
-            variant={isOutOfStock ? "secondary" : "default"}
-            size="sm"
-            className="w-full bg-gray-900 hover:bg-gray-800 text-white shadow-md text-xs py-1.5 px-3 h-8"
-            disabled={isOutOfStock}
-            onClick={handleAddToCart}
-          >
-            <ShoppingCart className="w-3.5 h-3.5 mr-1" />
-            {isOutOfStock
-              ? "Out of Stock"
-              : itemQuantity > 0
-              ? `In Cart (${itemQuantity})`
-              : "Add to Cart"}
-          </Button>
-
-          <Button
-            variant="outline"
-            size="sm"
-            className="w-full border-gray-300 dark:border-gray-600 hover:border-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 text-xs py-1.5 px-3 h-8"
-          >
-            <Eye className="w-3.5 h-3.5 mr-1" />
-            Quick View
-          </Button>
         </div>
       </div>
     </Card>
   );
 }
 
-// Main Component
-export default function PromoCarouselSection({
-  products = defaultProducts,
-}: PromoCarouselSectionProps) {
+export default function PromoCarouselSection({ products = defaultProducts }) {
   const [copied, setCopied] = useState(false);
   const [api, setApi] = useState<CarouselApi>();
-  const [canScrollPrev, setCanScrollPrev] = useState(false);
-  const [canScrollNext, setCanScrollNext] = useState(true);
 
-  const handleCopyCoupon = useCallback(() => {
+  const handleCopy = () => {
     navigator.clipboard.writeText(COUPON_CODE);
     setCopied(true);
-    toast.success("Coupon code copied to clipboard!");
+    toast.success("Code Copied!");
     setTimeout(() => setCopied(false), 2000);
-  }, []);
-
-  const scrollPrev = useCallback(() => {
-    api?.scrollPrev();
-  }, [api]);
-
-  const scrollNext = useCallback(() => {
-    api?.scrollNext();
-  }, [api]);
-
-  useEffect(() => {
-    if (!api) return;
-
-    const onSelect = () => {
-      setCanScrollPrev(api.canScrollPrev());
-      setCanScrollNext(api.canScrollNext());
-    };
-
-    onSelect();
-    api.on("select", onSelect);
-    api.on("reInit", onSelect);
-
-    return () => {
-      api.off("select", onSelect);
-      api.off("reInit", onSelect);
-    };
-  }, [api]);
+  };
 
   return (
-    <section className="py-12 bg-gray-50/50 dark:bg-[#1E1E1E]">
-      <div>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-          {/* Left Side - Promo Banner */}
-          <div className="lg:col-span-4">
-            <div className="relative min-h-[400px] lg:min-h-full rounded-2xl overflow-hidden bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-500 p-6 flex flex-col justify-between">
-              {/* Circular Discount Badge */}
-              <div className="absolute top-4 left-4 w-20 h-20 bg-white rounded-full flex flex-col items-center justify-center shadow-lg">
-                <span className="text-xs text-gray-600 font-medium">Save Up to</span>
-                <span className="text-2xl font-bold text-purple-600">26%</span>
-              </div>
+    <section className="w-full max-w-7xl mx-auto px-4 py-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 rounded-[24px] overflow-hidden bg-gradient-to-r from-[#9333ea] via-[#6366f1] to-[#0ea5e9]">
+        
+        {/* Left Side: Promo Content */}
+        <div className="lg:col-span-4 p-8 sm:p-12 flex flex-col justify-center relative">
+          {/* Discount Sticker */}
+          <div className="absolute top-8 left-8 w-24 h-24 bg-[#facc15] rounded-full flex flex-col items-center justify-center shadow-lg border-4 border-white/20 transform -rotate-12">
+            <span className="text-[11px] font-bold text-gray-800 leading-none">Save Up to</span>
+            <div className="flex items-start">
+              <span className="text-3xl font-black text-gray-900">26</span>
+              <span className="text-sm font-bold mt-1">%</span>
+            </div>
+          </div>
 
-              {/* Content */}
-              <div className="mt-24">
-                {/* Mega Sale Badge */}
-                <Badge className="bg-red-500 hover:bg-red-600 text-white text-xs font-bold px-3 py-1 mb-4">
-                  Mega Sale
-                </Badge>
+          <div className="mt-20">
+            <Badge className="bg-[#ef4444] text-white border-none rounded-md px-2 py-0.5 text-[10px] font-bold mb-4">
+              Mega Sale
+            </Badge>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white leading-[1.1] mb-4">
+              Your Favorite Keys Now at Lower Prices
+            </h2>
+            <p className="text-white/90 text-sm mb-8 max-w-[300px]">
+              Save up to 26% on Windows, Office, and game keys — just use code 
+              <span className="font-bold"> {COUPON_CODE} </span> at checkout.
+            </p>
 
-                {/* Heading */}
-                <h2 className="text-2xl sm:text-3xl font-bold text-white leading-tight mb-3">
-                  Your Favorite Keys Now at Lower Prices
-                </h2>
-
-                {/* Subtext */}
-                <p className="text-white/90 text-sm leading-relaxed">
-                  Save up to 26% on Windows, Office, and game keys — just use code{" "}
-                  <span className="font-bold text-yellow-300">{COUPON_CODE}</span> at checkout.
-                </p>
-              </div>
-
-              {/* CTA Section */}
-              <div className="mt-6 space-y-3">
-                {/* Coupon Code Button */}
-                <button
-                  onClick={handleCopyCoupon}
-                  className="w-full flex items-center justify-center gap-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 rounded-lg py-3 px-4 transition-all duration-200 group"
-                  aria-label="Copy coupon code"
+            <div className="flex flex-wrap gap-3">
+              <div className="flex items-center bg-white rounded-lg p-1 w-full max-w-[240px]">
+                <div className="flex-1 px-4 font-mono font-bold text-gray-700 tracking-widest uppercase">
+                  {COUPON_CODE}
+                </div>
+                <button 
+                  onClick={handleCopy}
+                  className="p-2 hover:bg-gray-100 rounded-md transition-colors"
                 >
-                  <span className="text-white font-mono font-bold tracking-wider">
-                    {COUPON_CODE}
-                  </span>
-                  {copied ? (
-                    <Check className="w-4 h-4 text-green-300" />
-                  ) : (
-                    <Copy className="w-4 h-4 text-white/80 group-hover:text-white transition-colors" />
-                  )}
+                  {copied ? <Check className="w-4 h-4 text-green-600" /> : <Copy className="w-4 h-4 text-gray-400" />}
                 </button>
-
-                {/* Shop Now Button */}
-                <Link href="/sale" className="block">
-                  <Button className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-3 h-auto text-sm shadow-lg hover:shadow-xl transition-all duration-200">
-                    Shop Now
-                  </Button>
-                </Link>
               </div>
+              <Link
+                href="/collections"
+                className="bg-[#facc15] hover:bg-[#eab308] text-gray-900 font-bold px-8 rounded-lg h-[46px] inline-flex items-center justify-center transition-colors"
+              >
+                Shop Now
+              </Link>
             </div>
           </div>
+        </div>
 
-          {/* Right Side - Product Carousel */}
-          <div className="lg:col-span-8">
-            <div className="relative">
-              {/* Carousel */}
-              <Carousel
-                setApi={setApi}
-                opts={{
-                  align: "start",
-                  loop: false,
-                  slidesToScroll: 1,
-                }}
-                className="w-full"
+        {/* Right Side: Carousel */}
+        <div className="lg:col-span-8 p-8 flex items-center relative">
+          <Carousel setApi={setApi} className="w-full" opts={{ align: "start" }}>
+            <CarouselContent className="-ml-4">
+              {products.map((product) => (
+                <CarouselItem key={product.id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
+                  <PromoProductCard product={product} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            
+            {/* Custom Navigation */}
+            <div className="flex justify-between absolute top-1/2 -left-4 -right-4 -translate-y-1/2 pointer-events-none">
+              <button 
+                onClick={() => api?.scrollPrev()}
+                className="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center shadow-md pointer-events-auto hover:bg-white"
               >
-                <CarouselContent className="-ml-4 !overflow-visible pb-4">
-                  {products.map((product) => (
-                    <CarouselItem
-                      key={product.id}
-                      className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
-                    >
-                      <div className="py-2">
-                        <PromoProductCard product={product} />
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-              </Carousel>
-
-              {/* Navigation Arrows */}
-              <button
-                onClick={scrollPrev}
-                disabled={!canScrollPrev}
-                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-10 w-10 h-10 bg-white rounded-full shadow-lg border border-gray-200 flex items-center justify-center hover:bg-gray-50 hover:shadow-xl transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-lg"
-                aria-label="Previous slide"
-              >
-                <ChevronLeft className="w-5 h-5 text-gray-700" />
+                <ChevronLeft className="w-5 h-5 text-purple-600" />
               </button>
-
-              <button
-                onClick={scrollNext}
-                disabled={!canScrollNext}
-                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-10 w-10 h-10 bg-white rounded-full shadow-lg border border-gray-200 flex items-center justify-center hover:bg-gray-50 hover:shadow-xl transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-lg"
-                aria-label="Next slide"
+              <button 
+                onClick={() => api?.scrollNext()}
+                className="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center shadow-md pointer-events-auto hover:bg-white"
               >
-                <ChevronRight className="w-5 h-5 text-gray-700" />
+                <ChevronRight className="w-5 h-5 text-purple-600" />
               </button>
             </div>
-          </div>
+          </Carousel>
         </div>
       </div>
     </section>

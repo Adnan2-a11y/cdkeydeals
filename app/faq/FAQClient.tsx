@@ -321,7 +321,7 @@ export default function FAQClient() {
                 Explore our wide selection of digital products
               </p>
               <Link
-                href="/"
+                href="/collections"
                 className="inline-flex items-center text-[#00d4aa] hover:text-[#00b894] font-medium text-sm"
               >
                 Shop Now →
