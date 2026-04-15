@@ -4,13 +4,7 @@ import Link from "next/link";
 import { ChevronRight, ChevronLeft, Gamepad2 } from "lucide-react";
 import { useRef } from "react";
 
-interface Product {
-  id: number;
-  title: string;
-  price?: number; // Optional kore deya hoyeche karon amra eta dekhabo na
-  badge?: string;
-  discount?: number;
-}
+import { Product } from '@/types/product';
 
 interface NewProductsSectionProps {
   products: Product[];
@@ -67,7 +61,7 @@ export default function NewProductsSection({
           {products.map((product) => (
             <Link
               key={product.id}
-              href={`/product/${product.id}`}
+              href={`/product/${product.slug || product.id.toString()}`}
               // Width komiye 140px kora hoyeche jate 7-8 ta card show kore
               className="shrink-0 w-[140px] sm:w-[150px] snap-start group"
             >

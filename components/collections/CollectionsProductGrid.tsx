@@ -133,7 +133,7 @@ export default function CollectionsProductGrid({
 
                   {/* Title */}
                   <h3 className="text-base font-bold text-gray-900 mb-2 hover:text-blue-600 transition-colors line-clamp-1">
-                    <a href={`/product/${product.id}`}>
+                    <a href={`/product/${product.slug || product.id.toString()}`}>
                       {product.title}
                     </a>
                   </h3>

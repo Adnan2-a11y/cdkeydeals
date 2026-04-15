@@ -7,21 +7,7 @@ import { ShoppingCart, Eye, Star, Package } from "lucide-react";
 import PriceDisplay from "@/components/ui/PriceDisplay";
 import { useCurrency } from "@/context/CurrencyContext";
 
-export interface Product {
-  id: number;
-  title: string;
-  price: number;
-  originalPrice?: number;
-  currency?: string;
-  category: string;
-  badge?: string;
-  badgeColor?: string;
-  stock: number;
-  stockLabel: string;
-  image: string;
-  rating?: number;
-  soldCount?: number;
-}
+import { Product } from '@/types/product';
 
 interface ProductCardProps {
   product: Product;
@@ -106,7 +92,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       </button>
 
       {/* Product Image */}
-      <Link href={`/product/${product.id}`} className="block">
+      <Link href={`/product/${product.slug || product.id.toString()}`} className="block">
         <div className="relative aspect-[3/3] bg-gradient-to-br from-muted/30 to-muted/50 dark:from-gray-700 dark:to-gray-600 overflow-hidden">
           {/* Image or Placeholder */}
           {!imageError && product.image ? (
@@ -152,7 +138,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Title */}
-        <Link href={`/product/${product.id}`}>
+        <Link href={`/product/${product.slug || product.id.toString()}`}>
           <h3 className="font-semibold text-foreground text-sm mb-2 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200 min-h-[40px]">
             {product.title}
           </h3>
@@ -192,10 +178,10 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Stock Status */}
         <div className="flex items-center gap-2 mb-4">
           <div className={`w-2 h-2 rounded-full ${
-            product.stock > 10 ? 'bg-green-500' : product.stock > 0 ? 'bg-yellow-500' : 'bg-red-500'
+            (product.stock || 0) > 10 ? 'bg-green-500' : (product.stock || 0) > 0 ? 'bg-yellow-500' : 'bg-red-500'
           }`} />
           <span className={`text-xs font-medium ${
-            product.stock > 10 ? 'text-green-700' : product.stock > 0 ? 'text-yellow-700' : 'text-red-700'
+            (product.stock || 0) > 10 ? 'text-green-700' : (product.stock || 0) > 0 ? 'text-yellow-700' : 'text-red-700'
           }`}>
             {product.stockLabel}
           </span>

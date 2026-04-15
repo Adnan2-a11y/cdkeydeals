@@ -23,6 +23,7 @@ const badgeColors: Record<BadgeColor, string> = {
 
 export default function ProductCard({
   id,
+  slug,
   title,
   price,
   originalPrice,
@@ -40,6 +41,9 @@ export default function ProductCard({
   const [imageError, setImageError] = useState(false);
   const { addToCart, getItemQuantity } = useCart();
   const { formatPriceWithOriginal } = useCurrency();
+
+  // Use slug if available, fallback to id for backward compatibility
+  const productIdentifier = slug || id.toString();
 
   const isLowStock = stock !== undefined && stock <= 5 && stock > 0;
   const isOutOfStock = stock === 0;
@@ -114,7 +118,7 @@ export default function ProductCard({
 
       {/* Product Image Container */}
       <div className="relative h-36 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4 overflow-hidden">
-        <Link href={`/product/${id}`} className="block w-full h-full">
+        <Link href={`/product/${productIdentifier}`} className="block w-full h-full">
           {image && !imageError ? (
             <img
               src={image}
@@ -161,7 +165,7 @@ export default function ProductCard({
           )}
 
           {/* Title */}
-          <Link href={`/product/${id}`}>
+          <Link href={`/product/${productIdentifier}`}>
             <h3 className="text-xs font-bold text-foreground line-clamp-2 min-h-[2rem] hover:text-blue-600 dark:hover:text-blue-400 transition-colors leading-tight">
               {title}
             </h3>

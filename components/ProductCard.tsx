@@ -8,6 +8,7 @@ import { useCurrency } from "@/context/CurrencyContext";
 
 interface ProductCardProps {
   id: number;
+  slug?: string;
   title: string;
   price: number;
   originalPrice?: number;
@@ -34,6 +35,7 @@ const badgeColors: Record<string, string> = {
 
 export default function ProductCard({
   id,
+  slug,
   title,
   price,
   originalPrice,
@@ -46,6 +48,9 @@ export default function ProductCard({
 }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const { formatPriceWithOriginal } = useCurrency();
+
+  // Use slug if available, fallback to id for backward compatibility
+  const productIdentifier = slug || id.toString();
 
   const isLowStock = stock !== undefined && stock <= 5 && stock > 0;
   const isOutOfStock = stock === 0;
@@ -94,7 +99,7 @@ export default function ProductCard({
       </button>
 
       {/* Image */}
-      <Link href={`/product/${id}`} className="block">
+      <Link href={`/product/${productIdentifier}`} className="block">
         <div className="aspect-[3/3] bg-muted/50 dark:bg-gray-700 flex items-center justify-center p-6 relative overflow-hidden">
           <div className="w-20 h-20 bg-muted dark:bg-gray-600 rounded-lg flex items-center justify-center">
             <Gamepad2 className="w-10 h-10 text-muted-foreground dark:text-gray-400" />
@@ -111,7 +116,7 @@ export default function ProductCard({
       {/* Content */}
       <div className="p-5">
         {/* Title */}
-        <Link href={`/product/${id}`}>
+        <Link href={`/product/${productIdentifier}`}>
           <h3 className="text-sm font-medium text-foreground line-clamp-2 min-h-[40px] hover:text-[#00d4aa] transition-colors">
             {title}
           </h3>

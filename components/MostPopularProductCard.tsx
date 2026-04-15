@@ -9,6 +9,7 @@ import { toast } from "sonner";
 
 interface Props {
   id: number;
+  slug?: string;
   title: string;
   category?: string;
   price: number;
@@ -21,6 +22,7 @@ interface Props {
 
 export default function MostPopularProductCard({
   id,
+  slug,
   title,
   category = "General",
   price,
@@ -61,7 +63,7 @@ export default function MostPopularProductCard({
     >
       {/* Product Image Container */}
       <Link
-        href={`/product/${id}`}
+        href={`/product/${slug || id.toString()}`}
         className="relative block aspect-[4/5] overflow-hidden rounded-xl border border-border shadow-sm transition-all duration-500"
       >
         {/* Image / Placeholder */}
@@ -123,7 +125,7 @@ export default function MostPopularProductCard({
             {category}
           </span>
 
-          <Link href={`/product/${id}`}>
+          <Link href={`/product/${slug || id.toString()}`}>
             <h3 className="text-[15px] font-bold text-foreground leading-snug hover:text-blue-600 dark:hover:text-blue-400 line-clamp-2 min-h-[40px] transition-colors">
               {title}
             </h3>

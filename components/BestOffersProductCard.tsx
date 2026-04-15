@@ -6,6 +6,7 @@ import { ShoppingCart, Eye, Clock, Shield, Star, ChevronRight } from "lucide-rea
 
 interface BestOffersProductCardProps {
   id: number;
+  slug?: string;
   title: string;
   price: number;
   originalPrice?: number;
@@ -41,6 +42,7 @@ const platformColors = {
 
 export default function BestOffersProductCard({
   id,
+  slug,
   title,
   price,
   originalPrice,
@@ -96,7 +98,7 @@ export default function BestOffersProductCard({
       </button>
 
       {/* Product Image */}
-      <Link href={`/product/${id}`} className="block">
+      <Link href={`/product/${slug || id.toString()}`} className="block">
         <div className="relative aspect-[4/3] bg-gradient-to-br from-muted/30 to-muted/50 dark:from-gray-700 dark:to-gray-600 overflow-hidden">
           {/* Image or Placeholder */}
           {!imageError && image ? (
@@ -148,7 +150,7 @@ export default function BestOffersProductCard({
         </div>
 
         {/* Title */}
-        <Link href={`/product/${id}`}>
+        <Link href={`/product/${slug || id.toString()}`}>
           <h3 className="font-semibold text-foreground text-sm mb-2 line-clamp-2 group-hover:text-[#00d4aa] transition-colors duration-200 min-h-[40px]">
             {title}
           </h3>
