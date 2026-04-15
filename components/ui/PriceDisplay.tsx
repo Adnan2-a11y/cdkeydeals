@@ -41,10 +41,10 @@ export default function PriceDisplay({
     formatPriceWithOriginal(price, originalPrice);
 
   return (
-    <div className={className}>
+    <div className={className} suppressHydrationWarning>
       {/* Discount Badge */}
       {showDiscount && hasDiscount && (
-        <span className={discountBadgeClassName}>
+        <span className={discountBadgeClassName} suppressHydrationWarning>
           -{discountPercentage}%
         </span>
       )}

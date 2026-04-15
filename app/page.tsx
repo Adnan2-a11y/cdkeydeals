@@ -14,6 +14,7 @@ import ServicesSection from "@/components/ServicesSection";
 import SupportFaqSection from "@/components/SupportFaqSection";
 import Newsletter from "@/components/Newsletter";
 import { getProducts } from "@/lib/wordpress";
+import ClientOnly from "@/components/ClientOnly";
 
 // Static data for the UI
 const categories = [
@@ -115,63 +116,80 @@ export default async function Home() {
   const displayTopProducts = liveProducts.slice(0, 8);
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto bg-background">
-        <main>
-          {/* Hero Slider */}
-          <HeroSlider />
+    <ClientOnly
+      fallback={
+        <div className="min-h-screen bg-background">
+          <div className="max-w-7xl mx-auto bg-background">
+            <div className="animate-pulse">
+              <div className="h-64 bg-gray-200 dark:bg-gray-800 rounded-lg mb-8"></div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                {[...Array(8)].map((_, i) => (
+                  <div key={i} className="h-32 bg-gray-200 dark:bg-gray-800 rounded-lg"></div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    >
+      <div className="min-h-screen bg-background">
+        <div className="max-w-7xl mx-auto bg-background">
+          <main>
+            {/* Hero Slider */}
+            <HeroSlider />
 
-          {/* Shop by Category */}
-          <CategoryTile categories={categories} />
+            {/* Shop by Category */}
+            <CategoryTile categories={categories} />
 
-          {/* New Products Section (Horizontal Scroll) */}
-          <NewProductsSection products={displayNewProducts} />
+            {/* New Products Section (Horizontal Scroll) */}
+            <NewProductsSection products={displayNewProducts} />
 
-          {/* Top Products Grid */}
-          <TopProducts
-            title="Top Products"
-            products={displayTopProducts}
-            viewAllLink="/best-selling"
-          />
+            {/* Top Products Grid */}
+            <TopProducts
+              title="Top Products"
+              products={displayTopProducts}
+              viewAllLink="/best-selling"
+            />
 
-          {/* Promo Banners */}
-          <PromoBanner />
+            {/* Promo Banners */}
+            <PromoBanner />
 
-          {/* Hot Deals Section */}
-          <DealsSection />
+            {/* Hot Deals Section */}
+            <DealsSection />
 
-          {/* Sale Marquee Banner */}
-          <SaleBanner />
+            {/* Sale Marquee Banner */}
+            <SaleBanner />
 
-          {/* Shop by Brand */}
-          <BrandCarousel brands={brands} />
+            {/* Shop by Brand */}
+            <BrandCarousel brands={brands} />
 
-          {/* Best Offers Section */}
-          <BestOffersSection />
+            {/* Best Offers Section */}
+            <BestOffersSection />
 
-          {/* Promo Banner + Product Carousel Section */}
-          <PromoCarouselSection />
+            {/* Promo Banner + Product Carousel Section */}
+            <PromoCarouselSection />
 
-          {/* Most Popular Section */}
-          <MostPopular />
+            {/* Most Popular Section */}
+            <MostPopular />
 
-          {/* Trending Now Section */}
-          <TrendingNowSection
-            title="Trending Now"
-            viewAllLink="/collections/trending"
-          />
+            {/* Trending Now Section */}
+            <TrendingNowSection
+              title="Trending Now"
+              viewAllLink="/collections/trending"
+            />
 
-          {/* Services Section */}
-          <ServicesSection />
+            {/* Services Section */}
+            <ServicesSection />
 
-          {/* Support & FAQ Section */}
-          <SupportFaqSection />
+            {/* Support & FAQ Section */}
+            <SupportFaqSection />
 
-          {/* Newsletter */}
-          <Newsletter />
-        </main>
+            {/* Newsletter */}
+            <Newsletter />
+          </main>
 
+        </div>
       </div>
-    </div>
+    </ClientOnly>
   );
 }

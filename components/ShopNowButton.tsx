@@ -103,6 +103,11 @@ export default function ShopNowButton({
   // Validate slug - use fallback if missing or invalid
   const isValidSlug = slug && typeof slug === "string" && slug.trim().length > 0;
   const href = isValidSlug ? `/product/${slug.trim()}` : fallbackHref;
+
+  // Debug logging in development
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[ShopNowButton] Rendering with:', { slug, isValidSlug, href });
+  }
   
   // If disabled, render a non-interactive button
   if (disabled) {

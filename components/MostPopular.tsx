@@ -115,16 +115,16 @@ export default function MostPopular({ title = "Most Popular", products: external
 
   return (
     <section className="py-12 bg-background">
-      <div className="max-w-[1320px] mx-auto px-4">
+      <div className="max-w-[1320px] mx-auto px-4" suppressHydrationWarning>
         {/* Section Title */}
-        <div className="mb-10">
+        <div className="mb-10" suppressHydrationWarning>
           <h2 className="text-2xl font-extrabold text-foreground">
             {title}
           </h2>
         </div>
 
         {/* Clean Grid Setup */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-6 gap-y-10">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-6 gap-y-10" suppressHydrationWarning>
           {products.map((product) => (
             <MostPopularProductCard
               key={product.id}

@@ -13,7 +13,6 @@ import FAQDropdown from "./FAQDropdown";
 interface NavbarProps {
   isDarkMode: boolean;
   onDarkModeToggle: () => void;
-  // navCategories prop রাখা হয়েছে আপনার ইন্টারফেস অনুযায়ী, যদিও নিচে সরাসরি ব্যবহার হয়নি
   navCategories?: {
     games: any[];
     software: any[];
@@ -33,11 +32,6 @@ export default function Navbar({ isDarkMode, onDarkModeToggle }: NavbarProps) {
 
   return (
     <div className="hidden lg:block w-full border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-[#1E1E1E]">
-      {/* Main Container: 
-          - max-w-[1280px]: মেনুগুলোকে একটি নির্দিষ্ট সীমানার মধ্যে রাখবে।
-          - mx-auto: কন্টেইনারটিকে স্ক্রিনের মাঝখানে রাখবে।
-          - px-4: ছোট স্ক্রিনে সাইডে গ্যাপ রাখবে।
-      */}
       <div className="max-w-[1280px] mx-auto px-4 relative">
         <div className="flex items-center justify-between h-[52px]">
           

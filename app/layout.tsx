@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import Script from 'next/script'
 import './globals.css'
-import Header from '@/components/header/Header'
+import DynamicHeader from '@/components/header/DynamicHeader'
 import Footer from '@/components/Footer'
 import { AuthProvider } from '@/context/AuthContext'
 import { CartProvider } from '@/context/CartContext'
@@ -41,28 +41,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
-      <body className="font-sans antialiased bg-background text-foreground" suppressHydrationWarning>
+      <head>
         <Script
           id="theme-init"
+          src="/theme-init.js"
           strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var theme = localStorage.getItem('cdkeydeals-theme') || 'system';
-                  var resolvedTheme = theme;
-                  if (theme === 'system') {
-                    resolvedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-                  }
-                  if (resolvedTheme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                  } else {
-                    document.documentElement.classList.remove('dark');
-                  }
-                } catch (e) {}
-              })();
-            `,
-          }}
+        />
+      </head>
+      <body className="font-sans antialiased bg-background text-foreground" suppressHydrationWarning>
+        {/* Browser Extension Attribute Cleaner - Runs after hydration */}
+        <Script
+          id="extension-attribute-cleaner"
+          src="/extension-attribute-cleaner.js"
+          strategy="afterInteractive"
         />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthProvider>
@@ -70,7 +61,7 @@ export default function RootLayout({
               <WishlistProvider>
                 <CartProvider>
                   <div className="min-h-screen flex flex-col">
-                    <Header />
+                    <DynamicHeader />
                     <main className="flex-1">
                       {children}
                     </main>

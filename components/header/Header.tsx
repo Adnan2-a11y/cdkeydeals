@@ -100,7 +100,7 @@ function HeaderContent() {
               {/* Hamburger Menu Button with "Menu" label */}
               <button
                 onClick={isMegaMenuOpen ? handleMenuClose : handleMenuToggle}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ml-2 ${
                   isMegaMenuOpen
                     ? "bg-indigo-600 text-white"
                     : "bg-indigo-600 text-white hover:bg-indigo-700"
@@ -117,7 +117,7 @@ function HeaderContent() {
             </div>
 
             {/* Center: Search Bar */}
-            <div className="hidden md:block flex-1 max-w-2xl mx-8">
+            <div className="hidden md:block flex-1 max-w-3xl mx-8">
               <SearchBar />
             </div>
 

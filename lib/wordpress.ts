@@ -1,5 +1,6 @@
 import { Product } from '@/types/product';
 import { collectionsProducts } from '@/data/mockProducts'; // Fallback if needed
+import { getMockProductBySlug, getMockProducts } from '@/data/mockProductDatabase'; // Mock database fallback
 
 const API_URL = process.env.WORDPRESS_URL || '';
 const CONSUMER_KEY = process.env.WP_CONSUMER_KEY || '';
@@ -109,6 +110,7 @@ export function mapWooCommerceProduct(wcProduct: any): Product {
 
 /**
  * Fetch a list of products from WooCommerce
+ * Merges WooCommerce products with mock database for completeness
  */
 export async function getProducts(params: {
   page?: number;
@@ -125,30 +127,60 @@ export async function getProducts(params: {
 
     const endpoint = `products${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
     const data = await wcFetch<any[]>(endpoint, { next: { revalidate: 60 } }); // Leverage Next.js ISR
+
+    const wcProducts = data.map(mapWooCommerceProduct);
     
-    return data.map(mapWooCommerceProduct);
+    // Merge with mock products to ensure all products are available
+    const mockProducts = getMockProducts({ 
+      featured: params.featured,
+      limit: params.per_page 
+    });
+    
+    // Combine and deduplicate by slug
+    const allProducts = [...wcProducts];
+    const existingSlugs = new Set(allProducts.map(p => p.slug));
+    
+    mockProducts.forEach(mockProduct => {
+      if (!existingSlugs.has(mockProduct.slug)) {
+        allProducts.push(mockProduct);
+      }
+    });
+
+    return allProducts.slice(0, params.per_page || 100);
   } catch (error) {
     console.error('Error in getProducts:', error);
     // Graceful fallback to mock data if API fails to keep UI functional
-    return collectionsProducts.slice(0, params.per_page || 10);
+    return getMockProducts({ 
+      featured: params.featured,
+      limit: params.per_page 
+    });
   }
 }
 
 /**
  * Fetch a single product by Slug
+ * Falls back to mock database if WooCommerce API doesn't have the product
  */
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   try {
     const data = await wcFetch<any[]>(`products?slug=${slug}&per_page=1`, { next: { revalidate: 60 } });
-    
+
     if (!data || data.length === 0) {
-      return null;
+      // Fallback to mock database if WooCommerce doesn't have this product
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`[WooCommerce] Product '${slug}' not found in WooCommerce, falling back to mock database`);
+      }
+      return getMockProductBySlug(slug) || null;
     }
 
     return mapWooCommerceProduct(data[0]);
   } catch (error) {
     console.error(`Error in getProductBySlug(${slug}):`, error);
-    return null;
+    // Fallback to mock database on API error
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`[WooCommerce] API error for '${slug}', falling back to mock database`);
+    }
+    return getMockProductBySlug(slug) || null;
   }
 }
 

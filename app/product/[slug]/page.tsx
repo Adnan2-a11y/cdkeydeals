@@ -138,10 +138,24 @@ function getRelatedProducts(currentProduct: Product, allProducts: Product[]): Pr
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
+  
+  // Debug logging
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[ProductPage] Loading product with slug:', slug);
+  }
+  
   const product = await getProductBySlug(slug);
+
+  // Debug logging
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[ProductPage] Product fetched:', product ? `Found (${product.title})` : 'Not found');
+  }
 
   // If product not found, show 404
   if (!product) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('[ProductPage] Product not found for slug:', slug, '- Redirecting to 404');
+    }
     notFound();
   }
 
@@ -158,7 +172,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       )}
-      
+
       <main className="min-h-screen bg-gray-50">
         <Suspense fallback={<ProductDetailsSkeleton />}>
           <ProductDetails product={product} relatedProducts={relatedProducts} />
