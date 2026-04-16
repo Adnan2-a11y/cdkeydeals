@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import CollectionSlugClient from './CollectionSlugClient';
-import { collectionsProducts, collectionsPlatforms } from '@/data/mockProducts';
+import { getProducts } from '@/lib/wordpress';
 import { Platform } from '@/types/product';
 
 // Platform slug to display name mapping
@@ -56,29 +56,41 @@ export async function generateMetadata({
   }
   
   const platformName = platformInfo.name;
-  const productCount = collectionsProducts.filter(
-    (p) => p.platform === platformInfo.platform
-  ).length;
   
-  return {
-    title: `${platformName} - Buy Cheap ${platformName} Deals | CDKeyDeals`,
-    description: `Browse ${productCount}+ ${platformName} deals at unbeatable prices. Instant delivery, secure checkout, and 24/7 customer support. Find the best ${platformName} game keys, gift cards, and software.`,
-    keywords: `${platformName.toLowerCase()}, ${platformName.toLowerCase()} keys, ${platformName.toLowerCase()} deals, ${platformName.toLowerCase()} games, cheap ${platformName.toLowerCase()}, digital keys, instant delivery`,
-    openGraph: {
+  try {
+    // Fetch products to get accurate count
+    const products = await getProducts({ maxProducts: 500 });
+    const productCount = products.filter(
+      (p: any) => p.platform === platformInfo.platform
+    ).length;
+    
+    return {
       title: `${platformName} - Buy Cheap ${platformName} Deals | CDKeyDeals`,
-      description: `Browse ${productCount}+ ${platformName} deals at unbeatable prices. Instant delivery and secure checkout.`,
-      type: 'website',
-      url: `https://cdkeydeals.com/collections/${slug}`,
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${platformName} - Buy Cheap ${platformName} Deals`,
-      description: `Browse ${productCount}+ ${platformName} deals at unbeatable prices.`,
-    },
-    alternates: {
-      canonical: `https://cdkeydeals.com/collections/${slug}`,
-    },
-  };
+      description: `Browse ${productCount}+ ${platformName} deals at unbeatable prices. Instant delivery, secure checkout, and 24/7 customer support. Find the best ${platformName} game keys, gift cards, and software.`,
+      keywords: `${platformName.toLowerCase()}, ${platformName.toLowerCase()} keys, ${platformName.toLowerCase()} deals, ${platformName.toLowerCase()} games, cheap ${platformName.toLowerCase()}, digital keys, instant delivery`,
+      openGraph: {
+        title: `${platformName} - Buy Cheap ${platformName} Deals | CDKeyDeals`,
+        description: `Browse ${productCount}+ ${platformName} deals at unbeatable prices. Instant delivery and secure checkout.`,
+        type: 'website',
+        url: `https://cdkeydeals.com/collections/${slug}`,
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: `${platformName} - Buy Cheap ${platformName} Deals`,
+        description: `Browse ${productCount}+ ${platformName} deals at unbeatable prices.`,
+      },
+      alternates: {
+        canonical: `https://cdkeydeals.com/collections/${slug}`,
+      },
+    };
+  } catch (error) {
+    // Fallback metadata if API fails
+    return {
+      title: `${platformName} - Buy Cheap ${platformName} Deals | CDKeyDeals`,
+      description: `Browse ${platformName} deals at unbeatable prices. Instant delivery, secure checkout, and 24/7 customer support.`,
+      keywords: `${platformName.toLowerCase()}, ${platformName.toLowerCase()} keys, ${platformName.toLowerCase()} deals`,
+    };
+  }
 }
 
 export default async function CollectionSlugPage({ 
@@ -95,9 +107,12 @@ export default async function CollectionSlugPage({
     notFound();
   }
   
+  // Fetch all products from WordPress
+  const allProducts = await getProducts({ maxProducts: 500 });
+  
   // Filter products by platform
-  const platformProducts = collectionsProducts.filter(
-    (product) => product.platform === platformInfo.platform
+  const platformProducts = allProducts.filter(
+    (product: any) => product.platform === platformInfo.platform
   );
   
   return (

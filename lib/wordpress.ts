@@ -1,10 +1,14 @@
 import { Product } from '@/types/product';
-import { collectionsProducts } from '@/data/mockProducts'; // Fallback if needed
-import { getMockProductBySlug, getMockProducts } from '@/data/mockProductDatabase'; // Mock database fallback
+import { errorHandler, safeAsync, ErrorCategory } from './error-handler';
 
 const API_URL = process.env.WORDPRESS_URL || '';
 const CONSUMER_KEY = process.env.WP_CONSUMER_KEY || '';
 const CONSUMER_SECRET = process.env.WP_CONSUMER_SECRET || '';
+
+// Batch configuration
+const BATCH_SIZE = 20; // Products per batch
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 1000; // ms
 
 /**
  * Base Fetch Function for WooCommerce API.
@@ -12,8 +16,9 @@ const CONSUMER_SECRET = process.env.WP_CONSUMER_SECRET || '';
  */
 async function wcFetch<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   if (!API_URL || !CONSUMER_KEY || !CONSUMER_SECRET) {
-    console.warn('WooCommerce API credentials are not set.');
-    throw new Error('WooCommerce API credentials are not set.');
+    const error = new Error('WooCommerce API credentials are not set.');
+    errorHandler.log(error, ErrorCategory.AUTHENTICATION, { endpoint });
+    throw error;
   }
 
   const url = `${API_URL}/wp-json/wc/v3/${endpoint}`;
@@ -25,18 +30,61 @@ async function wcFetch<T>(endpoint: string, options: RequestInit = {}): Promise<
   headers.set('Authorization', authHeader);
   headers.set('Content-Type', 'application/json');
 
-  const response = await fetch(url, {
-    ...options,
-    headers,
-  });
+  let lastError: Error | null = null;
+  
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      const response = await fetch(url, {
+        ...options,
+        headers,
+      });
 
-  if (!response.ok) {
-    const errorBody = await response.text();
-    console.error(`WooCommerce API Error (${response.status}):`, errorBody);
-    throw new Error(`WooCommerce API failed: ${response.status} ${response.statusText}`);
+      if (!response.ok) {
+        const errorBody = await response.text();
+        const error = new Error(`WooCommerce API failed: ${response.status} ${response.statusText}`);
+        errorHandler.logApiError(error, { 
+          endpoint, 
+          status: response.status, 
+          body: errorBody,
+          attempt 
+        });
+        
+        // Don't retry on client errors (4xx)
+        if (response.status >= 400 && response.status < 500) {
+          throw error;
+        }
+        
+        lastError = error;
+        
+        // Wait before retry
+        if (attempt < MAX_RETRIES) {
+          await new Promise(resolve => setTimeout(resolve, RETRY_DELAY * attempt));
+          continue;
+        }
+        
+        throw error;
+      }
+
+      return response.json();
+    } catch (error) {
+      lastError = error as Error;
+      
+      // Don't retry on network errors that are likely permanent
+      if (error instanceof TypeError && error.message.includes('fetch failed')) {
+        errorHandler.logNetworkError(error as Error, { endpoint, attempt });
+        throw error;
+      }
+      
+      if (attempt < MAX_RETRIES) {
+        await new Promise(resolve => setTimeout(resolve, RETRY_DELAY * attempt));
+        continue;
+      }
+      
+      throw error;
+    }
   }
 
-  return response.json();
+  throw lastError || new Error('Unknown error in wcFetch');
 }
 
 /**
@@ -109,78 +157,91 @@ export function mapWooCommerceProduct(wcProduct: any): Product {
 }
 
 /**
- * Fetch a list of products from WooCommerce
- * Merges WooCommerce products with mock database for completeness
+ * Fetch products in batches to handle large product catalogs efficiently
+ * @param params - Query parameters for filtering
+ * @param maxProducts - Maximum number of products to fetch (default: 100)
+ * @returns Array of products
  */
 export async function getProducts(params: {
   page?: number;
   per_page?: number;
   category?: number;
   featured?: boolean;
+  maxProducts?: number;
 } = {}): Promise<Product[]> {
+  const maxProducts = params.maxProducts || 100;
+  const perPage = params.per_page || BATCH_SIZE;
+  const totalBatches = Math.ceil(maxProducts / perPage);
+  
+  const allProducts: Product[] = [];
+  
   try {
-    const queryParams = new URLSearchParams();
-    if (params.page) queryParams.append('page', params.page.toString());
-    if (params.per_page) queryParams.append('per_page', params.per_page.toString());
-    if (params.category) queryParams.append('category', params.category.toString());
-    if (params.featured !== undefined) queryParams.append('featured', params.featured.toString());
+    // Fetch products in batches
+    for (let batch = 1; batch <= totalBatches; batch++) {
+      const queryParams = new URLSearchParams();
+      queryParams.append('page', batch.toString());
+      queryParams.append('per_page', perPage.toString());
+      if (params.category) queryParams.append('category', params.category.toString());
+      if (params.featured !== undefined) queryParams.append('featured', params.featured.toString());
 
-    const endpoint = `products${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
-    const data = await wcFetch<any[]>(endpoint, { next: { revalidate: 60 } }); // Leverage Next.js ISR
-
-    const wcProducts = data.map(mapWooCommerceProduct);
-    
-    // Merge with mock products to ensure all products are available
-    const mockProducts = getMockProducts({ 
-      featured: params.featured,
-      limit: params.per_page 
-    });
-    
-    // Combine and deduplicate by slug
-    const allProducts = [...wcProducts];
-    const existingSlugs = new Set(allProducts.map(p => p.slug));
-    
-    mockProducts.forEach(mockProduct => {
-      if (!existingSlugs.has(mockProduct.slug)) {
-        allProducts.push(mockProduct);
+      const endpoint = `products?${queryParams.toString()}`;
+      
+      const batchProducts = await safeAsync(
+        () => wcFetch<any[]>(endpoint, { next: { revalidate: 60 } }),
+        [],
+        { batch, perPage }
+      );
+      
+      if (batchProducts && Array.isArray(batchProducts)) {
+        const mappedProducts = batchProducts.map(mapWooCommerceProduct);
+        allProducts.push(...mappedProducts);
+        
+        // Stop if we've reached maxProducts
+        if (allProducts.length >= maxProducts) {
+          break;
+        }
       }
-    });
+    }
 
-    return allProducts.slice(0, params.per_page || 100);
+    return allProducts.slice(0, maxProducts);
   } catch (error) {
-    console.error('Error in getProducts:', error);
-    // Graceful fallback to mock data if API fails to keep UI functional
-    return getMockProducts({ 
-      featured: params.featured,
-      limit: params.per_page 
-    });
+    errorHandler.logApiError(error as Error, { params, maxProducts });
+    return [];
+  }
+}
+
+/**
+ * Get total product count from WooCommerce
+ */
+export async function getTotalProductCount(): Promise<number> {
+  try {
+    const data = await wcFetch<any[]>('products?per_page=1', { next: { revalidate: 300 } });
+    // Get total count from headers
+    // Note: WooCommerce returns total count in headers, but we'll estimate from first batch
+    return data?.length || 0;
+  } catch (error) {
+    errorHandler.logApiError(error as Error, { action: 'getTotalProductCount' });
+    return 0;
   }
 }
 
 /**
  * Fetch a single product by Slug
- * Falls back to mock database if WooCommerce API doesn't have the product
+ * Returns null if product is not found
  */
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   try {
     const data = await wcFetch<any[]>(`products?slug=${slug}&per_page=1`, { next: { revalidate: 60 } });
 
     if (!data || data.length === 0) {
-      // Fallback to mock database if WooCommerce doesn't have this product
-      if (process.env.NODE_ENV === 'development') {
-        console.log(`[WooCommerce] Product '${slug}' not found in WooCommerce, falling back to mock database`);
-      }
-      return getMockProductBySlug(slug) || null;
+      errorHandler.logApiError(new Error(`Product '${slug}' not found`), { slug });
+      return null;
     }
 
     return mapWooCommerceProduct(data[0]);
   } catch (error) {
-    console.error(`Error in getProductBySlug(${slug}):`, error);
-    // Fallback to mock database on API error
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`[WooCommerce] API error for '${slug}', falling back to mock database`);
-    }
-    return getMockProductBySlug(slug) || null;
+    errorHandler.logApiError(error as Error, { slug, action: 'getProductBySlug' });
+    return null;
   }
 }
 
@@ -198,7 +259,44 @@ export async function getCategories(): Promise<any[]> {
       image: cat?.image?.src ?? null,
     }));
   } catch (error) {
-    console.error('Error in getCategories:', error);
+    errorHandler.logApiError(error as Error, { action: 'getCategories' });
+    return [];
+  }
+}
+
+/**
+ * Fetch blog posts from WordPress
+ */
+export async function getBlogPosts(params: {
+  page?: number;
+  per_page?: number;
+  category?: number;
+  featured?: boolean;
+} = {}): Promise<any[]> {
+  try {
+    const queryParams = new URLSearchParams();
+    if (params.page) queryParams.append('page', params.page.toString());
+    if (params.per_page) queryParams.append('per_page', params.per_page.toString());
+    if (params.category) queryParams.append('categories', params.category.toString());
+    if (params.featured) queryParams.append('sticky', '1');
+
+    const endpoint = `posts${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+    const data = await wcFetch<any[]>(endpoint, { next: { revalidate: 300 } });
+
+    return data.map((post: any) => ({
+      id: post.id,
+      title: post.title?.rendered || 'Untitled',
+      excerpt: post.excerpt?.rendered || '',
+      content: post.content?.rendered || '',
+      image: post.featured_media || null,
+      categories: post.categories || [],
+      author: post.author || 'Unknown',
+      date: post.date || '',
+      link: post.link || '',
+      featured: post.sticky || false,
+    }));
+  } catch (error) {
+    errorHandler.logApiError(error as Error, { params, action: 'getBlogPosts' });
     return [];
   }
 }
