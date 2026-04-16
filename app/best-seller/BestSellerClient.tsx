@@ -7,166 +7,14 @@ import FilterSidebar, { FilterOptions } from "@/components/best-seller/FilterSid
 import SortBar, { SortOption, ViewMode } from "@/components/best-seller/SortBar";
 import ProductCard, { Product } from "@/components/best-seller/ProductCard";
 import ExtraSections from "@/components/best-seller/ExtraSections";
+import { Product as ProductType } from "@/types/product";
 
-// Import product data
-import productsData from "@/data/products.json";
+interface BestSellerClientProps {
+  initialProducts: ProductType[];
+}
 
-// Create best seller products data based on the reference
-const createBestSellerProducts = (): Product[] => [
-  {
-    id: 301,
-    title: "Apple iTunes Gift Card $40 USD Key UNITED STATES",
-    price: 37.74,
-    originalPrice: 40.00,
-    currency: "USD",
-    category: "Gift Cards",
-    badge: "Best Seller",
-    badgeColor: "orange",
-    stock: 100,
-    stockLabel: "In Stock",
-    image: "/images/products/itunes-gift-card.jpg",
-    rating: 4.8,
-    soldCount: 12456
-  },
-  {
-    id: 302,
-    title: "PUBG Mobile 300 + 25 UC (Unknown Cash) Official website Key - GLOBAL",
-    price: 4.99,
-    originalPrice: 6.99,
-    currency: "USD",
-    category: "Games",
-    badge: "Hot Sale",
-    badgeColor: "red",
-    stock: 100,
-    stockLabel: "In Stock",
-    image: "/images/products/pubg-mobile.jpg",
-    rating: 4.6,
-    soldCount: 8921
-  },
-  {
-    id: 303,
-    title: "Razer Gold Gift Card 2 USD Key - GLOBAL",
-    price: 1.99,
-    originalPrice: 2.50,
-    currency: "USD",
-    category: "Gift Cards",
-    badge: "Popular",
-    badgeColor: "blue",
-    stock: 100,
-    stockLabel: "In Stock",
-    image: "/images/products/razer-gold.jpg",
-    rating: 4.5,
-    soldCount: 6543
-  },
-  {
-    id: 304,
-    title: "SQL Server 2022 Standard Edition",
-    price: 299.99,
-    originalPrice: 499.99,
-    currency: "USD",
-    category: "Software",
-    badge: "Best Seller",
-    badgeColor: "orange",
-    stock: 50,
-    stockLabel: "In Stock",
-    image: "/images/products/sql-server.jpg",
-    rating: 4.7,
-    soldCount: 3456
-  },
-  {
-    id: 305,
-    title: "Microsoft Project Pro 2021 – Lifetime License for Windows",
-    price: 149.99,
-    originalPrice: 299.99,
-    currency: "USD",
-    category: "Office Keys",
-    badge: "Hot Sale",
-    badgeColor: "red",
-    stock: 25,
-    stockLabel: "In Stock",
-    image: "/images/products/ms-project.jpg",
-    rating: 4.8,
-    soldCount: 2345
-  },
-  {
-    id: 306,
-    title: "Microsoft Visio pro 2021 for 5 user",
-    price: 199.99,
-    originalPrice: 399.99,
-    currency: "USD",
-    category: "Office Keys",
-    badge: "Limited",
-    badgeColor: "purple",
-    stock: 10,
-    stockLabel: "10 Left",
-    image: "/images/products/ms-visio.jpg",
-    rating: 4.6,
-    soldCount: 1234
-  },
-  {
-    id: 307,
-    title: "NordVPN Basic 10 Devices 1 Year Global for PC, Android, Mac, iOS",
-    price: 39.99,
-    originalPrice: 59.99,
-    currency: "USD",
-    category: "VPN",
-    badge: "Best Seller",
-    badgeColor: "orange",
-    stock: 100,
-    stockLabel: "In Stock",
-    image: "/images/products/nordvpn.jpg",
-    rating: 4.7,
-    soldCount: 9876
-  },
-  {
-    id: 308,
-    title: "Internet Download Manager (PC) (1 PC, Lifetime) - IDM Key - GLOBAL",
-    price: 11.99,
-    originalPrice: 19.99,
-    currency: "USD",
-    category: "Software",
-    badge: "Popular",
-    badgeColor: "blue",
-    stock: 100,
-    stockLabel: "In Stock",
-    image: "/images/products/idm.jpg",
-    rating: 4.5,
-    soldCount: 7654
-  },
-  {
-    id: 309,
-    title: "McAfee AntiVirus PC 1 Device 1 Year GLOBAL",
-    price: 14.99,
-    originalPrice: 24.99,
-    currency: "USD",
-    category: "Antivirus",
-    badge: "Sale",
-    badgeColor: "green",
-    stock: 100,
-    stockLabel: "In Stock",
-    image: "/images/products/mcafee.jpg",
-    rating: 4.4,
-    soldCount: 5432
-  },
-  {
-    id: 310,
-    title: "Microsoft Office 2024 Pro Plus License Key Spring Promo Deal",
-    price: 34.99,
-    originalPrice: 79.99,
-    currency: "USD",
-    category: "Office Keys",
-    badge: "Best Seller",
-    badgeColor: "orange",
-    stock: 100,
-    stockLabel: "In Stock",
-    image: "/images/products/office-2024.jpg",
-    rating: 4.9,
-    soldCount: 15678
-  }
-];
-
-export default function BestSellerClient() {
-  const [products] = useState<Product[]>(createBestSellerProducts());
+export default function BestSellerClient({ initialProducts = [] }: BestSellerClientProps) {
+  const [products] = useState<ProductType[]>(initialProducts);
   const [filters, setFilters] = useState<FilterOptions>({
     categories: [],
     priceRange: { min: 0, max: 1000 },
@@ -182,13 +30,13 @@ export default function BestSellerClient() {
   const topProducts = products.slice(0, 4);
   const deals = products.filter(p => p.originalPrice && p.originalPrice > p.price).slice(0, 4);
   const trendingProducts = products.slice(2, 6);
-  const brands = productsData.brands || [];
+  const brands: any[] = [];
 
   // Filter and sort products
   const filteredAndSortedProducts = useMemo(() => {
     let filtered = products.filter(product => {
       // Category filter
-      if (filters.categories.length > 0 && !filters.categories.includes(product.category)) {
+      if (filters.categories.length > 0 && product.category && !filters.categories.includes(product.category)) {
         return false;
       }
 
@@ -203,11 +51,11 @@ export default function BestSellerClient() {
       }
 
       // Stock filter
-      if (filters.stockStatus.length > 0) {
+      if (filters.stockStatus.length > 0 && product.stock !== undefined) {
         const stockMatches = filters.stockStatus.some(status => {
-          if (status === "In Stock" && product.stock > 10) return true;
-          if (status === "Low Stock" && product.stock > 0 && product.stock <= 10) return true;
-          if (status === "Last Items" && product.stock <= 5) return true;
+          if (status === "In Stock" && product.stock! > 10) return true;
+          if (status === "Low Stock" && product.stock! > 0 && product.stock! <= 10) return true;
+          if (status === "Last Items" && product.stock! <= 5) return true;
           return false;
         });
         if (!stockMatches) return false;
@@ -310,7 +158,7 @@ export default function BestSellerClient() {
 
             {/* Products Grid */}
             <ProductGrid
-              products={filteredAndSortedProducts}
+              products={filteredAndSortedProducts as any[]}
               columns={viewMode === "grid" ? 5 : 1}
             />
 
@@ -337,9 +185,9 @@ export default function BestSellerClient() {
             {/* Extra Sections */}
             <div className="mt-16">
               <ExtraSections
-                topProducts={topProducts}
-                deals={deals}
-                trendingProducts={trendingProducts}
+                topProducts={topProducts as any[]}
+                deals={deals as any[]}
+                trendingProducts={trendingProducts as any[]}
                 brands={brands}
               />
             </div>

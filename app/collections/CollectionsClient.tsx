@@ -14,9 +14,6 @@ import ProductSection from "@/components/collections/ProductSection";
 import QuickViewModal from "@/components/collections/QuickViewModal";
 
 import {
-  collectionsCategories,
-} from "@/data/mockProducts";
-import {
   Product,
   CollectionsFilterOptions,
   SortOption,
@@ -271,7 +268,7 @@ export default function CollectionsClient({ initialProducts = [] }: { initialPro
         <PromoBanner />
 
         {/* Shop by Category */}
-        <ShopByCategory categories={collectionsCategories} />
+        <ShopByCategory categories={[]} />
 
         {/* Main Layout */}
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 mt-8">

@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import BestSellerClient from './BestSellerClient';
+import { getProducts } from '@/lib/wordpress';
 
 export const metadata: Metadata = {
   title: 'Best Seller Deals | CDKeyDeals Software, Games & Gift Cards',
@@ -12,6 +13,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function BestSellerPage() {
-  return <BestSellerClient />;
+export default async function BestSellerPage() {
+  // Fetch products from WordPress
+  const products = await getProducts({ maxProducts: 100, featured: true });
+  
+  return <BestSellerClient initialProducts={products} />;
 }
