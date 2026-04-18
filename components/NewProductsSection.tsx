@@ -27,7 +27,7 @@ export default function NewProductsSection({
   };
 
   return (
-    <section className="py-8">
+    <section className="pt-2 pb-8">
       <div className="px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
@@ -83,7 +83,7 @@ export default function NewProductsSection({
                 )}
 
                 {/* Image Placeholder - Height komano hoyeche */}
-                <div className="aspect-[4/5] bg-muted/30 dark:bg-muted/50 flex items-center justify-center p-2">
+                <div className="aspect-4/5 bg-muted/30 dark:bg-muted/50 flex items-center justify-center p-2">
                   <div className="w-12 h-12 bg-muted/50 dark:bg-gray-700 rounded-md flex items-center justify-center">
                     <Gamepad2 className="w-6 h-6 text-gray-400" />
                   </div>

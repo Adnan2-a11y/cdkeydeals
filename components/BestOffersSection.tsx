@@ -4,63 +4,19 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Copy, ChevronRight } from "lucide-react";
 
-// Interface for Best Offer products
-interface BestOfferProduct {
-  id: number;
-  title: string;
-  slug: string;
-  image?: string;
-  price: number;
-  originalPrice?: number;
-  badge?: string;
-  discount?: number;
+import { Product } from "@/types/product";
+
+interface BestOffersSectionProps {
+  products?: Product[];
 }
 
-// Product data for best offers with proper slugs
-const bestOffersProducts: BestOfferProduct[] = [
-  {
-    id: 1,
-    title: "MS Office 2024 Pro Plus & Windows 11 Pro Combo",
-    slug: "ms-office-2024-pro-plus-windows-11-pro-combo",
-    price: 49.99,
-    originalPrice: 89.99,
-    badge: "Mega Sale",
-    discount: 44,
-    image: "https://img.freepik.com/free-vector/spring-sale-background-with-bokeh-effect_23-2148851410.jpg",
-  },
-  {
-    id: 11,
-    title: "Microsoft Windows 10 Pro 1 pc Key",
-    slug: "microsoft-windows-10-pro-1-pc-key",
-    price: 14.99,
-    originalPrice: 199.99,
-    badge: "75% OFF",
-    discount: 75,
-    image: "https://upload.wikimedia.org/wikipedia/commons/4/48/Windows_logo_-_2012_%28dark_blue%29.svg",
-  },
-  {
-    id: 7,
-    title: "Windows 11 Pro 1 PC Digital License",
-    slug: "windows-11-pro-1-pc-digital-license",
-    price: 29.99,
-    originalPrice: 199.99,
-    badge: "Mega Sale",
-    discount: 85,
-    image: "https://www.microsoft.com/content/dam/static/Windows11Pro.png",
-  },
-  {
-    id: 9,
-    title: "Steam Wallet Code $100 USD Global",
-    slug: "steam-wallet-code-100-usd-global",
-    price: 99.99,
-    originalPrice: 100.00,
-    badge: "Spring Sale",
-    discount: 0,
-    image: "",
-  },
-];
+export default function BestOffersSection({ products = [] }: BestOffersSectionProps) {
+  // Use up to 4 products from the passed in array, fallback to default objects if not enough products
+  const p1 = products[0] || null;
+  const p2 = products[1] || null;
+  const p3 = products[2] || null;
+  const p4 = products[3] || null;
 
-export default function BestOffersSection() {
   // Dynamic promo code
   const promoCode = "MEGA26";
 
@@ -128,9 +84,9 @@ export default function BestOffersSection() {
                 </div>
 
                 <Link 
-                  href={getProductLink(bestOffersProducts[0]?.slug)}
+                  href={getProductLink(p1?.slug || p1?.id.toString())}
                   className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-8 py-4 rounded-xl transition-transform hover:scale-105"
-                  aria-label={`Shop now for ${bestOffersProducts[0]?.title}`}
+                  aria-label={`Shop now for ${p1?.title || 'Product'}`}
                 >
                   Shop Now
                 </Link>
@@ -148,33 +104,33 @@ export default function BestOffersSection() {
           <div className="lg:col-span-6 flex flex-col gap-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 h-full">
               
-              {/* Windows 10 Card */}
+              {/* Product 2 Card */}
               <Link 
-                href={getProductLink(bestOffersProducts[1]?.slug)}
+                href={getProductLink(p2?.slug || p2?.id?.toString())}
                 className="bg-gradient-to-br from-purple-800 to-indigo-900 rounded-2xl p-6 relative overflow-hidden min-h-[200px] flex flex-col justify-end group cursor-pointer"
               >
-                <div className="absolute top-4 left-4 bg-yellow-400 text-black text-[10px] font-bold px-1.5 py-0.5 rounded">{bestOffersProducts[1]?.discount}%</div>
+                {p2?.discount && <div className="absolute top-4 left-4 bg-yellow-400 text-black text-[10px] font-bold px-1.5 py-0.5 rounded">{p2.discount}% OFF</div>}
                 <div className="relative z-10">
-                  <h3 className="text-white text-xl font-bold mb-1">{bestOffersProducts[1]?.title}</h3>
+                  <h3 className="text-white text-xl font-bold mb-1 line-clamp-2">{p2?.title || "Special Offer"}</h3>
                   <p className="text-white/80 text-sm">at the cheapest price in the online market!</p>
                   <span className="inline-block mt-2 bg-yellow-400 hover:bg-yellow-500 text-black text-sm font-bold px-4 py-2 rounded-lg transition-colors">
                     Shop Now
                   </span>
                 </div>
-                {/* Windows Logo Watermark */}
+                {/* Product 2 Image */}
                 <div className="absolute -right-4 -bottom-4 opacity-20 group-hover:scale-110 transition-transform">
-                   <img src={bestOffersProducts[1]?.image} className="w-32 h-32 invert" alt="" />
+                   <img src={p2?.image || "https://upload.wikimedia.org/wikipedia/commons/4/48/Windows_logo_-_2012_%28dark_blue%29.svg"} className="w-32 h-32 object-contain" alt="" />
                 </div>
               </Link>
 
-              {/* Windows 11 Card */}
+              {/* Product 3 Card */}
               <Link 
-                href={getProductLink(bestOffersProducts[2]?.slug)}
+                href={getProductLink(p3?.slug || p3?.id?.toString())}
                 className="bg-[#001b3d] rounded-2xl p-6 relative overflow-hidden min-h-[200px] flex flex-col justify-end group border border-blue-500/30 cursor-pointer"
               >
-                <div className="absolute top-4 left-4 bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">{bestOffersProducts[2]?.badge}</div>
+                {p3?.badge && <div className="absolute top-4 left-4 bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">{p3.badge}</div>}
                 <div className="relative z-10">
-                  <h3 className="text-white text-xl font-bold mb-1">{bestOffersProducts[2]?.title}</h3>
+                  <h3 className="text-white text-xl font-bold mb-1 line-clamp-2">{p3?.title || "Premium Deal"}</h3>
                   <p className="text-white/80 text-sm">at the cheapest price in the online market!</p>
                   <span className="inline-block mt-2 bg-yellow-400 hover:bg-yellow-500 text-black text-sm font-bold px-4 py-2 rounded-lg transition-colors">
                     Shop Now
@@ -187,7 +143,7 @@ export default function BestOffersSection() {
 
             {/* Bottom Horizontal Banner */}
             <Link 
-              href={getProductLink(bestOffersProducts[3]?.slug)}
+              href={getProductLink(p4?.slug || p4?.id?.toString())}
               className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-2xl p-6 relative overflow-hidden flex items-center justify-between border border-blue-100 cursor-pointer group"
             >
                <div className="flex items-center gap-6 z-10">

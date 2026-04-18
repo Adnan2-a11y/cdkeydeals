@@ -15,7 +15,7 @@ interface Category {
   name: string;
   slug: string;
   icon?: string;
-  image?: string;
+  image?: string | null;
 }
 
 interface CategoryTileProps {
@@ -81,7 +81,7 @@ function resolveIcon(key: string): React.ReactNode {
 
 export default function CategoryTile({ categories }: CategoryTileProps) {
   return (
-    <section className="py-12 bg-background">
+    <section className="pt-12 pb-4 bg-background">
       <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ChevronRight, ChevronLeft } from "lucide-react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -11,7 +11,6 @@ interface Brand {
   name: string;
   slug: string;
   image?: string;
-  icon?: string; // Kept for backwards compatibility if needed
 }
 
 interface BrandCarouselProps {
@@ -22,16 +21,19 @@ const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 },
+    transition: { staggerChildren: 0.05 },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, scale: 0.9 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
-    scale: 1,
-    transition: { duration: 0.4, ease: "easeOut" as const },
+    y: 0,
+    transition: { 
+      duration: 0.5, 
+      ease: "easeOut" as const 
+    },
   },
 };
 
@@ -40,60 +42,56 @@ export default function BrandCarousel({ brands }: BrandCarouselProps) {
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
+      const scrollAmount = 400;
       scrollRef.current.scrollBy({
-        left: direction === "left" ? -300 : 300,
+        left: direction === "left" ? -scrollAmount : scrollAmount,
         behavior: "smooth",
       });
     }
   };
 
+  if (!brands || brands.length === 0) return null;
+
   return (
-    <section className="py-12 bg-transparent">
+    <section className="py-16 bg-white dark:bg-[#1a1a1a] overflow-hidden">
       <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        {/* Header */}
+        {/* Header Section */}
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-xl font-extrabold text-foreground tracking-tight">Shop by Brand</h2>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => scroll("left")}
-              className="w-10 h-10 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-foreground rounded-full flex items-center justify-center transition-colors shadow-sm"
-              aria-label="Scroll left"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => scroll("right")}
-              className="w-10 h-10 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-foreground rounded-full flex items-center justify-center transition-colors shadow-sm"
-              aria-label="Scroll right"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
+          <h2 className="text-2xl font-bold text-foreground">Shop by Brand</h2>
+          <Link
+            href="/categories"
+            className="flex items-center gap-1 text-[#00d4aa] hover:text-[#00b894] font-medium text-sm transition-colors"
+          >
+            Shop All
+            <ChevronRight className="w-4 h-4" />
+          </Link>
         </div>
 
-        {/* Scrollable Brands Grid */}
+        {/* Brand Scroller */}
         <motion.div
           ref={scrollRef}
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
-          className="flex gap-6 overflow-x-auto pb-8 scrollbar-hide snap-x snap-mandatory"
+          viewport={{ once: true, margin: "-100px" }}
+          className="flex gap-6 overflow-x-auto pb-10 scrollbar-hide snap-x snap-mandatory"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {brands.map((brand) => (
             <motion.div
               key={brand.id}
               variants={itemVariants}
-              className="shrink-0 snap-start flex flex-col items-center group"
+              className="shrink-0 snap-start group"
             >
-              <Link href={`/brand/${brand.slug}`} className="outline-none">
-                {/* Image Container Card */}
-                <div className="relative w-32 h-20 sm:w-40 sm:h-24 rounded-xl bg-white dark:bg-gray-800
-                                border border-gray-100 dark:border-gray-700
-                                flex items-center justify-center p-4
-                                shadow-sm transition-all duration-300 
-                                group-hover:scale-105 group-hover:shadow-lg group-hover:border-[#00d4aa]/30">
+              <div className="block outline-none">
+                {/* Brand Card - Clean Shopify Style */}
+                <div className="relative w-36 h-28 sm:w-44 sm:h-32 bg-white dark:bg-[#242424] 
+                              border border-gray-100 dark:border-zinc-800
+                              rounded-2xl flex items-center justify-center p-6
+                              transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]
+                              group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] 
+                              dark:group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)]
+                              group-hover:-translate-y-1">
                   
                   {brand.image ? (
                     <div className="relative w-full h-full">
@@ -101,17 +99,22 @@ export default function BrandCarousel({ brands }: BrandCarouselProps) {
                         src={brand.image}
                         alt={`${brand.name} Logo`}
                         fill
-                        className="object-contain filter dark:brightness-200 dark:contrast-200 opacity-80 group-hover:opacity-100 transition-opacity"
-                        sizes="(max-width: 640px) 128px, 160px"
+                        className="object-contain filter transition-all duration-500 
+                                 grayscale group-hover:grayscale-0 
+                                 dark:brightness-200 dark:contrast-150 dark:group-hover:brightness-100 dark:group-hover:contrast-100
+                                 scale-90 group-hover:scale-100 opacity-60 group-hover:opacity-100"
+                        sizes="(max-width: 640px) 144px, 176px"
                       />
                     </div>
                   ) : (
-                    <span className="font-bold text-gray-400 dark:text-gray-500 text-center text-sm group-hover:text-[#00d4aa] transition-colors line-clamp-1">
-                      {brand.name}
-                    </span>
+                    <div className="text-center">
+                      <span className="font-black text-gray-400 dark:text-gray-600 text-xs uppercase tracking-widest transition-colors">
+                        {brand.name}
+                      </span>
+                    </div>
                   )}
                 </div>
-              </Link>
+              </div>
             </motion.div>
           ))}
         </motion.div>

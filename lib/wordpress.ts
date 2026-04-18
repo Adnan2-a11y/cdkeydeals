@@ -108,14 +108,16 @@ export function mapWooCommerceProduct(wcProduct: any): Product {
     discount = Math.round(((originalPrice - price) / originalPrice) * 100);
   }
 
-  // Handle images securely
+  // Handle images — use the first available image or a professional branded SVG placeholder
   const images: string[] = [];
   if (Array.isArray(wcProduct?.images)) {
     wcProduct.images.forEach((img: any) => {
-      if (img?.src) images.push(img.src);
+      if (img?.src && !img.src.includes('woocommerce-placeholder')) {
+        images.push(img.src);
+      }
     });
   }
-  const mainImage = images.length > 0 ? images[0] : '/placeholder.svg';
+  const mainImage = images.length > 0 ? images[0] : '/images/product-placeholder.svg';
 
   // Categories
   const category = (Array.isArray(wcProduct?.categories) && wcProduct.categories.length > 0) 
@@ -130,9 +132,27 @@ export function mapWooCommerceProduct(wcProduct: any): Product {
   const description: string = wcProduct?.description ?? '';
   const shortDescription: string = wcProduct?.short_description ?? '';
 
-  // Stock Handling
-  const stock: number = wcProduct?.stock_quantity ?? 0;
-  const stockStatus = wcProduct?.stock_status; // "instock", "outofstock", "onbackorder"
+  // ── Stock Handling ──────────────────────────────────────────────────────────
+  // WooCommerce stock_status: "instock" | "outofstock" | "onbackorder"
+  // stock_quantity is null when "Manage Stock" is disabled — means unlimited / always in stock.
+  const stockStatus: string = wcProduct?.stock_status ?? 'instock';
+  const manageStock: boolean = wcProduct?.manage_stock ?? false;
+  const rawStockQty: number | null = wcProduct?.stock_quantity ?? null;
+
+  // If manage_stock is false, stock is unlimited — treat as in stock.
+  const stock: number = manageStock ? (rawStockQty ?? 0) : 0;
+  
+  // Build a human-readable stock label
+  let stockLabel: string;
+  if (stockStatus === 'outofstock') {
+    stockLabel = 'Out of Stock';
+  } else if (stockStatus === 'onbackorder') {
+    stockLabel = 'Available on Backorder';
+  } else if (manageStock && rawStockQty !== null && rawStockQty <= 5) {
+    stockLabel = `Only ${rawStockQty} left`;
+  } else {
+    stockLabel = 'In Stock';
+  }
 
   return {
     id,
@@ -140,19 +160,20 @@ export function mapWooCommerceProduct(wcProduct: any): Product {
     title,
     price,
     originalPrice: originalPrice > price ? originalPrice : undefined,
-    currency: 'USD', // WooCommerce default fallback
+    currency: 'USD',
     discount,
     image: mainImage,
     images,
     category,
-    stock,
-    stockLabel: stockStatus === 'instock' ? (stock > 0 ? `${stock} in stock` : 'In stock') : 'Out of stock',
+    // Only populate numeric stock if manage_stock is enabled
+    stock: manageStock ? (rawStockQty ?? 0) : undefined,
+    stockLabel,
     rating: parseFloat(wcProduct?.average_rating) || 0,
     reviewCount: wcProduct?.rating_count ?? 0,
     tags,
     description: description || shortDescription,
     isFeatured: wcProduct?.featured ?? false,
-    platform: 'Other', // Platform mapping could be handled via WooCommerce attributes later
+    platform: 'Other',
   };
 }
 
@@ -167,6 +188,9 @@ export async function getProducts(params: {
   per_page?: number;
   category?: number;
   featured?: boolean;
+  on_sale?: boolean;
+  orderby?: 'date' | 'popularity' | 'rating' | 'price' | 'title' | 'id';
+  order?: 'asc' | 'desc';
   maxProducts?: number;
 } = {}): Promise<Product[]> {
   const maxProducts = params.maxProducts || 100;
@@ -183,6 +207,9 @@ export async function getProducts(params: {
       queryParams.append('per_page', perPage.toString());
       if (params.category) queryParams.append('category', params.category.toString());
       if (params.featured !== undefined) queryParams.append('featured', params.featured.toString());
+      if (params.on_sale !== undefined) queryParams.append('on_sale', params.on_sale.toString());
+      if (params.orderby) queryParams.append('orderby', params.orderby);
+      if (params.order) queryParams.append('order', params.order);
 
       const endpoint = `products?${queryParams.toString()}`;
       

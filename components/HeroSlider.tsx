@@ -24,7 +24,7 @@ interface SlideData {
 // SLIDE DATA
 // =====================================================
 
-const slides: SlideData[] = [
+const defaultSlides: SlideData[] = [
   {
     id: 1,
     title: "Counter-Strike 2 Prime Status",
@@ -95,9 +95,26 @@ function CountdownTimer() {
   );
 }
 
-export default function HeroSlider() {
+import { Product } from "@/types/product";
+
+export default function HeroSlider({ products = [] }: { products?: Product[] }) {
   const [current, setCurrent] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true); // ✅ NEW
+  const [isPlaying, setIsPlaying] = useState(true);
+
+  // Map dynamic products if available, otherwise use defaults
+  const slides: SlideData[] = products.length > 0 
+    ? products.slice(0, 3).map((p, index) => ({
+        id: p.id,
+        title: p.title,
+        subtitle: p.description?.replace(/<[^>]*>?/gm, '').substring(0, 100) + '...', // strip html
+        cta: "Shop Now",
+        productSlug: p.slug || p.id.toString(),
+        badge: p.discount ? "Save Up to" : undefined,
+        discount: p.discount ? `${p.discount}%` : undefined,
+        image: p.image || defaultSlides[index]?.image || defaultSlides[0].image,
+        buttonVariant: "primary",
+      }))
+    : defaultSlides;
 
   useEffect(() => {
     if (!isPlaying) return; // ✅ pause support

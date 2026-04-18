@@ -169,7 +169,7 @@ export default function MostPopularProductCard({
           <Button
             variant={isOutOfStock ? "secondary" : "default"}
             size="sm"
-            className="w-full bg-gray-900 hover:bg-gray-800 text-white shadow-md text-xs py-1.5 px-3 h-8"
+            className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-black shadow-md text-xs py-1.5 px-3 h-8 border-none"
             disabled={isOutOfStock}
             onClick={handleAddToCart}
           >

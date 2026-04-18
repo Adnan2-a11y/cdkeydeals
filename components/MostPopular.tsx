@@ -1,144 +1,233 @@
 "use client";
 
 import { useState } from "react";
-import MostPopularProductCard from "./MostPopularProductCard";
+import Link from "next/link";
+import Image from "next/image";
+import { ShoppingCart, Eye, Package } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useCart } from "@/context/CartContext";
+import { toast } from "sonner";
 import QuickViewModal from "./QuickViewModal";
 import { Product } from "@/types/product";
 
-// Product type for the component
-interface MostPopularProduct {
-  id: number;
-  title: string;
-  category?: string;
-  price: number;
-  currency?: string;
-  image?: string;
-  badge?: string;
-  stockLabel?: string;
-  originalPrice?: number;
-}
-
 interface MostPopularProps {
   title?: string;
-  products?: MostPopularProduct[];
+  products: Product[];
   viewAllLink?: string;
 }
 
-// প্রোডাক্ট ডাটাগুলো এখানেই ডিফাইন করে দিচ্ছি যেন এরর না আসে
-const mostPopularProducts = [
-  {
-    id: 1,
-    title: "Microsoft Windows 11 Professional",
-    category: "Hot Sale",
-    price: 1900,
-    currency: "Tk",
-    image: "/placeholder.jpg", 
-    stockLabel: "In Stock",
-  },
-  {
-    id: 2,
-    title: "MS Office 2024 Pro Plus & Windows 11 Pro Combo",
-    category: "Hot Sale",
-    price: 5100,
-    currency: "Tk",
-    image: "/placeholder.jpg",
-    stockLabel: "1 Last Items",
-  },
-  {
-    id: 3,
-    title: "Office 2024 Pro Plus License Key Spring Promo Deal",
-    category: "Best Seller",
-    price: 1700,
-    badge: "SPRING PROMO",
-    currency: "Tk",
-    image: "/placeholder.jpg",
-    stockLabel: "In Stock",
-  },
-  {
-    id: 4,
-    title: "Microsoft Office 365 Account | Email & Password",
-    category: "Office Keys",
-    price: 6300,
-    currency: "Tk",
-    image: "/placeholder.jpg",
-    stockLabel: "In Stock",
-  },
-  {
-    id: 5,
-    title: "Adobe Creative Cloud Family Complete Creative Suite",
-    category: "Adobe Software",
-    price: 7100,
-    currency: "Tk",
-    image: "/placeholder.jpg",
-    stockLabel: "In Stock",
-  },
-  {
-    id: 6,
-    title: "PlayStation Gift Card 3 USD - UNITED STATES",
-    category: "Gift Cards",
-    price: 400,
-    currency: "Tk",
-    image: "/placeholder.jpg",
-    stockLabel: "In Stock",
-  },
-];
+// ─── Individual Product Card ──────────────────────────────────────────────────
 
-export default function MostPopular({ title = "Most Popular", products: externalProducts, viewAllLink }: MostPopularProps) {
-  // Use external products if provided, otherwise use default products
-  const products = externalProducts || mostPopularProducts;
+function PopularCard({ product, onQuickView }: { product: Product; onQuickView: () => void }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const { addToCart, getItemQuantity } = useCart();
 
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
+  const itemQuantity = getItemQuantity(product.id);
+  const isOutOfStock = product.stockLabel === "Out of Stock";
+  const isLowStock = product.stockLabel?.startsWith("Only");
 
-  const handleQuickView = (productId: number) => {
-    const product = products.find((p) => p.id === productId);
-    if (product) {
-      setSelectedProduct({
+  const handleAddToCart = () => {
+    if (!isOutOfStock) {
+      addToCart({
         id: product.id,
         title: product.title,
         price: product.price,
         currency: product.currency,
         image: product.image,
-        category: product.category,
-        stockLabel: product.stockLabel,
-        badge: product.badge,
-        originalPrice: product.originalPrice,
       });
-      setIsQuickViewOpen(true);
+      toast.success(`${product.title} added to cart!`);
     }
   };
 
-  const handleCloseQuickView = () => {
-    setIsQuickViewOpen(false);
-    setTimeout(() => setSelectedProduct(null), 300);
+  const href = `/product/${product.slug || product.id.toString()}`;
+  const showImage = product.image && !imageError && !product.image.includes("product-placeholder");
+
+  return (
+    <div
+      className="group flex flex-col relative rounded-xl bg-card dark:bg-muted p-3
+        hover:-translate-y-1.5 hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)]
+        dark:hover:shadow-[0_8px_30px_rgba(255,255,255,0.08)]
+        transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Image Container */}
+      <Link href={href} className="relative block aspect-4/5 overflow-hidden rounded-xl border border-border shadow-sm">
+        <div className="w-full h-full bg-muted/50 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
+          {showImage ? (
+            <img
+              src={product.image!}
+              alt={product.title}
+              className={`w-full h-full object-cover transition-transform duration-500 ${
+                isHovered ? "scale-110" : "scale-100"
+              }`}
+              onError={() => setImageError(true)}
+            />
+          ) : (
+            // Professional fallback: styled box icon
+            <div className="flex flex-col items-center justify-center w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
+              <div className="relative w-14 h-16 bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-500 dark:to-gray-600 rounded-sm shadow-md">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Package className="w-7 h-9 text-white/70" />
+                </div>
+                <div className="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-r from-gray-400 to-gray-500 dark:from-gray-600 dark:to-gray-700 rounded-l-sm" />
+                <div className="absolute top-1 left-1 right-1 h-0.5 bg-white/20 rounded-sm" />
+              </div>
+              <span className="mt-2 text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">
+                CdkeyDeals
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Hover overlay */}
+        <div
+          className={`absolute inset-0 bg-linear-to-t from-black/50 via-black/20 to-transparent transition-opacity duration-300 ${
+            isHovered ? "opacity-100" : "opacity-0"
+          }`}
+        />
+
+        {/* Discount badge */}
+        {product.discount && (
+          <div className="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-black px-1.5 py-0.5 rounded-md shadow-sm z-10">
+            -{product.discount}%
+          </div>
+        )}
+
+        {/* Quick View */}
+        <button
+          type="button"
+          onClick={(e) => { e.preventDefault(); onQuickView(); }}
+          className={`absolute top-2 right-2 z-20 w-8 h-8
+            bg-white/90 dark:bg-gray-800/90 hover:bg-gray-900 hover:text-white
+            text-gray-700 dark:text-gray-300 rounded-full flex items-center justify-center
+            transition-all duration-300 shadow-md backdrop-blur-sm ${
+            isHovered ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"
+          }`}
+          aria-label="Quick view"
+        >
+          <Eye className="w-3.5 h-3.5" />
+        </button>
+      </Link>
+
+      {/* Product Info */}
+      <div className="mt-4 flex flex-col flex-1 justify-between">
+        <div className="space-y-1">
+          <span className="text-xs text-muted-foreground font-medium">{product.category}</span>
+
+          <Link href={href}>
+            <h3 className="text-[14px] font-bold text-foreground leading-snug hover:text-blue-600 dark:hover:text-blue-400 line-clamp-2 min-h-[40px] transition-colors">
+              {product.title}
+            </h3>
+          </Link>
+
+          <div className="flex items-center gap-2 pt-1">
+            <span className="text-base font-extrabold text-foreground">
+              ${product.price.toFixed(2)}
+            </span>
+            {product.originalPrice && (
+              <span className="text-xs text-muted-foreground line-through">
+                ${product.originalPrice.toFixed(2)}
+              </span>
+            )}
+          </div>
+
+          {/* Stock Status */}
+          <div className="flex items-center gap-1.5 mt-1">
+            <span className={`w-2 h-2 rounded-full ${
+              isOutOfStock ? "bg-red-500" : isLowStock ? "bg-orange-500" : "bg-green-500"
+            }`} />
+            <span className={`text-xs font-semibold ${
+              isOutOfStock
+                ? "text-red-600 dark:text-red-400"
+                : isLowStock
+                ? "text-orange-600 dark:text-orange-400"
+                : "text-green-600 dark:text-green-400"
+            }`}>
+              {product.stockLabel || "In Stock"}
+            </span>
+          </div>
+        </div>
+
+        {/* Action Buttons — revealed on hover */}
+        <div
+          className={`mt-3 space-y-1.5 transition-all duration-300 ${
+            isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2 pointer-events-none"
+          }`}
+        >
+          <Button
+            size="sm"
+            className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-black shadow-md text-xs py-1.5 px-3 h-8 border-none"
+            disabled={isOutOfStock}
+            onClick={handleAddToCart}
+          >
+            <ShoppingCart className="w-3.5 h-3.5 mr-1" />
+            {isOutOfStock ? "Out of Stock" : itemQuantity > 0 ? `In Cart (${itemQuantity})` : "Add to Cart"}
+          </Button>
+
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full text-xs py-1.5 px-3 h-8"
+            onClick={onQuickView}
+          >
+            <Eye className="w-3.5 h-3.5 mr-1" />
+            Quick View
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main Section ─────────────────────────────────────────────────────────────
+
+export default function MostPopular({ title = "Most Popular", products, viewAllLink }: MostPopularProps) {
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
+
+  const handleQuickView = (product: Product) => {
+    setSelectedProduct(product);
+    setIsQuickViewOpen(true);
   };
+
+  if (!products || products.length === 0) return null;
 
   return (
     <section className="py-12 bg-background">
-      <div className="max-w-[1320px] mx-auto px-4" suppressHydrationWarning>
-        {/* Section Title */}
-        <div className="mb-10" suppressHydrationWarning>
-          <h2 className="text-2xl font-extrabold text-foreground">
-            {title}
-          </h2>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-2xl font-bold text-foreground">{title}</h2>
+          {viewAllLink && (
+            <Link
+              href={viewAllLink}
+              className="flex items-center gap-1 text-[#00d4aa] hover:text-[#00b894] font-medium text-sm transition-colors"
+            >
+              View All →
+            </Link>
+          )}
         </div>
 
-        {/* Clean Grid Setup */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-6 gap-y-10" suppressHydrationWarning>
+        {/* Product Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-4 gap-y-8">
           {products.map((product) => (
-            <MostPopularProductCard
+            <PopularCard
               key={product.id}
-              {...product}
-              onQuickView={() => handleQuickView(product.id)}
+              product={product}
+              onQuickView={() => handleQuickView(product)}
             />
           ))}
         </div>
 
-        {/* Quick View Modal */}
         <QuickViewModal
           product={selectedProduct}
           isOpen={isQuickViewOpen}
-          onClose={handleCloseQuickView}
+          onClose={() => {
+            setIsQuickViewOpen(false);
+            setTimeout(() => setSelectedProduct(null), 300);
+          }}
         />
       </div>
     </section>
