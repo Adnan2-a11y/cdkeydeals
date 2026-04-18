@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import {
   Facebook,
   Twitter,
@@ -73,13 +74,14 @@ export default function Footer() {
           {/* 2. Logo & Description Section */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-2 mb-4">
-              {/* Custom Logo based on image */}
-              <div className="text-[#6343D8] flex items-center gap-1">
-                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="rotate-[-10deg]">
-                   <path d="M12 2a10 10 0 1 0 10 10" />
-                   <path d="M12 2a10 10 0 1 1-10 10" />
-                </svg>
-                <span className="text-2xl font-bold tracking-tight">cdkey<span className="font-medium">Deals</span></span>
+              <div className="flex items-center gap-1">
+                <Image
+                  src="/images/CDkeyDeals Logo.svg"
+                  alt="CDkeyDeals Logo"
+                  width={190}
+                  height={65}
+                  className="dark:invert"
+                />
               </div>
             </div>
             <p className="text-[#666666] dark:text-gray-400 text-sm leading-relaxed max-w-xs">
