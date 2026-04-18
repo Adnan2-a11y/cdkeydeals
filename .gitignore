@@ -15,11 +15,4 @@ node_modules
 .next/
 .DS_Store
 .env
-<<<<<<< HEAD
-test-wp.js
 test-wp2.js
-test-wp.js
-test-wp.js
-=======
-test-wp2.js
->>>>>>> b2d5f4e (df)
