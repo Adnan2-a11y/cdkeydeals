@@ -175,7 +175,7 @@ export default function MegaDropdown({
             z-50 overflow-hidden flex rounded-xl`}
           >
             {/* LEFT SIDE */}
-            <div className="w-[260px] py-4 border-r border-gray-100 dark:border-gray-800">
+            <div className="w-[480px] py-4 border-r border-gray-100 dark:border-gray-800">
               {columns.map((column, index) => (
                 <div
                   key={column.title}
