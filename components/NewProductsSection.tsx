@@ -82,11 +82,16 @@ export default function NewProductsSection({
                   </div>
                 )}
 
-                {/* Image Placeholder - Height komano hoyeche */}
-                <div className="aspect-4/5 bg-muted/30 dark:bg-muted/50 flex items-center justify-center p-2">
-                  <div className="w-12 h-12 bg-muted/50 dark:bg-gray-700 rounded-md flex items-center justify-center">
-                    <Gamepad2 className="w-6 h-6 text-gray-400" />
-                  </div>
+                {/* Image */}
+                <div className="aspect-4/5 relative bg-muted/30 dark:bg-muted/50 p-2">
+                  <img
+                    src={product.image || '/images/product-placeholder.svg'}
+                    alt={product.title}
+                    className="w-full h-full object-cover rounded-md"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/images/product-placeholder.svg';
+                    }}
+                  />
                 </div>
 
                 {/* Content - Sudhu Title rakha hoyeche */}

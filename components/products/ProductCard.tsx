@@ -129,17 +129,11 @@ export default function ProductCard({
               onError={() => setImageError(true)}
             />
           ) : (
-            <div className="relative w-full h-full flex items-center justify-center">
-              <div className="w-20 h-24 bg-gradient-to-br from-gray-200 to-gray-300 rounded-sm shadow-lg transform rotate-3 hover:rotate-6 transition-transform duration-300">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Package className="w-10 h-12 text-gray-400" />
-                </div>
-                {/* Box spine */}
-                <div className="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-r from-gray-300 to-gray-400 rounded-l-sm"></div>
-                {/* Box highlight */}
-                <div className="absolute top-1 left-1 right-1 h-1 bg-white/30 rounded-sm"></div>
-              </div>
-            </div>
+            <img
+              src="/images/product-placeholder.svg"
+              alt="No image available"
+              className="w-full h-full object-cover"
+            />
           )}
         </Link>
 

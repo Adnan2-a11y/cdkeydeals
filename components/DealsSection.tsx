@@ -60,6 +60,10 @@ export default function DealsSection({ products: externalProducts }: DealsSectio
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
 
+  // Pick the first product as the "Featured Big Deal" on the left
+  const featuredDeal = products.length > 0 ? products[0] : null;
+  const carouselProducts = products.length > 1 ? products.slice(1) : products;
+
   const handleQuickView = (product: Product) => {
     setSelectedProduct(product);
     setIsQuickViewOpen(true);
@@ -113,11 +117,24 @@ export default function DealsSection({ products: externalProducts }: DealsSectio
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Main Deal Banner */}
+          {/* Main Deal Banner - Now Dynamic */}
           <div className="lg:w-[400px] shrink-0">
             <div className="relative h-full min-h-[450px] rounded-3xl overflow-hidden shadow-2xl group/banner">
-              {/* Background with subtle animation */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#1a1c2c] via-[#4a192c] to-[#12141d] z-0" />
+              {/* Background with dynamic image if available */}
+              {featuredDeal?.image ? (
+                <div className="absolute inset-0">
+                  <Image
+                    src={featuredDeal.image}
+                    alt={featuredDeal.title}
+                    fill
+                    className="object-cover opacity-30 group-hover/banner:scale-110 transition-transform duration-1000"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#1a1c2c] via-black/80 to-[#12141d]" />
+                </div>
+              ) : (
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1a1c2c] via-[#4a192c] to-[#12141d]" />
+              )}
+              
               <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 z-[1]" />
               
               <div className="relative z-10 h-full p-8 flex flex-col justify-between">
@@ -130,25 +147,33 @@ export default function DealsSection({ products: externalProducts }: DealsSectio
                   <CountdownTimer />
                   
                   <div className="mt-10">
-                    <h3 className="text-white text-sm font-bold uppercase tracking-widest opacity-60 mb-2">Microsoft Store</h3>
-                    <h2 className="text-4xl xs:text-5xl font-black text-white leading-none tracking-tighter">
-                      OFFICE <br />
-                      <span className="text-yellow-400">2024</span>
+                    <h3 className="text-white text-sm font-bold uppercase tracking-widest opacity-60 mb-2">
+                      {featuredDeal?.category || 'Special Offer'}
+                    </h3>
+                    <h2 className="text-3xl xs:text-4xl font-black text-white leading-none tracking-tighter uppercase line-clamp-3">
+                      {featuredDeal?.title.split(' ').slice(0, 2).join(' ')} <br />
+                      <span className="text-yellow-400">{featuredDeal?.title.split(' ').slice(2).join(' ')}</span>
                     </h2>
-                    <p className="text-gray-400 text-sm mt-4 max-w-[240px] leading-relaxed">
-                      Get the latest Professional Plus suite with instant delivery and lifetime validity.
+                    <p className="text-gray-400 text-sm mt-4 max-w-[240px] leading-relaxed line-clamp-3">
+                      {featuredDeal?.description?.replace(/<[^>]*>?/gm, '').substring(0, 100) || 'Get this limited time deal with instant delivery and secure checkout.'}
                     </p>
                   </div>
                 </div>
 
                 <div className="space-y-4">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-yellow-400 text-3xl font-black">$24.99</span>
-                    <span className="text-white/40 text-lg line-through font-bold">$129.00</span>
+                    <span className="text-yellow-400 text-3xl font-black">
+                      {featuredDeal?.currency === 'BDT' ? '৳' : '$'}{featuredDeal?.price}
+                    </span>
+                    {featuredDeal?.originalPrice && (
+                      <span className="text-white/40 text-lg line-through font-bold">
+                        {featuredDeal?.currency === 'BDT' ? '৳' : '$'}{featuredDeal?.originalPrice}
+                      </span>
+                    )}
                   </div>
                   
                   <Link
-                    href="/collections/software"
+                    href={featuredDeal ? `/product/${featuredDeal.slug || featuredDeal.id}` : "/collections/software"}
                     className="flex items-center justify-center gap-2 bg-yellow-400 hover:bg-white text-black font-black py-4 px-8 rounded-2xl w-full transition-all duration-300 shadow-lg shadow-yellow-400/20 group-hover/banner:scale-[1.02] active:scale-95"
                   >
                     GRAB THIS DEAL
@@ -157,7 +182,6 @@ export default function DealsSection({ products: externalProducts }: DealsSectio
                 </div>
               </div>
               
-              {/* Decorative light effect */}
               <div className="absolute -top-20 -right-20 w-64 h-64 bg-purple-500/20 rounded-full blur-[80px] group-hover/banner:bg-purple-500/30 transition-colors" />
             </div>
           </div>
@@ -169,7 +193,7 @@ export default function DealsSection({ products: externalProducts }: DealsSectio
               className="flex gap-6 overflow-x-auto pb-10 scrollbar-hide snap-x snap-mandatory px-2"
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
-              {products.map((product) => {
+              {carouselProducts.map((product) => {
                 const stockPercent = Math.min(Math.max((product.stock || 0) / 100 * 100, 10), 90);
                 
                 return (
@@ -192,20 +216,12 @@ export default function DealsSection({ products: externalProducts }: DealsSectio
                           </div>
                         )}
                         
-                        {product.image ? (
-                          <Image
-                            src={product.image}
-                            alt={product.title}
-                            fill
-                            className="object-cover group-hover:scale-110 transition-transform duration-700"
-                          />
-                        ) : (
-                          <div className="absolute inset-0 flex items-center justify-center bg-muted/20">
-                            <span className="text-muted-foreground text-[10px] font-black uppercase text-center px-4">
-                              {product.title}
-                            </span>
-                          </div>
-                        )}
+                        <Image
+                          src={product.image || '/images/product-placeholder.svg'}
+                          alt={product.title}
+                          fill
+                          className="object-cover group-hover:scale-110 transition-transform duration-700"
+                        />
                         
                         {/* Quick Action Overlay */}
                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
