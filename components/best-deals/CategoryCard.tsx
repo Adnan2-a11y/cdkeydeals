@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 
 interface CategoryCardProps {
@@ -10,35 +9,42 @@ interface CategoryCardProps {
 }
 
 export default function CategoryCard({ icon, title, href = "#" }: CategoryCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
     <Link href={href}>
-      <div
-        className="flex flex-col items-center justify-center p-4 cursor-pointer group"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        {/* Circular Icon Container */}
+      <div className="flex flex-col items-center justify-center cursor-pointer group">
+
+        {/* 🔥 EXTRA LARGE ICON CONTAINER */}
         <div
-          className={`
-            w-16 h-16 md:w-20 md:h-20 rounded-full 
+          className="
+            w-28 h-28 md:w-36 md:h-36 lg:w-40 lg:h-40
+            rounded-full 
             flex items-center justify-center 
             bg-gradient-to-br from-gray-50 to-gray-100 
-            shadow-sm 
-            transition-all duration-300 ease-out
-            group-hover:shadow-lg
-            group-hover:scale-105
-            ${isHovered ? 'shadow-lg scale-105' : ''}
-          `}
+            dark:from-muted dark:to-muted/60
+            shadow-lg
+            transition-all duration-300
+            group-hover:scale-110 group-hover:shadow-2xl
+          "
         >
-          <span className="text-2xl md:text-3xl">{icon}</span>
+          {/* 🚀 ULTRA BIG ICON */}
+          <span className="
+            text-6xl md:text-7xl lg:text-8xl
+            transition-transform duration-300
+            group-hover:scale-110
+          ">
+            {icon}
+          </span>
         </div>
-        
-        {/* Category Title */}
-        <span className="mt-3 text-xs md:text-sm text-center text-gray-700 font-medium group-hover:text-gray-900 transition-colors duration-200">
+
+        {/* Title */}
+        <span className="
+          mt-4 text-sm text-center font-medium
+          text-gray-700 dark:text-muted-foreground
+          group-hover:text-gray-900 dark:group-hover:text-white
+        ">
           {title}
         </span>
+
       </div>
     </Link>
   );

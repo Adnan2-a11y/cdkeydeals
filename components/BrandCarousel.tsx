@@ -53,7 +53,6 @@ export default function BrandCarousel({ brands }: BrandCarouselProps) {
   if (!brands || brands.length === 0) return null;
 
   return (
-    <section className="py-16 bg-white dark:bg-[#1a1a1a] overflow-hidden">
       <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="flex items-center justify-between mb-8">
@@ -119,6 +118,5 @@ export default function BrandCarousel({ brands }: BrandCarouselProps) {
           ))}
         </motion.div>
       </div>
-    </section>
   );
 }

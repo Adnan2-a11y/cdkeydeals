@@ -68,7 +68,7 @@ export default function TopProducts({
   const displayProducts = products.slice(0, 6);
 
   return (
-    <section className="py-12 bg-muted/30 dark:bg-muted/20">
+    <section className="pt-12 pb-6">
       <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">

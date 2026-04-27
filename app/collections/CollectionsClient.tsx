@@ -243,22 +243,6 @@ export default function CollectionsClient({ initialProducts = [] }: { initialPro
       <div className="bg-card border-b border-border">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
           <Breadcrumb />
-
-          {/* Page Title */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h1 className="text-3xl font-bold text-foreground mb-4">
-              All Products
-            </h1>
-            <p className="text-muted-foreground max-w-3xl">
-              Explore our complete collection of digital products. Find the best
-              deals on game keys, software licenses, gift cards, and
-              subscriptions. All products are delivered instantly to your email.
-            </p>
-          </motion.div>
         </div>
       </div>
 

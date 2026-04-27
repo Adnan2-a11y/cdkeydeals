@@ -320,13 +320,7 @@ export default function QuickViewModal({
                       </div>
                     )}
 
-                    {/* Description */}
-                    {product.description && (
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {product.description}
-                      </p>
-                    )}
-
+                    
                     {/* Price */}
                     <div className="flex items-baseline gap-3">
                       <span className="text-3xl font-bold text-[#6366f1] dark:text-indigo-400">

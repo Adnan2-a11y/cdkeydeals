@@ -48,7 +48,7 @@ export default function MoreDropdown({ isOpen, onHover, onLeave }: MoreDropdownP
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute top-full left-0 mt-1 min-w-[180px] bg-white dark:bg-[#1E1E1E] rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden z-50"
+            className="absolute top-full left-0 mt-4 min-w-[180px] bg-white dark:bg-[#1E1E1E] rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden z-50"
             role="menu"
             aria-label="More menu"
           >

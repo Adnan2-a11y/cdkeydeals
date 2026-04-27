@@ -61,6 +61,7 @@ export default function SoftwareDropdown({
       onClose={onClose}
       columns={columns}
       columnHoverColor="text-indigo-600"
+      className="bg-[#1E1E1E]"
     />
   );
 }

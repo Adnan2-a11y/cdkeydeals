@@ -67,7 +67,7 @@ export default function ProductSection({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="snap-start flex-shrink-0 w-[200px] sm:w-[220px] md:w-[240px]"
+                className="snap-start flex-shrink-0 w-[220px] sm:w-[240px] md:w-[260px]"
               >
                 <CollectionsProductCard
                   product={product}
@@ -88,7 +88,7 @@ export default function ProductSection({
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"
+          className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3"
         >
           {products.map((product, index) => (
             <CollectionsProductCard

@@ -106,7 +106,7 @@ export default function GiftCardsDropdown({
             animate={{ opacity: 1, scale: 1,   y: 0   }}
             exit={{ opacity: 0, scale: 0.95, y: -10 }}
             transition={{ duration: 0.15, ease: "easeOut" }}
-            className="absolute top-full left-0 mt-1 w-64 bg-white dark:bg-[#1E1E1E] rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-2 z-50"
+            className="absolute top-full left-0 mt-4 w-64 bg-white dark:bg-[#1E1E1E] rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-2 z-50"
             onMouseEnter={() => { if (timeoutRef.current) clearTimeout(timeoutRef.current); }}
             onMouseLeave={onClose}
           >

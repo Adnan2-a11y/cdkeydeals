@@ -221,7 +221,7 @@ const defaultBanners: PromoBannerData[] = [
 
 export default function PromoBanner({ banners = defaultBanners, className = "" }: PromoBannerProps) {
   return (
-    <section className={`py-12 bg-white dark:bg-[#1E1E1E] ${className}`}>
+    <section className={`pt-6 pb-12 bg-white dark:bg-[#1E1E1E] ${className}`}>
       <div>
         {/* Banner Grid */}
         <div className="grid md:grid-cols-2 gap-6">

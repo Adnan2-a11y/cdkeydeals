@@ -42,22 +42,18 @@ export default function ProductCard({
   const { addToCart, getItemQuantity } = useCart();
   const { formatPriceWithOriginal } = useCurrency();
 
-  // Use slug if available, fallback to id for backward compatibility
   const productIdentifier = slug || id.toString();
 
   const isLowStock = stock !== undefined && stock <= 5 && stock > 0;
   const isOutOfStock = stock === 0;
-  const inStock = stockLabel?.toLowerCase().includes('in stock') || (stock !== undefined && stock > 5);
 
-  // Convert to USD base price (assuming current price is in USD for consistency)
-  // If your prices are in different currencies, convert them to USD first
   const basePriceUSD = price;
   const baseOriginalPriceUSD = originalPrice;
 
   const getStockStatus = () => {
-    if (isOutOfStock) return { status: 'out-of-stock', color: 'text-red-600', bg: 'bg-red-500', label: 'Out of Stock' };
-    if (isLowStock) return { status: 'low-stock', color: 'text-orange-600', bg: 'bg-orange-500', label: stockLabel || 'Low Stock' };
-    return { status: 'in-stock', color: 'text-green-600', bg: 'bg-green-500', label: stockLabel || 'In Stock' };
+    if (isOutOfStock) return { status: 'out-of-stock', color: 'text-red-500', bg: 'bg-red-500', label: 'Out of Stock' };
+    if (isLowStock) return { status: 'low-stock', color: 'text-orange-500', bg: 'bg-orange-500', label: stockLabel || 'Low Stock' };
+    return { status: 'in-stock', color: 'text-green-500', bg: 'bg-green-500', label: stockLabel || 'In Stock' };
   };
 
   const stockStatus = getStockStatus();
@@ -88,7 +84,18 @@ export default function ProductCard({
 
   return (
     <div
-      className="group relative bg-card dark:bg-muted rounded-xl hover:border overflow-hidden hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_8px_30px_rgba(255,255,255,0.08)] hover:-translate-y-1.5 transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] font-['Inter',system-ui,sans-serif] min-h-[340px] flex flex-col"
+      className="
+        group relative 
+        bg-white dark:bg-[#242425]
+        border border-gray-200 dark:border-[#242425]
+        rounded-xl overflow-hidden
+        hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] 
+        dark:hover:shadow-[0_8px_30px_rgba(255,255,255,0.06)]
+        hover:-translate-y-1.5 
+        transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]
+        font-['Inter',system-ui,sans-serif] 
+        min-h-[340px] flex flex-col
+      "
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -108,7 +115,13 @@ export default function ProductCard({
       {/* Quick View Button */}
       <button
         onClick={handleQuickView}
-        className={`absolute top-2 right-2 z-20 w-8 h-8 bg-white/90 hover:bg-gray-900 hover:text-white text-gray-700 rounded-full flex items-center justify-center transition-all duration-300 shadow-md backdrop-blur-sm ${
+        className={`absolute top-2 right-2 z-20 w-8 h-8 
+        bg-white/90 dark:bg-gray-800/90 
+        hover:bg-gray-900 hover:text-white 
+        dark:hover:bg-white dark:hover:text-black
+        text-gray-700 dark:text-gray-200
+        rounded-full flex items-center justify-center 
+        transition-all duration-300 shadow-md backdrop-blur-sm ${
           isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
         }`}
         aria-label="Quick view"
@@ -116,8 +129,8 @@ export default function ProductCard({
         <Eye className="w-3 h-3" />
       </button>
 
-      {/* Product Image Container */}
-      <div className="relative h-36 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4 overflow-hidden">
+      {/* Product Image */}
+      <div className="relative h-36 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center p-4 overflow-hidden">
         <Link href={`/product/${productIdentifier}`} className="block w-full h-full">
           {image && !imageError ? (
             <img
@@ -137,17 +150,18 @@ export default function ProductCard({
           )}
         </Link>
 
-        {/* Gradient Overlay for Hover Actions */}
+        {/* Hover Gradient */}
         <div
-          className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-opacity duration-300 ${
+          className={`absolute bottom-0 left-0 right-0 
+          bg-gradient-to-t from-black/60 via-black/20 to-transparent 
+          transition-opacity duration-300 ${
             isHovered ? 'opacity-100' : 'opacity-0'
           }`}
         />
       </div>
 
-      {/* Content Area */}
+      {/* Content */}
       <div className="flex-1 p-3 flex flex-col justify-between">
-        {/* Top Content */}
         <div>
           {/* Category */}
           {category && (
@@ -160,7 +174,7 @@ export default function ProductCard({
 
           {/* Title */}
           <Link href={`/product/${productIdentifier}`}>
-            <h3 className="text-xs font-bold text-foreground line-clamp-2 min-h-[2rem] hover:text-blue-600 dark:hover:text-blue-400 transition-colors leading-tight">
+            <h3 className="text-xs font-bold text-gray-900 dark:text-white line-clamp-2 min-h-[2rem] hover:text-blue-600 dark:hover:text-blue-400 transition-colors leading-tight">
               {title}
             </h3>
           </Link>
@@ -169,13 +183,13 @@ export default function ProductCard({
           <PriceDisplay
             price={basePriceUSD}
             originalPrice={baseOriginalPriceUSD}
-            priceClassName="text-sm font-bold text-foreground"
-            originalPriceClassName="text-xs text-muted-foreground dark:text-gray-500 line-through"
+            priceClassName="text-sm font-bold text-gray-900 dark:text-white"
+            originalPriceClassName="text-xs text-gray-500 dark:text-gray-400 line-through"
             discountBadgeClassName="text-xs text-red-500 font-semibold bg-red-50 dark:bg-red-900/20 px-1 py-0.5 rounded"
             className="mt-2 flex items-center gap-1"
           />
 
-          {/* Stock Status */}
+          {/* Stock */}
           <div className="mt-2 flex items-center gap-1">
             <div className={`w-1.5 h-1.5 ${stockStatus.bg} rounded-full`}></div>
             <span className={`text-xs ${stockStatus.color} font-medium`}>
@@ -184,14 +198,20 @@ export default function ProductCard({
           </div>
         </div>
 
-        {/* Action Buttons - Hidden by default, shown on hover */}
+        {/* Buttons */}
         <div className={`mt-3 space-y-1.5 transition-all duration-300 ${
           isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
         }`}>
           <Button
             variant={isOutOfStock ? 'secondary' : 'default'}
             size="sm"
-            className="w-full bg-gray-900 hover:bg-gray-800 text-white shadow-md text-xs py-1.5 px-3 h-7"
+            className="
+              w-full 
+              bg-gray-900 dark:bg-white 
+              text-white dark:text-black
+              hover:bg-gray-800 dark:hover:bg-gray-200 
+              shadow-md text-xs py-1.5 px-3 h-7
+            "
             disabled={isOutOfStock}
             onClick={handleAddToCart}
           >
@@ -202,7 +222,13 @@ export default function ProductCard({
           <Button
             variant="outline"
             size="sm"
-            className="w-full border-gray-300 hover:border-gray-400 hover:bg-gray-50 text-xs py-1.5 px-3 h-7"
+            className="
+              w-full 
+              border-gray-300 dark:border-gray-700
+              hover:border-gray-400 dark:hover:border-gray-500
+              hover:bg-gray-50 dark:hover:bg-gray-800
+              text-xs py-1.5 px-3 h-7
+            "
             onClick={handleQuickView}
           >
             <Eye className="w-3 h-3 mr-1" />

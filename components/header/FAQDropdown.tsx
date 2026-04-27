@@ -108,7 +108,7 @@ export default function FAQDropdown({ isOpen, onToggle, onClose }: FAQDropdownPr
       {/* Dropdown */}
       {isOpen && (
         <div
-          className="absolute top-full left-0 mt-1 w-80 bg-white dark:bg-[#1E1E1E] rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-3 z-50"
+          className="absolute top-full left-0 mt-4 w-80 bg-white dark:bg-[#1E1E1E] rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-3 z-50"
           onMouseEnter={() => {
             if (timeoutRef.current) {
               clearTimeout(timeoutRef.current);

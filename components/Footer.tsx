@@ -10,6 +10,7 @@ import {
   Pin,
   MessageCircle,
 } from "lucide-react";
+import { SiPinterest } from "react-icons/si";
 
 const footerLinks = {
   byPlatform: [
@@ -60,7 +61,7 @@ export default function Footer() {
             { icon: <Instagram size={18} />, name: "Instagram", href: "https://www.instagram.com/cdkeydealsofficial/" },
             { icon: <Twitter size={18} />, name: "X", href: "https://x.com/cdkeydealss" },
             { icon: <Linkedin size={18} />, name: "LinkedIn", href: "https://www.linkedin.com/company/cdkeydeals/about/" },
-            { icon: <Pin size={18} />, name: "Pinterest", href: "https://www.pinterest.com/cdkeydealsofficial/" },
+            { icon: <SiPinterest size={18} />, name: "Pinterest", href: "https://www.pinterest.com/cdkeydealsofficial/" },
           ].map((social, i) => (
             <a
               key={i}

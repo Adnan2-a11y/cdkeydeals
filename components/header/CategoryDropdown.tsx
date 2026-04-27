@@ -21,9 +21,11 @@ const categories = [
 interface CategoryDropdownProps {
   selectedCategory: string;
   onCategoryChange: (category: string) => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 
-export default function CategoryDropdown({ selectedCategory, onCategoryChange }: CategoryDropdownProps) {
+export default function CategoryDropdown({ selectedCategory, onCategoryChange, onFocus, onBlur }: CategoryDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -31,7 +33,9 @@ export default function CategoryDropdown({ selectedCategory, onCategoryChange }:
       {/* Dropdown Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 h-12 px-4 bg-gray-50 dark:bg-[#2C2C2C] border border-r-0 border-gray-200 dark:border-gray-600 rounded-l-lg text-sm text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/20 dark:focus:ring-indigo-400/20 transition-all min-w-[160px]"
+        onFocus={onFocus}
+        onBlur={onBlur}
+        className="flex items-center gap-2 h-12 px-4 bg-gray-50 dark:bg-[#2C2C2C] border border-r-0 border-gray-200 dark:border-gray-600 rounded-l-lg text-sm text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 outline-none ring-0 transition-all min-w-[160px]"
       >
         <span className="truncate">{selectedCategory}</span>
         <ChevronDown 

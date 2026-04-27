@@ -205,7 +205,7 @@ export default function BestDealsDropdown({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -5 }}
             transition={{ duration: 0.15 }}
-            className="absolute left-0 right-0 top-full z-50 bg-white dark:bg-[#121212] border-t border-b border-gray-200 dark:border-gray-800 shadow-[0_10px_20px_-10px_rgba(0,0,0,0.1)] dark:shadow-none"
+            className="absolute left-0 right-0 top-full z-50 bg-white dark:bg-[#1E1E1E] border-t border-b border-gray-200 dark:border-gray-800 shadow-[0_10px_20px_-10px_rgba(0,0,0,0.1)] dark:shadow-none"
           >
             {/* Main Container */}
             <div className="max-w-7xl mx-auto flex h-[500px]">

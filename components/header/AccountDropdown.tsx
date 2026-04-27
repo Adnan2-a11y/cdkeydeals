@@ -14,13 +14,17 @@ export default function AccountDropdown() {
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const toggleDropdown = () => {
@@ -40,26 +44,28 @@ export default function AccountDropdown() {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-100 dark:border-gray-800 overflow-hidden z-50">
+        <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-[#1E1E1E] rounded-xl shadow-lg border border-gray-200 dark:border-gray-800 overflow-hidden z-50">
           {/* Dropdown Content */}
-          <div className="p-6">
+          <div className="p-4">
             {/* Account Header */}
-            <div className="mb-6">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Account</h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+            <div className="mb-4">
+              <h3 className="text-base font-bold text-gray-900 dark:text-white mb-1">
+                Account
+              </h3>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
                 Sign In or Create an Account to Unlock All Access
               </p>
             </div>
 
             {/* Action Buttons */}
-            <div className="space-y-3">
+            <div className="space-y-2">
               {/* Create Account Button */}
               <button
                 onClick={() => {
                   setIsOpen(false);
                   setIsSignInModalOpen(true);
                 }}
-                className="w-full py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg transition-all duration-200 transform hover:scale-105"
+                className="w-full py-2.5 px-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-all duration-200"
               >
                 Create Account
               </button>
@@ -70,7 +76,7 @@ export default function AccountDropdown() {
                   setIsOpen(false);
                   setIsSignInModalOpen(true);
                 }}
-                className="w-full py-3 px-4 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold rounded-lg transition-all duration-200"
+                className="w-full py-2.5 px-3 bg-purple-100 hover:bg-purple-200 text-purple-700 font-semibold rounded-lg transition-all duration-200 dark:bg-purple-500/10 dark:hover:bg-purple-500/20 dark:text-purple-300"
               >
                 Log In
               </button>
@@ -80,9 +86,9 @@ export default function AccountDropdown() {
       )}
 
       {/* Sign In Modal */}
-      <SignInModal 
-        open={isSignInModalOpen} 
-        onOpenChange={setIsSignInModalOpen} 
+      <SignInModal
+        open={isSignInModalOpen}
+        onOpenChange={setIsSignInModalOpen}
       />
     </div>
   );

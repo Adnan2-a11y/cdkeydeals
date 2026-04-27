@@ -171,7 +171,7 @@ export default function MegaDropdown({
             className={`absolute left-80 top-full w-auto min-w-[720px]${
               maxWidth ? ` max-w-[${maxWidth}]` : ''
             }
-            bg-white dark:bg-[#121212] shadow-2xl border-b border-t
+            bg-white dark:bg-[#1E1E1E] shadow-2xl border-b border-t
             z-50 overflow-hidden flex rounded-xl`}
           >
             {/* LEFT SIDE */}

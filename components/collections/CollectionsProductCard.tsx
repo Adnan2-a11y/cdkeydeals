@@ -156,7 +156,7 @@ export default function CollectionsProductCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.05 }}
-      className="group relative bg-card rounded-xl overflow-hidden hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_8px_30px_rgba(255,255,255,0.08)] hover:-translate-y-1.5 transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] font-['Inter',system-ui,sans-serif] min-h-[320px] flex flex-col border border-border"
+      className="group relative bg-card rounded-xl overflow-hidden hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_8px_30px_rgba(255,255,255,0.08)] hover:-translate-y-1.5 transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] font-['Inter',system-ui,sans-serif] min-h-[280px] flex flex-col border border-border"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -215,7 +215,7 @@ export default function CollectionsProductCard({
 
       {/* Product Image Container */}
       <Link href={productUrl} className="block">
-        <div className="relative h-48 bg-muted flex items-center justify-center p-4 overflow-hidden">
+        <div className="relative aspect-[4/3] bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 overflow-hidden">
           {/* Default Image */}
           <div className="absolute inset-0">
             {defaultImage && !imageError ? (
@@ -268,7 +268,7 @@ export default function CollectionsProductCard({
       </Link>
 
       {/* Content Area */}
-      <div className="flex-1 p-4 flex flex-col justify-between">
+      <div className="flex-1 p-3 flex flex-col justify-between relative">
         <div>
           {/* Platform & Category */}
           <div className="flex items-center gap-2 mb-1">
@@ -289,7 +289,7 @@ export default function CollectionsProductCard({
 
           {/* Title */}
           <Link href={productUrl}>
-            <h3 className="text-sm font-bold text-foreground line-clamp-2 min-h-[2.5rem] hover:text-primary transition-colors leading-tight">
+            <h3 className="text-sm font-bold text-foreground line-clamp-2 min-h-[2rem] hover:text-primary transition-colors leading-tight">
               {title}
             </h3>
           </Link>
@@ -312,7 +312,7 @@ export default function CollectionsProductCard({
           )}
 
           {/* Price */}
-          <div className="mt-2 flex items-center gap-2">
+          <div className="mt-1 flex items-center gap-2">
             <span className="text-lg font-bold text-foreground">
               {currencySymbol}
               {price.toFixed(2)}
@@ -326,7 +326,7 @@ export default function CollectionsProductCard({
           </div>
 
           {/* Stock Status */}
-          <div className="mt-2 flex items-center gap-1">
+          <div className="mt-1 flex items-center gap-1">
             <div className={`w-1.5 h-1.5 ${stockStatus.bg} rounded-full`} />
             <span className={`text-xs ${stockStatus.color} font-medium`}>
               {stockStatus.label}
@@ -334,12 +334,12 @@ export default function CollectionsProductCard({
           </div>
         </div>
 
-        {/* Action Buttons */}
+        {/* Action Buttons - Bottom Overlay */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
-          transition={{ duration: 0.2 }}
-          className={`mt-3 space-y-2 ${isHovered ? "pointer-events-auto" : "pointer-events-none"}`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 20 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+          className={`absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-card/95 to-card/50 backdrop-blur-sm ${isHovered ? "pointer-events-auto" : "pointer-events-none"}`}
         >
           <Button
             variant={isOutOfStock ? "secondary" : "default"}

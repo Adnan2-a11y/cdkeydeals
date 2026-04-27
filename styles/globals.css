@@ -122,4 +122,53 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Global cursor pointer for interactive elements */
+  button, 
+  a, 
+  [role="button"],
+  [role="link"],
+  [onclick],
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  textarea,
+  select,
+  label,
+  summary {
+    @apply cursor-pointer;
+  }
+  
+  /* Ensure clickable divs and other elements with hover states show pointer */
+  button:hover,
+  a:hover,
+  [role="button"]:hover,
+  [role="link"]:hover,
+  [onclick]:hover,
+  .hover\\:cursor-pointer {
+    @apply cursor-pointer;
+  }
+  
+  /* Specific cursor for form inputs */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="number"],
+  textarea {
+    @apply cursor-text;
+  }
+  
+  input[type="text"]:hover,
+  input[type="email"]:hover,
+  input[type="password"]:hover,
+  input[type="search"]:hover,
+  input[type="tel"]:hover,
+  input[type="url"]:hover,
+  input[type="number"]:hover,
+  textarea:hover {
+    @apply cursor-text;
+  }
 }
