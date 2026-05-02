@@ -1,282 +1,168 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ChevronRight } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 
-// ================= TYPES =================
-export interface MegaDropdownSubItem {
-  name: string;
-  href: string;
-  badge?: string;
-  hoverColor?: string;
-}
+// ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface MegaDropdownColumn {
   title: string;
-  icon?: string;
+  icon: string;
   iconAlt?: string;
-  items: MegaDropdownSubItem[];
-  hoverColor?: string;
-}
-
-export interface MegaDropdownPromoCard {
-  title: string;
-  subtitle: string;
-  buttonText: string;
-  buttonHref: string;
-  gradient: string;
-  textColor?: string;
-  buttonTextColor?: string;
-  isExternal?: boolean;
+  items: { name: string; href: string }[];
 }
 
 interface MegaDropdownProps {
   triggerLabel: string;
   triggerHref: string;
-  triggerHoverColor?: string;
-
+  triggerHoverColor: string;
   isOpen: boolean;
   onToggle: () => void;
   onClose: () => void;
-
   columns: MegaDropdownColumn[];
-  promoCards?: MegaDropdownPromoCard[];
-
-  columnHoverColor?: string;
-  maxWidth?: string;
+  columnHoverColor: string;
 }
+
+// ─── Component ────────────────────────────────────────────────────────────────
 
 export default function MegaDropdown({
   triggerLabel,
   triggerHref,
-  triggerHoverColor = "text-indigo-600",
+  triggerHoverColor,
   isOpen,
   onToggle,
   onClose,
   columns,
-  promoCards = [],
-  columnHoverColor = "text-indigo-600",
-  maxWidth,
+  columnHoverColor,
 }: MegaDropdownProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [activeColumnIndex, setActiveColumnIndex] = useState<number>(0);
 
-  // ================= EVENTS =================
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (!dropdownRef.current?.contains(e.target as Node)) {
+  // Handle mouse enter with delay
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    if (!isOpen) {
+      onToggle();
+    }
+  };
+
+  // Handle mouse leave with delay
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      if (isOpen) {
         onClose();
       }
-    };
+    }, 150); // 150ms delay
+  };
 
-    const handleEscapeKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         onClose();
       }
     };
 
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
-      document.addEventListener("keydown", handleEscapeKey);
     }
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleEscapeKey);
     };
   }, [isOpen, onClose]);
-
-  useEffect(() => {
-    if (isOpen) {
-      setActiveColumnIndex(0);
-    }
-  }, [isOpen]);
-
-  const handleEnter = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    if (!isOpen) onToggle();
-  };
-
-  const handleLeave = () => {
-    timeoutRef.current = setTimeout(() => onClose(), 120);
-  };
-
-  // ================= COLOR HELPERS =================
-  const resolveHoverClass = (color: string) => {
-    switch (color) {
-      case "text-indigo-600": return "hover:text-indigo-600";
-      case "text-purple-600": return "hover:text-purple-600";
-      case "text-green-600": return "hover:text-green-600";
-      case "text-orange-600": return "hover:text-orange-600";
-      default: return "hover:text-indigo-600";
-    }
-  };
-
-  const resolveTriggerHoverClass = (color: string) => {
-    switch (color) {
-      case "text-indigo-600": return "group-hover:text-indigo-600";
-      case "text-purple-600": return "group-hover:text-purple-600";
-      case "text-green-600": return "group-hover:text-green-600";
-      case "text-orange-600": return "group-hover:text-orange-600";
-      default: return "group-hover:text-indigo-600";
-    }
-  };
-
-  const activeColumn = columns[activeColumnIndex];
-  const activeHoverColor = activeColumn?.hoverColor || columnHoverColor;
 
   return (
     <div
       ref={dropdownRef}
-      className="static"
-      onMouseEnter={handleEnter}
-      onMouseLeave={handleLeave}
+      className="relative"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       {/* Trigger */}
-      <Link href={triggerHref} className="flex items-center gap-1 py-2 group">
-        <span
-          className={`text-[14.5px] font-semibold ${resolveTriggerHoverClass(
-            triggerHoverColor
-          )}`}
-        >
-          {triggerLabel}
-        </span>
-
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            onToggle();
+      <a
+        href={triggerHref}
+        className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${triggerHoverColor} hover:opacity-80`}
+        onMouseEnter={(e) => {
+          e.preventDefault();
+          handleMouseEnter();
+        }}
+      >
+        {triggerLabel}
+        <svg
+          className="w-4 h-4 transition-transform duration-200"
+          style={{
+            transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
           }}
-          className="p-0.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
         >
-          <ChevronDown
-            className={`w-3.5 h-3.5 transition ${isOpen ? "rotate-180" : ""}`}
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
           />
-        </button>
-      </Link>
+        </svg>
+      </a>
 
-      {/* Dropdown Container */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.2 }}
-            /* `left-80` is kept as per your original code to maintain bar position */
-            className={`absolute left-80 top-full w-auto min-w-[700px] ${
-              maxWidth ? ` max-w-[${maxWidth}]` : ''
-            } bg-white dark:bg-[#1E1E1E] shadow-2xl border border-gray-100 dark:border-gray-800 z-50 overflow-hidden flex rounded-xl`}
-          >
-            {/* LEFT SIDE (The one we fixed) */}
-            <div className="w-[280px] py-4 border-r border-gray-100 dark:border-gray-800 bg-gray-50/30 dark:bg-[#1a1a1a]/40">
+      {/* Dropdown Content */}
+      {isOpen && (
+        <div className="absolute top-full left-0 z-50 w-screen max-w-4xl mt-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl">
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {columns.map((column, index) => (
-                <div
-                  key={column.title}
-                  onMouseEnter={() => setActiveColumnIndex(index)}
-                  className={`flex items-center gap-3 px-5 py-3 cursor-pointer transition ${
-                    activeColumnIndex === index
-                      ? "bg-white dark:bg-[#1E1E1E] shadow-sm"
-                      : "hover:bg-gray-100/50 dark:hover:bg-[#1a1a1a]"
-                  }`}
-                >
-                  {column.icon ? (
-                    <div className="w-6 h-6 relative flex-shrink-0">
-                      <Image
-                        src={column.icon}
-                        alt={column.iconAlt || column.title}
-                        fill
-                        className="object-contain"
-                        sizes="24px"
-                      />
-                    </div>
-                  ) : (
-                    <div className="w-6 h-6 rounded bg-gray-200 dark:bg-gray-700" />
-                  )}
+                <div key={index} className="space-y-4">
+                  {/* Column Header */}
+                  <div className="flex items-center gap-3">
+                    {column.icon && (
+                      <div className="relative w-8 h-8 flex-shrink-0">
+                        <Image
+                          src={column.icon}
+                          alt={column.iconAlt || column.title}
+                          fill
+                          className="object-contain"
+                          sizes="32px"
+                        />
+                      </div>
+                    )}
+                    <h3 className={`font-semibold text-gray-900 dark:text-white ${columnHoverColor}`}>
+                      {column.title}
+                    </h3>
+                  </div>
 
-                  <span className={`text-[14px] font-medium flex-1 ${activeColumnIndex === index ? 'text-indigo-600 dark:text-indigo-400' : ''}`}>
-                    {column.title}
-                  </span>
-
-                  <ChevronRight className={`w-4 h-4 transition-opacity ${activeColumnIndex === index ? 'text-indigo-600 opacity-100' : 'text-gray-300 opacity-0'}`} />
+                  {/* Column Items */}
+                  <ul className="space-y-2">
+                    {column.items.map((item, itemIndex) => (
+                      <li key={itemIndex}>
+                        <a
+                          href={item.href}
+                          className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors py-1 block"
+                        >
+                          {item.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               ))}
             </div>
-
-            {/* RIGHT SIDE (Content column shifted left) */}
-            <div className="flex-1 flex bg-white dark:bg-[#1E1E1E]">
-              <AnimatePresence mode="wait">
-                {activeColumn && (
-                  <motion.div
-                    key={activeColumnIndex}
-                    initial={{ opacity: 0, x: 10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -10 }}
-                    transition={{ duration: 0.15 }}
-                    className="flex-1 py-5 px-8 min-w-[320px]"
-                  >
-                    <h3 className="font-bold text-[11px] uppercase tracking-widest mb-4 text-gray-400 dark:text-gray-500">
-                      {activeColumn.title}
-                    </h3>
-
-                    <div className="space-y-1">
-                      {activeColumn.items.map((item) => (
-                        <Link
-                          key={item.name}
-                          href={item.href}
-                          className={`flex items-center justify-between px-3 py-2 rounded-lg transition
-                          hover:bg-gray-50 dark:hover:bg-[#252525]
-                          ${resolveHoverClass(
-                            item.hoverColor || activeHoverColor
-                          )}`}
-                        >
-                          <span className="text-[14px]">{item.name}</span>
-
-                          {item.badge && (
-                            <span className="text-[10px] px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 font-bold rounded-full">
-                              {item.badge}
-                            </span>
-                          )}
-                        </Link>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* PROMO (Stays at the far right) */}
-              {promoCards.length > 0 && (
-                <div className="w-[240px] p-5 bg-gray-50 dark:bg-[#181818] border-l border-gray-100 dark:border-gray-800">
-                  {promoCards.map((card, i) => (
-                    <div
-                      key={i}
-                      className={`rounded-xl p-4 mb-4 ${card.gradient} ${card.textColor || "text-white"} shadow-md`}
-                    >
-                      <h4 className="font-semibold text-sm">{card.title}</h4>
-                      <p className="text-[12px] opacity-80 mt-1 mb-3 leading-snug">
-                        {card.subtitle}
-                      </p>
-
-                      <Link
-                        href={card.buttonHref}
-                        target={card.isExternal ? "_blank" : "_self"}
-                        className={`text-xs font-bold underline decoration-2 underline-offset-4 ${card.buttonTextColor || ""}`}
-                      >
-                        {card.buttonText}
-                      </Link>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

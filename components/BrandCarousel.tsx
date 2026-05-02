@@ -1,20 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
 import { useRef, useEffect } from "react";
-import Link from "next/link";
 import Image from "next/image";
-
-interface Brand {
-  id: number;
-  name: string;
-  slug: string;
-  image?: string;
-}
+import { getFriendImages, FriendImage } from "@/lib/friends-images";
 
 interface BrandCarouselProps {
-  brands: Brand[];
+  brands?: FriendImage[];
 }
 
 const containerVariants = {
@@ -40,8 +32,12 @@ const itemVariants = {
 export default function BrandCarousel({ brands }: BrandCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   
+  // Use friends images if no brands provided
+  const friendsImages = getFriendImages();
+  const displayBrands = brands && brands.length > 0 ? brands : friendsImages;
+  
   // Duplicate brands for seamless infinite loop
-  const duplicatedBrands = [...brands, ...brands];
+  const duplicatedBrands = [...displayBrands, ...displayBrands];
 
   // manual scroll buttons (optional future use)
   const scroll = (direction: "left" | "right") => {
@@ -105,20 +101,13 @@ export default function BrandCarousel({ brands }: BrandCarouselProps) {
     };
   }, [duplicatedBrands.length]); // Add dependency to re-run when brands change
 
-  if (!brands || brands.length === 0) return null;
+  if (!displayBrands || displayBrands.length === 0) return null;
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Header Section */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="mb-8">
         <h2 className="text-2xl font-bold text-foreground">Shop by Brand</h2>
-        <Link
-          href="/categories"
-          className="flex items-center gap-1 text-[#00d4aa] hover:text-[#00b894] font-medium text-sm transition-colors"
-        >
-          Shop All
-          <ChevronRight className="w-4 h-4" />
-        </Link>
       </div>
 
       {/* Brand Scroller */}
@@ -128,7 +117,7 @@ export default function BrandCarousel({ brands }: BrandCarouselProps) {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
-        className="flex gap-6 overflow-x-auto pb-10 scrollbar-hide flex-nowrap"
+        className="flex gap-x-4 overflow-x-auto pb-10 scrollbar-hide flex-nowrap"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {duplicatedBrands.map((brand, index) => (
@@ -142,22 +131,24 @@ export default function BrandCarousel({ brands }: BrandCarouselProps) {
               <div
                 className="relative w-36 h-28 sm:w-44 sm:h-32 bg-white dark:bg-[#242424]
               border border-gray-100 dark:border-zinc-800
-              rounded-2xl flex items-center justify-center p-6
-              shadow-none transition-none"
+              rounded-2xl overflow-hidden
+              shadow-sm hover:shadow-lg transition-all duration-300
+              hover:scale-105 cursor-pointer"
               >
                 {brand.image ? (
-                  <div className="relative w-full h-full">
-                    <Image
-                      src={brand.image}
-                      alt={`${brand.name} Logo`}
-                      fill
-                      className="object-contain filter grayscale opacity-60
-                               dark:brightness-200 dark:contrast-150"
-                      sizes="(max-width: 640px) 144px, 176px"
-                    />
+                  <div className="absolute inset-0 flex items-center justify-center p-3">
+                    <div className="relative w-[75%] h-[75%]">
+                      <Image
+                        src={brand.image}
+                        alt={`${brand.name} Logo`}
+                        fill
+                        className="object-contain dark:brightness-200 dark:contrast-150"
+                        sizes="(max-width: 640px) 108px, 132px"
+                      />
+                    </div>
                   </div>
                 ) : (
-                  <div className="text-center">
+                  <div className="absolute inset-0 flex items-center justify-center">
                     <span className="font-black text-gray-400 dark:text-gray-600 text-xs uppercase tracking-widest">
                       {brand.name}
                     </span>

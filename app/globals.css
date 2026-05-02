@@ -238,8 +238,7 @@ body {
   a:hover,
   [role="button"]:hover,
   [role="link"]:hover,
-  [onclick]:hover,
-  .hover\\:cursor-pointer {
+  [onclick]:hover {
     @apply cursor-pointer;
   }
   

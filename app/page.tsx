@@ -29,19 +29,6 @@ const FALLBACK_CATEGORIES = [
   { id: 7, name: "Nintendo",         icon: "nintendo",     slug: "nintendo",        href: "/collections/nintendo",      count: 0, image: null },
 ];
 
-// ─── Static Brand list ─────────────────────────────────────────────────────────
-const brands = [
-  { id: 1,  name: "Microsoft",  slug: "microsoft",  image: "/images/brands/microsoft.png"  },
-  { id: 2,  name: "Steam",      slug: "steam",      image: "/images/brands/steam.png"      },
-  { id: 3,  name: "Xbox",       slug: "xbox",       image: "/images/brands/xbox.png"       },
-  { id: 4,  name: "PlayStation",slug: "playstation",image: "/images/brands/playstation.png"},
-  { id: 5,  name: "Nintendo",   slug: "nintendo",   image: "/images/brands/nintendo.png"   },
-  { id: 6,  name: "EA Sports",  slug: "ea-sports",  image: "/images/brands/ea-sports.png"  },
-  { id: 7,  name: "Adobe",      slug: "adobe",      image: "/images/brands/adobe.png"      },
-  { id: 8,  name: "Epic Games", slug: "epic-games", image: "/images/brands/epic-games.png" },
-  { id: 9,  name: "Ubisoft",    slug: "ubisoft",    image: "/images/brands/ubisoft.png"    },
-  { id: 10, name: "Apple",      slug: "apple",      image: "/images/brands/apple.png"      },
-];
 
 export default async function Home() {
   // ── Parallel fetch — all homepage sections at once ────────────────────────────
@@ -136,7 +123,7 @@ export default async function Home() {
 
             {/* ── Shop by Brand ─────────────────────────────────────────── */}
             <ErrorBoundary section="BrandCarousel">
-              <BrandCarousel brands={brands} />
+              <BrandCarousel />
             </ErrorBoundary>
 
             {/* ── Best Offers ───────────────────────────────────────────── */}
