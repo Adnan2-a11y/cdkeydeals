@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Image from "next/image"; // ✅ added
+import Image from "next/image";
 
 // ================= TYPES =================
 export interface MegaDropdownSubItem {
@@ -160,7 +160,7 @@ export default function MegaDropdown({
         </button>
       </Link>
 
-      {/* Dropdown */}
+      {/* Dropdown Container */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -168,101 +168,104 @@ export default function MegaDropdown({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.2 }}
-            className={`absolute left-80 top-full w-auto min-w-[720px] ${
+            /* `left-80` is kept as per your original code to maintain bar position */
+            className={`absolute left-80 top-full w-auto min-w-[700px] ${
               maxWidth ? ` max-w-[${maxWidth}]` : ''
-            } bg-white dark:bg-[#1E1E1E] shadow-2xl border-b border-t z-50 overflow-hidden flex rounded-xl`}
+            } bg-white dark:bg-[#1E1E1E] shadow-2xl border border-gray-100 dark:border-gray-800 z-50 overflow-hidden flex rounded-xl`}
           >
-            {/* LEFT SIDE */}
-            <div className="w-[480px] py-4 border-r border-gray-100 dark:border-gray-800">
+            {/* LEFT SIDE (The one we fixed) */}
+            <div className="w-[280px] py-4 border-r border-gray-100 dark:border-gray-800 bg-gray-50/30 dark:bg-[#1a1a1a]/40">
               {columns.map((column, index) => (
                 <div
                   key={column.title}
                   onMouseEnter={() => setActiveColumnIndex(index)}
                   className={`flex items-center gap-3 px-5 py-3 cursor-pointer transition ${
                     activeColumnIndex === index
-                      ? "bg-gray-50 dark:bg-[#1e1e1e]"
-                      : "hover:bg-gray-50 dark:hover:bg-[#1a1a1a]"
+                      ? "bg-white dark:bg-[#1E1E1E] shadow-sm"
+                      : "hover:bg-gray-100/50 dark:hover:bg-[#1a1a1a]"
                   }`}
                 >
-                  {/* ✅ IMAGE FIXED */}
                   {column.icon ? (
-                    <div className="w-7 h-7 relative flex-shrink-0">
+                    <div className="w-6 h-6 relative flex-shrink-0">
                       <Image
                         src={column.icon}
                         alt={column.iconAlt || column.title}
                         fill
                         className="object-contain"
-                        sizes="28px"
+                        sizes="24px"
                       />
                     </div>
                   ) : (
-                    <div className="w-7 h-7 rounded bg-gray-200 dark:bg-gray-700" />
+                    <div className="w-6 h-6 rounded bg-gray-200 dark:bg-gray-700" />
                   )}
 
-                  <span className="text-[14px] font-medium flex-1">
+                  <span className={`text-[14px] font-medium flex-1 ${activeColumnIndex === index ? 'text-indigo-600 dark:text-indigo-400' : ''}`}>
                     {column.title}
                   </span>
 
-                  <ChevronRight className="w-4 h-4 text-gray-400" />
+                  <ChevronRight className={`w-4 h-4 transition-opacity ${activeColumnIndex === index ? 'text-indigo-600 opacity-100' : 'text-gray-300 opacity-0'}`} />
                 </div>
               ))}
             </div>
 
-            {/* RIGHT SIDE */}
-            <div className="flex-1 flex">
+            {/* RIGHT SIDE (Content column shifted left) */}
+            <div className="flex-1 flex bg-white dark:bg-[#1E1E1E]">
               <AnimatePresence mode="wait">
                 {activeColumn && (
                   <motion.div
                     key={activeColumnIndex}
-                    initial={{ opacity: 0, x: 8 }}
+                    initial={{ opacity: 0, x: 10 }}
                     animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -8 }}
-                    className="flex-1 py-5 px-6 min-w-[320px]"
+                    exit={{ opacity: 0, x: -10 }}
+                    transition={{ duration: 0.15 }}
+                    className="flex-1 py-5 px-8 min-w-[320px]"
                   >
-                    <h3 className="font-bold text-sm mb-4 text-gray-400">
+                    <h3 className="font-bold text-[11px] uppercase tracking-widest mb-4 text-gray-400 dark:text-gray-500">
                       {activeColumn.title}
                     </h3>
 
-                    {activeColumn.items.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className={`flex items-center justify-between px-3 py-2 rounded transition
-                        hover:bg-gray-50 dark:hover:bg-[#1a1a1a]
-                        ${resolveHoverClass(
-                          item.hoverColor || activeHoverColor
-                        )}`}
-                      >
-                        <span>{item.name}</span>
+                    <div className="space-y-1">
+                      {activeColumn.items.map((item) => (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          className={`flex items-center justify-between px-3 py-2 rounded-lg transition
+                          hover:bg-gray-50 dark:hover:bg-[#252525]
+                          ${resolveHoverClass(
+                            item.hoverColor || activeHoverColor
+                          )}`}
+                        >
+                          <span className="text-[14px]">{item.name}</span>
 
-                        {item.badge && (
-                          <span className="text-[11px] px-2 py-0.5 bg-indigo-100 text-indigo-600 rounded">
-                            {item.badge}
-                          </span>
-                        )}
-                      </Link>
-                    ))}
+                          {item.badge && (
+                            <span className="text-[10px] px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 font-bold rounded-full">
+                              {item.badge}
+                            </span>
+                          )}
+                        </Link>
+                      ))}
+                    </div>
                   </motion.div>
                 )}
               </AnimatePresence>
 
-              {/* PROMO */}
+              {/* PROMO (Stays at the far right) */}
               {promoCards.length > 0 && (
-                <div className="w-[240px] p-5 bg-gray-50 dark:bg-[#181818] border-l">
+                <div className="w-[240px] p-5 bg-gray-50 dark:bg-[#181818] border-l border-gray-100 dark:border-gray-800">
                   {promoCards.map((card, i) => (
                     <div
                       key={i}
-                      className={`rounded-xl p-4 mb-4 ${card.gradient} ${card.textColor || "text-white"}`}
+                      className={`rounded-xl p-4 mb-4 ${card.gradient} ${card.textColor || "text-white"} shadow-md`}
                     >
                       <h4 className="font-semibold text-sm">{card.title}</h4>
-                      <p className="text-xs opacity-80 mb-3">
+                      <p className="text-[12px] opacity-80 mt-1 mb-3 leading-snug">
                         {card.subtitle}
                       </p>
 
                       <Link
                         href={card.buttonHref}
                         target={card.isExternal ? "_blank" : "_self"}
-                        className={`text-xs font-medium underline ${card.buttonTextColor || ""}`}
+                        className={`text-xs font-bold underline decoration-2 underline-offset-4 ${card.buttonTextColor || ""}`}
                       >
                         {card.buttonText}
                       </Link>
