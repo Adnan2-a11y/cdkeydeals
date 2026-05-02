@@ -1,0 +1,19 @@
+/* Search highlighting styles */
+mark {
+  background-color: #fef08a;
+  color: #713f12;
+  padding: 0 2px;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
+.dark mark {
+  background-color: #713f12;
+  color: #fef08a;
+}
+
+/* Ensure mark elements don't break layout */
+mark {
+  display: inline;
+  white-space: nowrap;
+}

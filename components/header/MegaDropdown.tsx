@@ -168,11 +168,9 @@ export default function MegaDropdown({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.2 }}
-            className={`absolute left-80 top-full w-auto min-w-[720px]${
+            className={`absolute left-80 top-full w-auto min-w-[720px] ${
               maxWidth ? ` max-w-[${maxWidth}]` : ''
-            }
-            bg-white dark:bg-[#1E1E1E] shadow-2xl border-b border-t
-            z-50 overflow-hidden flex rounded-xl`}
+            } bg-white dark:bg-[#1E1E1E] shadow-2xl border-b border-t z-50 overflow-hidden flex rounded-xl`}
           >
             {/* LEFT SIDE */}
             <div className="w-[480px] py-4 border-r border-gray-100 dark:border-gray-800">
