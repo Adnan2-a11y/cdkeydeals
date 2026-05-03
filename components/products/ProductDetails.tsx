@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronRight, ArrowLeft, Monitor, ShieldCheck, Globe, Laptop, Timer, CheckCircle } from "lucide-react";
+import Image from "next/image";
+import { ChevronRight, ArrowLeft, Monitor, ShieldCheck, Globe, Laptop, Timer } from "lucide-react";
 import { Product } from "@/types/product";
 import { useWishlist, productToWishlistItem } from "@/context/WishlistContext";
 
@@ -28,7 +29,6 @@ export default function ProductDetails({ product, relatedProducts = [] }: Produc
     toggleWishlist(productToWishlistItem(product));
   };
 
-  // Build specs from product data
   const technicalSpecs = [
     { label: "Developer", value: product.platform || "Unknown" },
     { label: "Publisher", value: product.platform || "Unknown" },
@@ -41,7 +41,6 @@ export default function ProductDetails({ product, relatedProducts = [] }: Produc
       : []),
   ];
 
-  // Product meta info grid
   const metaItems = [
     { icon: <Monitor className="w-5 h-5" />, label: "Platform", value: product.platform || "Software" },
     { icon: <ShieldCheck className="w-5 h-5" />, label: "Version", value: "Retail" },
@@ -53,67 +52,41 @@ export default function ProductDetails({ product, relatedProducts = [] }: Produc
   return (
     <div className="pb-24 lg:pb-8 bg-white dark:bg-[#0b0b0b]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* ───────── Breadcrumb ───────── */}
-        <nav className="flex items-center text-xs font-medium text-gray-500 dark:text-zinc-500 mb-6 space-x-2 overflow-x-auto whitespace-nowrap pb-2 scrollbar-hide">
-          <Link href="/" className="hover:text-gray-900 dark:hover:text-zinc-50 transition-colors shrink-0">Home</Link>
-          <ChevronRight className="w-3 h-3 shrink-0 text-gray-400 dark:text-zinc-600" />
-          <Link href="/collections" className="hover:text-gray-900 dark:hover:text-zinc-50 transition-colors shrink-0">Shop</Link>
+
+        {/* Breadcrumb */}
+        <nav className="flex items-center text-xs font-medium text-gray-500 dark:text-zinc-500 mb-6 space-x-2 overflow-x-auto whitespace-nowrap pb-2">
+          <Link href="/">Home</Link>
+          <ChevronRight className="w-3 h-3" />
+          <Link href="/collections">Shop</Link>
           {product.category && (
             <>
-              <ChevronRight className="w-3 h-3 shrink-0 text-gray-400 dark:text-zinc-600" />
-              <Link
-                href={`/collections?category=${encodeURIComponent(product.category)}`}
-                className="hover:text-gray-900 dark:hover:text-zinc-50 transition-colors shrink-0"
-              >
+              <ChevronRight className="w-3 h-3" />
+              <Link href={`/collections?category=${product.category}`}>
                 {product.category}
               </Link>
             </>
           )}
-          <ChevronRight className="w-3 h-3 shrink-0 text-gray-400 dark:text-zinc-600" />
-          <span className="text-blue-600 dark:text-primary font-bold truncate max-w-[200px]">{product.title}</span>
+          <ChevronRight className="w-3 h-3" />
+          <span className="text-blue-600 font-bold truncate">{product.title}</span>
         </nav>
 
-        {/* Mobile Back */}
-        <Link
-          href="/collections"
-          className="inline-flex items-center text-sm text-gray-500 dark:text-zinc-500 hover:text-gray-900 dark:hover:text-zinc-50 mb-4 lg:hidden transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4 mr-1" />
-          Back to Products
-        </Link>
-
-        {/* ───────── Hero Section (2-col grid) ───────── */}
+        {/* Hero Section */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
-          {/* Left: Gallery */}
           <div className="lg:col-span-5">
             <ProductGallery
-            title={product.title}
-            image={product.image}
-            images={product.images}
-            badge={product.badge}
-            badgeColor={product.badgeColor as any}
-            discountPercent={product.discount}
-            isNew={product.isNew}
-            inWishlist={isInWishlist(product.id)}
+              title={product.title}
+              image={product.image}
+              images={product.images}
+              badge={product.badge}
+              badgeColor={product.badgeColor as any}
+              discountPercent={product.discount}
+              isNew={product.isNew}
+              inWishlist={isInWishlist(product.id)}
               onWishlistToggle={handleWishlistToggle}
             />
           </div>
 
-          {/* Right: Info + CTA */}
           <div className="lg:col-span-7 flex flex-col justify-center space-y-5">
-            {/* Badges */}
-            <div className="flex gap-2 flex-wrap">
-              {product.category && (
-                <span className="bg-gray-100 dark:bg-[#1a1a1a] text-gray-800 dark:text-zinc-300 border border-gray-300 dark:border-zinc-700 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
-                  {product.category}
-                </span>
-              )}
-              <span className="bg-blue-50 dark:bg-primary/20 text-blue-600 dark:text-primary border border-blue-200 dark:border-primary/30 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
-                Lifetime License
-              </span>
-            </div>
-
-            {/* Title & Meta */}
             <ProductMeta
               title={product.title}
               category={product.category}
@@ -123,95 +96,72 @@ export default function ProductDetails({ product, relatedProducts = [] }: Produc
               soldCount={product.soldCount}
             />
 
-            {/* AddToCart flow (price, qty, CTA) */}
             <AddToCartFlow product={product} />
-
-            {/* Brand / Category / Status strip */}
-            <div className="grid grid-cols-3 gap-2 py-4 border-y border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-[#1a1a1a] rounded-lg px-4">
-              <div className="text-center">
-                <p className="text-[10px] uppercase tracking-widest text-gray-500 dark:text-zinc-400 mb-1">Brand</p>
-                <p className="font-bold text-sm text-gray-900 dark:text-zinc-50">{product.platform || "CDKeyDeals"}</p>
-              </div>
-              <div className="text-center">
-                <p className="text-[10px] uppercase tracking-widest text-gray-500 dark:text-zinc-400 mb-1">Category</p>
-                <p className="font-bold text-sm text-gray-900 dark:text-zinc-50">{product.category || "General"}</p>
-              </div>
-              <div className="text-center">
-                <p className="text-[10px] uppercase tracking-widest text-gray-500 dark:text-zinc-400 mb-1">Status</p>
-                <p className={`font-bold text-sm ${product.stock === 0 ? "text-red-500" : "text-green-600 dark:text-green-500"}`}>
-                  {product.stock === 0 ? "Out of Stock" : "In Stock"}
-                </p>
-              </div>
-            </div>
           </div>
         </section>
 
-        {/* ───────── Meta Info Grid (5 cols) ───────── */}
+        {/* Meta Grid */}
         <section className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-12">
           {metaItems.map((item, i) => (
-            <div
-              key={i}
-              className={`bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-zinc-700 p-4 rounded-xl text-center ${
-                i === metaItems.length - 1 ? "col-span-2 md:col-span-1" : ""
-              }`}
-            >
-              <div className="flex justify-center text-blue-600 dark:text-primary mb-2">{item.icon}</div>
-              <p className="text-[10px] text-gray-500 dark:text-zinc-400 uppercase tracking-tighter">{item.label}</p>
-              <p className="text-sm font-bold text-gray-900 dark:text-zinc-50">{item.value}</p>
+            <div key={i} className="bg-gray-50 dark:bg-[#1a1a1a] p-4 rounded-xl text-center">
+              <div className="flex justify-center mb-2 text-blue-600">{item.icon}</div>
+              <p className="text-[10px] uppercase text-gray-500">{item.label}</p>
+              <p className="text-sm font-bold">{item.value}</p>
             </div>
           ))}
         </section>
 
-        {/* ───────── Product Description (Enhanced) ───────── */}
+        {/* Product Description */}
         <ProductDescription product={product} />
 
-        {/* ───────── Technical Specifications ───────── */}
+        {/* Technical Specs */}
         <TechnicalSpecs specs={technicalSpecs} />
 
-        {/* ───────── FAQ ───────── */}
+        {/* FAQ */}
         <ProductFaq />
 
-        {/* ───────── Related Products ───────── */}
+        {/* Related Products */}
         {relatedProducts.length > 0 && (
           <section className="mb-16">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-zinc-50 font-headline">You May Also Like</h2>
-              <Link href="/collections" className="text-sm text-blue-600 dark:text-primary hover:text-blue-700 dark:hover:text-primary/80 font-medium flex items-center gap-1">
-                View All
-                <ChevronRight className="w-4 h-4" />
+              <h2 className="text-xl font-bold">You May Also Like</h2>
+              <Link href="/collections" className="text-sm text-blue-600 flex items-center gap-1">
+                View All <ChevronRight className="w-4 h-4" />
               </Link>
             </div>
+
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
               {relatedProducts.slice(0, 6).map((relatedProduct) => (
                 <Link
-                  key={relatedProduct.id}
+                  key={`${relatedProduct.id}-${relatedProduct.image}`}
                   href={`/product/${relatedProduct.slug || relatedProduct.id}`}
-                  className="bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-zinc-700 rounded-xl overflow-hidden hover:shadow-lg hover:border-blue-300 dark:hover:border-primary/30 transition-all duration-200 cursor-pointer group"
+                  className="bg-gray-50 dark:bg-[#1a1a1a] rounded-xl overflow-hidden hover:shadow-lg transition-all group"
                 >
-                  <div className="relative h-32 bg-white dark:bg-gradient-to-br dark:from-[#1a1a1a] dark:to-[#0f0f0f] flex items-center justify-center p-3 overflow-hidden">
+                  {/* FIXED IMAGE */}
+                  <div className="relative h-32 w-full overflow-hidden">
                     {relatedProduct.image ? (
-                      <img
+                      <Image
                         src={relatedProduct.image}
                         alt={relatedProduct.title}
-                        className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-300"
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        sizes="(max-width: 768px) 50vw, 16vw"
+                        quality={90}
                       />
                     ) : (
-                      <div className="w-10 h-12 bg-gray-200 dark:bg-[#1a1a1a] rounded animate-pulse" />
+                      <div className="w-full h-full bg-gray-200 animate-pulse" />
                     )}
                   </div>
+
                   <div className="p-3">
-                    <h4 className="text-xs font-bold text-gray-900 dark:text-zinc-50 line-clamp-2 min-h-[2rem] group-hover:text-blue-600 dark:group-hover:text-primary transition-colors">
+                    <h4 className="text-xs font-bold line-clamp-2">
                       {relatedProduct.title}
                     </h4>
-                    <div className="mt-2 flex items-baseline gap-1">
-                      <span className="text-sm font-bold text-gray-900 dark:text-zinc-50">
+
+                    <div className="mt-2">
+                      <span className="text-sm font-bold">
                         ${relatedProduct.price.toFixed(2)}
                       </span>
-                      {relatedProduct.originalPrice && relatedProduct.originalPrice > relatedProduct.price && (
-                        <span className="text-xs text-gray-500 dark:text-zinc-500 line-through">
-                          ${relatedProduct.originalPrice.toFixed(2)}
-                        </span>
-                      )}
                     </div>
                   </div>
                 </Link>
@@ -219,9 +169,9 @@ export default function ProductDetails({ product, relatedProducts = [] }: Produc
             </div>
           </section>
         )}
+
       </div>
 
-      {/* ───────── Mobile Fixed Bottom Bar ───────── */}
       <MobileActionToolbar product={product} quantity={quantity} />
     </div>
   );

@@ -89,7 +89,7 @@ export default function ProductQuickViewDemo() {
           </p>
           <RelatedProducts
             products={enhancedProducts.slice(0, 8)}
-            title="You May Also Like"
+            title="You May Also Like 111"
             onProductClick={(product) => handleQuickView(product.id)}
           />
         </div>

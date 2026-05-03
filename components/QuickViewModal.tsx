@@ -409,7 +409,7 @@ export default function QuickViewModal({
                 {relatedProducts.length > 0 && (
                   <div className="border-t border-border px-6 lg:px-8 py-6">
                     <h3 className="text-sm font-bold text-foreground uppercase tracking-wide mb-4">
-                      You May Also Like
+                      You May Also Like11
                     </h3>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                       {relatedProducts.slice(0, 5).map((rp) => (
