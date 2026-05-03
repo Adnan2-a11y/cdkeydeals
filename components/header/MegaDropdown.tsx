@@ -92,36 +92,38 @@ export default function MegaDropdown({
       onMouseLeave={handleMouseLeave}
     >
       {/* Trigger */}
-      <a
-        href={triggerHref}
-        className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${triggerHoverColor} hover:opacity-80`}
-        onMouseEnter={(e) => {
-          e.preventDefault();
-          handleMouseEnter();
-        }}
-      >
-        {triggerLabel}
-        <svg
-          className="w-4 h-4 transition-transform duration-200"
-          style={{
-            transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+      <div className="flex items-center">
+        <a
+          href={triggerHref}
+          className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-all duration-200 ${triggerHoverColor} hover:opacity-80`}
+          onMouseEnter={(e) => {
+            e.preventDefault();
+            handleMouseEnter();
           }}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
-      </a>
+          {triggerLabel}
+          <svg
+            className="w-4 h-4 transition-transform duration-200"
+            style={{
+              transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+            }}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </a>
+      </div>
 
       {/* Dropdown Content */}
       {isOpen && (
-        <div className="absolute top-full left-0 z-50 w-screen max-w-4xl mt-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl">
+        <div className="absolute top-full left-0 z-50 w-screen max-w-4xl mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl opacity-100 visible transform translate-y-0 transition-all duration-200 ease-in-out">
           <div className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {columns.map((column, index) => (

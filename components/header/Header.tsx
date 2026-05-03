@@ -31,8 +31,6 @@ function HeaderContent() {
   const [isGiftCardsDropdownOpen, setIsGiftCardsDropdownOpen] = useState(false);
   const [isBestDealsDropdownOpen, setIsBestDealsDropdownOpen] = useState(false);
   const [isBlogDropdownOpen, setIsBlogDropdownOpen] = useState(false);
-  const [isGamesDropdownOpen, setIsGamesDropdownOpen] = useState(false);
-  const [isSoftwareDropdownOpen, setIsSoftwareDropdownOpen] = useState(false);
   const [isMoreDropdownOpen, setIsMoreDropdownOpen] = useState(false);
   const [isFAQDropdownOpen, setIsFAQDropdownOpen] = useState(false);
 
@@ -162,19 +160,11 @@ function HeaderContent() {
                 </span>
               </Link>
 
-              {/* Games - Clickable with Dropdown */}
-              <GamesDropdown
-                isOpen={isGamesDropdownOpen}
-                onToggle={() => setIsGamesDropdownOpen(!isGamesDropdownOpen)}
-                onClose={() => setIsGamesDropdownOpen(false)}
-              />
+              {/* Games - Hoverable with Dropdown */}
+              <GamesDropdown />
               
-              {/* Software - Clickable with Dropdown */}
-              <SoftwareDropdown
-                isOpen={isSoftwareDropdownOpen}
-                onToggle={() => setIsSoftwareDropdownOpen(!isSoftwareDropdownOpen)}
-                onClose={() => setIsSoftwareDropdownOpen(false)}
-              />
+              {/* Software - Hoverable with Dropdown */}
+              <SoftwareDropdown />
               
               {/* Gift Cards - Clickable with Dropdown */}
               <GiftCardsDropdown
